@@ -32,7 +32,19 @@
 
 - database–class confounding
 - 실제 24시간 정확도, 처리시간과 전력 미검증
-- physical AFE PCB, ADC silicon, ASIC/post-layout와 clinical validation 미수행
+- 2026-07 개정 당시 physical AFE PCB, ADC silicon, ASIC/post-layout와 clinical validation 미수행; ASIC 범위는 아래 2026-08 개정에서 갱신
 - FPGA 전력은 activity 기반 추정이며 2.991 µW는 완전 power-gating 조건의 산출값
 
 문장별 근거는 `INTEGRATED_TECHNICAL_REPORT_EVIDENCE_MAP.csv`에 있다.
+
+## 2026-08-20 GPDK045 core-only PPA 개정
+
+- `snn_ecg_asic_core_top`, `PROFILE_EN=0`의 generic GPDK045 flow 근거를 추가했다.
+- 실제 raw XMODEL 재실행 4/36과 과거 36-case compact acceptance를 분리해, 36개 raw dump 직접 재실행처럼 읽히던 표현을 바로잡았다.
+- Xcelium wrapper smoke, actual-core Conformal 13-module PASS, Genus `syn_map`, Innovus signal post-route와 IQuantus extraction을 구분해 기록했다.
+- mapped 35,188 cells/93,585.906 µm²와 post-route 35,663 instances/95,321.556 µm²를 보고했다.
+- setup WNS +2.980 ns와 hold WNS −0.050 ns를 함께 제시해 full timing closure가 아님을 명시했다.
+- clock slew 위반 86개, `SDFFQX1` 995개와 undefined scan 10.70% flops의 QoR 한계를 추가했다.
+- Incomplete antenna data, physical-only cell·metal fill 미삽입과 historical clock-source transition 미지정을 공개했다.
+- 3.35554239 mW를 default activity 0.10의 vectorless estimate로 제한하고 FPGA 추정치·이상적 power-gating 산출값·실측 전력과 구분했다.
+- VDD/VSS 미배선, internal route DRC 1, PG/IR, foundry DRC/LVS, DFT, pad/package와 fabrication 미수행을 claim 경계로 남겼다.

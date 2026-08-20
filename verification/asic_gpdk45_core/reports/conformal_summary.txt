@@ -1,0 +1,12 @@
+Cadence Conformal 24.1 public summary
+Comparison: canonical RTL wrapper (golden) versus Genus fv_map (revised)
+Mode: hierarchical comparison
+
+Processed module pairs: 13/13
+Equivalent modules: 13
+Non-equivalent modules: 0
+Aborted modules: 0
+Hierarchical compare result: Equivalent
+LEC comparison: PASS
+
+This proves RTL-to-syn_map logical equivalence for the compared design. It is not a classification-accuracy result and does not cover the final routed netlist.

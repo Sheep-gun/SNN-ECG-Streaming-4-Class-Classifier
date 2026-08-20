@@ -11,6 +11,7 @@
 | SystemVerilog XMODEL | `design/analog/xmodel/` | digital handoff model |
 | Pure RTL | `design/digital/rtl/` | fixed synthesizable source |
 | AXI IP | `design/digital/ip_repo/` | packaging and integration |
+| GPDK045 core-only ASIC flow | `design/digital/asic/gpdk45/` | wrapper, SDC와 Cadence script; PDK 원본 미포함 |
 | Python equivalent model | `models/digital_equivalence/tools/` | algorithm/reference |
 | Exact C++ model | `models/digital_equivalence/exact_cpp/` | integer equivalence and CPU baseline |
 
@@ -38,6 +39,7 @@
 - 사전 feature 분석: `analysis/feature_selection/`
 - timing/pipeline 개발 이력: `verification/timing_optimization/`
 - FPGA implementation: `verification/fpga_implementation/`
+- GPDK045 core-only PPA: `verification/asic_gpdk45_core/`, `tables/asic_gpdk45_ppa.csv`
 - 통합 acceptance: `verification/xmodel_rtl_acceptance_36case/`
 - raw replay audit: `verification/xmodel_rtl_e2e/`
 - final figures: `figures/final_submission/`
@@ -54,5 +56,6 @@
 - private 신청서, 서명, 연락처
 - 사용자 홈 절대경로
 - 재생성 가능한 대용량 raw data
+- GPDK045 Liberty, LEF, QRC, Verilog, CDL, GDS와 Cadence 원격 work database
 
 삭제된 자료의 연구 이력은 최종 Git history에 두 upstream history를 병합하여 보존한다.

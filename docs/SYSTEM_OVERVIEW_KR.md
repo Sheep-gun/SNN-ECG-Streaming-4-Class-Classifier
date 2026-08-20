@@ -17,7 +17,8 @@ Public digitized ECG
   → 60 s Snapshot Membrane
   → 30-Snapshot Final Membrane
   → NSR / CHF / ARR / AF
-  → AXI IP / MicroBlaze / FPGA replay
+  ├→ AXI IP / MicroBlaze / FPGA replay
+  └→ GPDK045 core-only mapping / LEC / signal post-route / extraction
 ```
 
 ## 아날로그부
@@ -40,4 +41,5 @@ Pure RTL은 AXI-Lite 제어·결과 레지스터와 AXI-Stream 입력을 갖는 
 - Snapshot: 60초, 60,000 samples, 총 30개
 - 분류 결과: 29/36, 정확도 80.56%, Macro-F1 80.44%
 - FPGA 등가성: class 36/36, four membranes 144/144
-- 미검증: physical AFE/ADC, ASIC/post-layout, clinical validation, actual 24-hour accuracy/time/power
+- ASIC exploratory result: explicit setup WNS +2.980 ns, hold WNS −0.050 ns, clock slew 위반 86개, vectorless 3.35554239 mW; scan-aware QoR/PG/sign-off 미완료
+- 미검증: physical AFE/ADC, ASIC full timing closure·PG/IR·foundry DRC/LVS·fabrication, clinical validation, actual 24-hour accuracy/time/power

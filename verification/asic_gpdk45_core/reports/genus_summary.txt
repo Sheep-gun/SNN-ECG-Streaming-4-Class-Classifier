@@ -1,0 +1,15 @@
+Cadence Genus 23.14 public summary
+Design: snn_ecg_asic_core_top
+Library/view: slow_vdd1v2 / PVT_1P08V_125C
+Clock: core_clk, 10000.0 ps
+Completed stage: syn_map (syn_opt not run because the installed limited license was unavailable)
+
+Unresolved references: 0
+Empty modules: 0
+Mapped cell count: 35188
+Mapped cell area: 93585.906 um2
+Critical setup slack: +3349.1 ps
+Setup TNS: 0.0 ps
+Violating setup paths: 0
+
+This is a pre-route mapped estimate. Post-route extracted timing and power are reported separately.

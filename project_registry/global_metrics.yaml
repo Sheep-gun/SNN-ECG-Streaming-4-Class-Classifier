@@ -55,9 +55,45 @@ metrics:
     active_energy_mj: 5.38392855
     ideal_power_gated_average_uw: 2.991
     evidence: models/digital_equivalence/results/accelerator_benefit_summary.csv
+  asic_gpdk45_core:
+    process_scope: generic GPDK045 GSCLIB v4.7 core-only exploratory
+    top: snn_ecg_asic_core_top
+    canonical_profile_en: 0
+    clock_mhz: 100
+    mapped_cells: 35188
+    mapped_cell_area_um2: 93585.906
+    mapped_setup_slack_ns: 3.349
+    conformal_hierarchical_modules_passed: 13
+    conformal_diff: 0
+    conformal_abort: 0
+    postroute_instances: 35663
+    postroute_cell_area_um2: 95321.556
+    def_database_units_per_um: 2000
+    die_boundary_um: [421.000, 418.190]
+    extracted_setup_wns_ns: 2.980
+    extracted_hold_wns_ns: -0.050
+    clock_slew_violations: 86
+    clock_slew_target_ns: 0.060
+    clock_slew_worst_ns: 0.062
+    scan_capable_sdffqx1_cells: 995
+    undefined_scan_flop_percent: 10.70
+    scan_chain_defined: false
+    full_timing_closure: false
+    signal_routing_complete: true
+    power_ground_routing_complete: false
+    innovus_internal_route_drc_count: 1
+    internal_antenna_count: 0
+    antenna_check_complete: false
+    physical_only_cells_and_metal_fill_inserted: false
+    vectorless_power_mw: 3.35554239
+    vectorless_activity_assumption: default PI and sequential activity 0.10
+    ppa_evidence: verification/asic_gpdk45_core/results/ppa_summary.csv
+    physical_evidence: verification/asic_gpdk45_core/results/physical_checks.csv
+    equivalence_evidence: verification/asic_gpdk45_core/results/equivalence_summary.csv
 claim_boundaries:
   validated_input_duration: 30 minutes
   holter_direction: 24 hours or longer
-  unvalidated: [24-hour accuracy, 24-hour latency, physical AFE PCB, ADC silicon, ASIC post-layout, clinical validation, measured FPGA-board power]
+  unvalidated: [24-hour accuracy, 24-hour latency, physical AFE PCB, ADC silicon, ASIC setup-hold and clock-rule closure, scan-aware QoR, power grid and IR, physical-only cell and metal fill insertion, foundry DRC and LVS, DFT and pads, package, fabricated silicon, clinical validation, measured FPGA-board power, measured ASIC power]
   power_note: 2.991 uW is a conditional derived estimate under complete power-gating, not measured FPGA power.
+  asic_power_note: 3.35554239 mW is a setup-slow vectorless estimate using default activity 0.10, not workload or measured silicon power.
   dataset_note: strict record-wise splitting prevents source-record leakage but does not remove database-class confounding.

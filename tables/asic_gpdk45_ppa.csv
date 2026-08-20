@@ -1,0 +1,13 @@
+scope,stage,metric,value,unit,status,evidence,claim_boundary
+gpdk045_core,logic,Conformal equivalent modules,13/13,modules,PASS,verification/asic_gpdk45_core/results/equivalence_summary.csv,RTL to Genus fv_map only
+gpdk045_core,area,post-route instances,35663,count,OBSERVED,verification/asic_gpdk45_core/results/ppa_summary.csv,core-only no pads
+gpdk045_core,area,post-route cell area,95321.556,um2,OBSERVED,verification/asic_gpdk45_core/results/ppa_summary.csv,standard-cell area
+gpdk045_core,area,placement density,66.20,percent,OBSERVED,verification/asic_gpdk45_core/results/ppa_summary.csv,reported placeable area denominator
+gpdk045_core,performance,setup WNS at 100 MHz,2.980,ns,PARTIAL,verification/asic_gpdk45_core/results/ppa_summary.csv,positive explicit setup WNS but 86 clock slew violations remain
+gpdk045_core,performance,hold WNS,-0.050,ns,FAIL,verification/asic_gpdk45_core/results/ppa_summary.csv,hold not closed
+gpdk045_core,performance,clock slew violations,86,count,FAIL,verification/asic_gpdk45_core/results/physical_checks.csv,target 0.060 ns worst 0.062 ns
+gpdk045_core,implementation,scan-capable SDFFQX1,995,count,PARTIAL,verification/asic_gpdk45_core/results/physical_checks.csv,undefined scan chains on 10.70 percent of flops may affect QoR
+gpdk045_core,power,vectorless total power,3.35554239,mW,ESTIMATE,verification/asic_gpdk45_core/results/ppa_summary.csv,PI and sequential activity 0.10 not workload based
+gpdk045_core,route,total wire length,449894,um,OBSERVED,verification/asic_gpdk45_core/results/ppa_summary.csv,signal route only
+gpdk045_core,route,total vias,259424,count,OBSERVED,verification/asic_gpdk45_core/results/ppa_summary.csv,signal route only
+gpdk045_core,route,internal DRC violations,1,count,FAIL,verification/asic_gpdk45_core/results/physical_checks.csv,Metal1 spacing not foundry signoff DRC

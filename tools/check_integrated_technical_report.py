@@ -31,6 +31,12 @@ REQUIRED_TEXT = [
     "80.56%", "80.44%", "9,719", "5,038", "8.184 ns",
     "12,494", "8,494", "0.097 ns", "36.0129 ms", "49.36",
     "142.0 mW", "2.991 µW", "database–class confounding", "30분", "24시간",
+    "35,188", "93,585.906 µm²", "35,663", "95,321.556 µm²",
+    "421.000 × 418.190 µm", "+2.980 ns", "−0.050 ns", "3.35554239 mW",
+    "default PI/sequential activity 0.10", "VDD/VSS unrouted", "internal route DRC 1",
+    "clock slew 위반 86개", "`SDFFQX1` 995개", "undefined scan 10.70% flops",
+    "antenna data incomplete",
+    "실제 full-30분 raw XMODEL accepted dump는 4/36개",
     "c6b80de19cdcad5b7e43fe7835588b629d847f75",
     "c7c75cfebf7add12bfcc32bb59d5edf38ac6e5aa",
     "5e2e5d0a46be47d8086b8642e055066079bfa4e6",
@@ -41,16 +47,19 @@ REQUIRED_VERBATIM_EXCERPTS = [
     "따라서 30분은 하드웨어의 처리 한계가 아니라 공개 데이터셋을 공정하게 비교하기 위한 표준 평가 단위이다.",
     "각 30분 구간은 원천 DB label과 가용한 beat/rhythm annotation을 대조하여 해당 클래스의 박동 및 리듬 증거가 충분히 포함되는지 확인하고 라벨 대표성을 점검하였다.",
     "분류 구조의 가중치와 임계값은 학습 및 검증 데이터로 결정하고 RTL로 구현한 뒤 최종 시험 전에 고정하였다.",
-    "현재 개발 범위는 모델 기반 AFE–ADC와 FPGA 디지털 IP의 통합 설계 및 검증 단계이며, ASIC 제작과 post-layout 검증은 후속 과제이다.",
+    "이어 generic GPDK045에서 digital core-only Genus mapping, Conformal 논리 등가성, Innovus signal post-route와 IQuantus 추출까지 수행했다.",
     "원시 ECG 전체를 저장하지 않고, 표본이 입력될 때마다 사건을 검출하고 뉴런의 증거 누적값을 순차적으로 갱신하는 스트리밍 구조이다.",
     "현재 표본과 직전 표본의 차이인 ΔECG를 구하고, 그 절댓값이 구간 초기의 입력 변화에 맞춰 자동 설정된 문턱값을 넘으면 부호에 따라 상승 또는 하강 Strong Event를 발생시킨다.",
     "Pure RTL은 AXI IP로 패키징하였다.",
     "분류 성능은 학습/검증 데이터와 원천 record가 겹치지 않고 모델 선택에도 사용되지 않은 fully held-out 최종 시험 데이터로, 설계 고정 후 최초 한 번만 평가하였다.",
-    "다만 장시간 처리와 저전력 목표는 각각 30분 입력 검증과 이상적인 power-gating 조건의 산출값에 근거하므로 조건부 달성으로 평가하였다.",
+    "장시간 처리와 저전력 목표도 각각 30분 입력 검증, 이상적 power-gating 산출과 vectorless ASIC 추정에 근거하므로 조건부로 유지한다.",
 ]
 FORBIDDEN = [
     "SNN-inspired", "본 연구는 세계 최초", "동일한 연구가 없음을 확인",
     "실측 소비전력 2.991", "FPGA 소비전력은 2.991", "임상적으로 검증",
+    "ASIC full timing closure를 달성", "GPDK045 실측 전력", "foundry sign-off를 완료",
+    "AFE–ADC와 Pure RTL을 직접 연결한 36개 XMODEL End-to-End",
+    "End-to-End full replay에서는 30분 입력 36개 모두",
 ]
 
 

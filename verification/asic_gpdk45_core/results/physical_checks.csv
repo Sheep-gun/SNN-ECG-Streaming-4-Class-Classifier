@@ -1,0 +1,17 @@
+check,result,count_or_value,scope,limitation
+placement,PARTIAL,66.20 percent density,standard-cell core,995 SDFFQX1 and undefined scan chains on 10.70 percent of flops may affect placement and timing QoR
+clock_tree,FAIL,6045 sinks and 1 source; 86 slew violations,core_clk,target 0.060 ns and worst 0.062 ns
+detailed_signal_route,PASS,449894 um wire and 259424 vias,regular signal nets,no PG route
+signal_connectivity,PASS,0 regular signal problems,verifyConnectivity regular,VDD and VSS separately reported unrouted
+power_ground_route,NOT_RUN,2 unrouted PG nets,VDD and VSS,no ring stripes sroute or IR-drop
+iquantus_extraction,PASS,status 0,two library PVT views,same gpdk045.tch and unit RC scaling
+postroute_setup,PARTIAL,+2.980 ns WNS,explicit setup_slow report at 100 MHz,positive data-path WNS but 86 clock slew violations and scan QoR limitation remain
+postroute_hold,FAIL,-0.050 ns WNS,hold_fast,hold fixing not run and scan SI/SE paths are present
+innovus_internal_route_drc,FAIL,1 Metal1 spacing violation,internal router check,not foundry signoff DRC
+process_antenna_internal,PARTIAL,0 reported,Innovus internal route check,library ANTENNAGATEAREA data incomplete so some rules were not checked correctly
+filler_decap_endcap_welltap,NOT_RUN,0 filler and decap reported,physical-only cells,not inserted
+metal_fill,NOT_RUN,n/a,post-route extraction,MetalFill OFF
+foundry_drc_lvs,NOT_RUN,n/a,signoff,no decks available in the kit archive
+postroute_sdf_gls,NOT_RUN,n/a,back-annotation,archived SDF is an analysis export and was not validated in GLS
+dft_scan,NOT_RUN,995 SDFFQX1 mapped functionally,test implementation,scan chains not defined; Innovus reported 10.70 percent undefined scan flops
+remote_artifact_cleanup,PASS,0 remaining Cadence processes,isolated remote run workspace,raw archive retained locally only

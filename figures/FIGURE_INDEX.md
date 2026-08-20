@@ -18,5 +18,6 @@
 | 11 | AFE–ADC XMODEL–RTL integration | `설계회로 검증/AXI,IP 및 mixed 검증/VAL-03_analog_digital_integration_flow.svg` |
 | 12 | XMODEL AFE–ADC stage waveform | `설계회로 구현결과/Xmodel 구현 결과.svg` |
 | 13 | FPGA implementation/placement | `설계회로 구현결과/FPGA 구현ㆍ배치 결과.svg` |
+| 14 | GPDK045 core-only signal placement/routing | `설계회로 구현결과/GPDK045 코어 배치배선 결과.gif` |
 
-Figure 13은 ASIC layout이 아니라 Vivado post-route FPGA placement를 바탕으로 정리한 publication figure다. Figure 5는 원본 RTL hierarchy에 근거한 reader-facing vector 정리이며 synthesized leaf-cell netlist가 아니다.
+Figure 13은 ASIC layout이 아니라 Vivado post-route FPGA placement를 바탕으로 정리한 publication figure다. Figure 14는 generic GPDK045 digital core의 일반 신호 배선 화면이며 PG·pad·signoff layout이 아니다. Figure 5는 원본 RTL hierarchy에 근거한 reader-facing vector 정리이며 synthesized leaf-cell netlist가 아니다.

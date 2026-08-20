@@ -9,3 +9,12 @@ microblaze_system,slice_register,8494,design/digital/reports/final/final_metrics
 microblaze_system,BRAM,16,design/digital/reports/final/final_metrics.json,양건,whole replay system
 microblaze_system,DSP,3,design/digital/reports/final/final_metrics.json,양건,whole replay system
 microblaze_system,setup_WNS_ns,0.097,design/digital/reports/final/final_metrics.json,양건,timing closure not board latency
+asic_gpdk45_core,mapped_cells,35188,verification/asic_gpdk45_core/results/ppa_summary.csv,양건,Genus syn_map only
+asic_gpdk45_core,mapped_cell_area_um2,93585.906,verification/asic_gpdk45_core/results/ppa_summary.csv,양건,generic GPDK045 not silicon area
+asic_gpdk45_core,postroute_instances,35663,tables/asic_gpdk45_ppa.csv,양건,core-only signal-routed block
+asic_gpdk45_core,postroute_cell_area_um2,95321.556,tables/asic_gpdk45_ppa.csv,양건,excludes pads package and PG completion
+asic_gpdk45_core,setup_WNS_ns,2.980,tables/asic_gpdk45_ppa.csv,양건,positive explicit WNS but 86 clock slew violations remain
+asic_gpdk45_core,hold_WNS_ns,-0.050,tables/asic_gpdk45_ppa.csv,양건,hold violation means no full timing closure
+asic_gpdk45_core,clock_slew_violations,86,tables/asic_gpdk45_ppa.csv,양건,target 0.060 ns worst 0.062 ns
+asic_gpdk45_core,scan_capable_SDFFQX1,995,tables/asic_gpdk45_ppa.csv,양건,undefined scan chains on 10.70 percent of flops affect QoR confidence
+asic_gpdk45_core,vectorless_total_power_mW,3.35554239,tables/asic_gpdk45_ppa.csv,양건,default activity 0.10 not workload or measured power

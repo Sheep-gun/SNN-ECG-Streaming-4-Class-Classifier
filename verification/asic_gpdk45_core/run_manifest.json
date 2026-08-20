@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "run_date_kst": "2026-08-20",
+  "source_commit_before_asic_additions": "d6b8e1748abaf9d9917960cfaf7a10fc2d189f1b",
+  "design": {
+    "top": "snn_ecg_asic_core_top",
+    "canonical_top": "snn_ecg_30min_final_top",
+    "compiled_verilog_file_count": 16,
+    "included_parameter_header_count": 1,
+    "rtl_dependency_hash_match_local": "17/17",
+    "adc_width": 12,
+    "profile_en": 0,
+    "snapshot_samples": 60000,
+    "snapshots_per_chunk": 30,
+    "post_done_ticks": 37
+  },
+  "tools": {
+    "xcelium": "23.09-s013",
+    "genus": "23.14-s090_1",
+    "innovus": "23.14-s088_1",
+    "conformal": "24.10-s500",
+    "iquantus": "23.1.1-s336"
+  },
+  "technology": {
+    "kit": "generic GPDK045 GSCLIB v4.7",
+    "setup_library": "slow_vdd1v2_basicCells.lib",
+    "setup_pvt": "1.08 V, 125 C",
+    "hold_library": "fast_vdd1v2_basicCells.lib",
+    "hold_pvt": "1.32 V, 0 C",
+    "rc_technology": "gpdk045.tch",
+    "rc_limitation": "same QRC technology and unit scaling used for both library PVT views",
+    "timing_table_limitation": "tool-demonstration 2x2 constraint tables rather than silicon-accuracy recommended 7x7"
+  },
+  "constraints": {
+    "clock_period_ns": 10.0,
+    "clock_frequency_mhz": 100.0,
+    "setup_uncertainty_ns": 0.2,
+    "hold_uncertainty_ns": 0.1,
+    "input_delay_ns": 1.0,
+    "output_delay_ns": 1.0,
+    "input_transition_ns": 0.1,
+    "output_load_pf": 0.020,
+    "clock_source_transition_explicit": false,
+    "observed_ccopt_root_slew_ns": 0.004,
+    "current_sdc_postrun_hardening_clock_transition_ns": 0.100
+  },
+  "logic_checks": {
+    "xcelium_wrapper_smoke": "PASS; reduced-parameter synthetic 16-sample cycle comparison only",
+    "genus_unresolved_references": 0,
+    "genus_empty_modules": 0,
+    "conformal_rtl_to_fv_map": "PASS; 13/13 equivalent, 0 non-equivalent, 0 aborted",
+    "synthesis_baseline": "syn_map; syn_opt unavailable under the installed limited license"
+  },
+  "postroute": {
+    "instances": 35663,
+    "cell_area_um2": 95321.556,
+    "placement_density_percent": 66.20,
+    "def_database_units_per_um": 2000,
+    "die_width_um": 421.000,
+    "die_height_um": 418.190,
+    "setup_wns_ns": 2.980,
+    "hold_wns_ns": -0.050,
+    "si_aware_timing": true,
+    "clock_slew_target_ns": 0.060,
+    "clock_slew_worst_ns": 0.062,
+    "clock_slew_violations": 86,
+    "wire_length_um": 449894,
+    "vias": 259424,
+    "internal_route_drc": 1,
+    "internal_route_drc_type": "Metal1 spacing",
+    "scan_capable_sdffqx1_cells": 995,
+    "undefined_scan_flop_percent": 10.70,
+    "scan_chain_defined": false,
+    "fillers_and_decaps": 0,
+    "endcap_welltap_and_metal_fill_inserted": false,
+    "internal_antenna_count": 0,
+    "antenna_check_complete": false,
+    "extraction": "IQuantus high effort, status 0"
+  },
+  "power": {
+    "method": "post-route vectorless",
+    "view": "setup_slow, 1.08 V",
+    "primary_input_activity": 0.10,
+    "sequential_activity": 0.10,
+    "internal_mw": 2.42385086,
+    "switching_mw": 0.92844734,
+    "leakage_mw": 0.00324419,
+    "total_mw": 3.35554239,
+    "workload_based": false
+  },
+  "excluded": [
+    "syn_opt",
+    "post-route setup and hold optimization",
+    "timeDesign setup and hold summaries",
+    "clock slew closure",
+    "scan-free remapping or defined scan chains",
+    "PG ring/stripes/sroute and IR-drop",
+    "DFT insertion and scan stitching",
+    "filler/decap/endcap/welltap and metal fill",
+    "pads and package",
+    "foundry DRC/LVS/ERC signoff",
+    "post-route SDF back-annotation GLS",
+    "fabrication and silicon measurement"
+  ],
+  "private_raw_archive": {
+    "committed_to_git": false,
+    "sha256": "983cb360b64d006087fbec6497e471cabb30409ab670a1a2f8ca1181e4d48e93",
+    "local_hash_verified": true,
+    "remote_workspace_removed_after_retrieval": true,
+    "remaining_cadence_processes_after_cleanup": 0
+  }
+}

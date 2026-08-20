@@ -24,8 +24,10 @@
   → SystemVerilog XMODEL
   → 1 kSPS signed 12-bit stream
   → SNN Pure RTL
-  → AXI IP, MicroBlaze
-  → Vivado implementation, Nexys A7-100T replay
+  ├→ AXI IP, MicroBlaze
+  │ → Vivado implementation, Nexys A7-100T replay
+  └→ core-only ASIC wrapper (PROFILE_EN=0)
+    → Cadence Genus / Conformal / Innovus / IQuantus
 ```
 
 - 아날로그 모델: HPF, 3-op-amp IA, Active Twin-T 60 Hz notch, 150 Hz LPF, buffer, S/H, 12-bit ADC
@@ -46,6 +48,11 @@
 | Exact C++ 대비 활성시간 | 1,777.6998 ms 대 36.0129 ms, 49.36배 | 단일 thread kernel 대 profiler counter 기반 FPGA core |
 | 1 kSPS 연속 할당전력 | 142.0 mW | post-route activity 기반 추정, 보드 실측 아님 |
 | 이상적 평균전력 | 2.991 µW | 30분마다 36.0129 ms 동작 후 완전 power-gating을 가정한 산출값 |
+| GPDK045 Genus mapping | 35,188 cells, 93,585.906 µm² | GSCLIB v4.7, `syn_map` 기준; `syn_opt` 미실행 |
+| GPDK045 논리 등가성 | 13 hierarchical modules PASS, diff 0, abort 0 | actual-core RTL↔mapped netlist Conformal LEC |
+| GPDK045 core-only post-route | 35,663 instances, 95,321.556 µm², 421.000 × 418.190 µm | generic 45 nm exploratory block, pad/PG 제외 |
+| GPDK045 post-route timing | setup WNS +2.980 ns, hold WNS −0.050 ns, clock slew 위반 86개 | 100 MHz explicit report; setup/hold·clock-rule closure 아님 |
+| GPDK045 post-route power | 3.35554239 mW | setup-slow vectorless, default 0.10 activity; workload 전력·실측값 아님 |
 
 LTspice와 XMODEL의 동일 10초 ECG 비교에서는 MAE 0.6445 LSB, RMS 1.3020 LSB, 상관계수 0.999518, 지연 0표본을 기록했다. 이는 모델 간 정합이며 물리 AFE 또는 ADC 실측이 아니다.
 
@@ -70,6 +77,8 @@ LTspice와 XMODEL의 동일 10초 ECG 비교에서는 MAE 0.6445 LSB, RMS 1.3020
 | SNN/RTL 구조 | [docs/DIGITAL_ARCHITECTURE_KR.md](docs/DIGITAL_ARCHITECTURE_KR.md) |
 | timing 병목 개선 | [verification/timing_optimization/RTL_TIMING_OPTIMIZATION_HISTORY_KR.md](verification/timing_optimization/RTL_TIMING_OPTIMIZATION_HISTORY_KR.md) |
 | 하드웨어와 전력 | [docs/HARDWARE_IMPLEMENTATION_KR.md](docs/HARDWARE_IMPLEMENTATION_KR.md) |
+| GPDK045 core-only flow | [design/digital/asic/gpdk45/](design/digital/asic/gpdk45/) |
+| GPDK045 PPA 근거 | [verification/asic_gpdk45_core/README_KR.md](verification/asic_gpdk45_core/README_KR.md) |
 | 통합 검증 | [docs/INTEGRATION_VERIFICATION_KR.md](docs/INTEGRATION_VERIFICATION_KR.md) |
 | 최종 Figure | [figures/FIGURE_INDEX.md](figures/FIGURE_INDEX.md) |
 | 재현 명령 | [REPRODUCIBILITY_KR.md](REPRODUCIBILITY_KR.md) |
@@ -82,4 +91,4 @@ LTspice와 XMODEL의 동일 10초 ECG 비교에서는 MAE 0.6445 LSB, RMS 1.3020
 
 ## 한계
 
-물리 AFE PCB, ADC silicon, ASIC post-layout, fabricated silicon, 임상 검증과 실제 24시간 입력 검증은 수행하지 않았다. FPGA 전력은 추정치이고 2.991 µW는 이상적 power-gating 가정값이다. 본 결과는 임상 진단이나 상용 의료기기 대비 우월성을 뜻하지 않는다.
+GPDK045 결과는 generic demonstration library의 core-only exploratory post-route 결과다. hold WNS −0.050 ns, clock slew 위반 86개, 미배선 VDD/VSS와 Innovus internal route DRC 1건이 남고, historical netlist의 scan-capable `SDFFQX1` 995개에는 scan chain이 정의되지 않아 placement/timing QoR 한계가 있다. Filler/decap/tap/endcap·metal fill, pad/DFT/package, PG/IR, foundry DRC/LVS와 fabricated silicon도 완료하지 않아 timing closure나 sign-off가 아니다. 물리 AFE PCB, ADC silicon, 임상 검증과 실제 24시간 입력 검증은 수행하지 않았다. FPGA 전력은 추정치이고 2.991 µW는 이상적 power-gating 가정값이며, GPDK045 3.35554239 mW도 default activity의 vectorless 추정치이다. 본 결과는 임상 진단이나 상용 의료기기 대비 우월성을 뜻하지 않는다.

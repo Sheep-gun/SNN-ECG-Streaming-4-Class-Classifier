@@ -21,6 +21,8 @@
 | Exact C++ 모델 | `models/digital_equivalence/exact_cpp/` |
 | Pure RTL Vivado project | `vivado/pure_rtl/project/SNN_ECG_PURE_RTL_VISUALIZATION.xpr` |
 | MicroBlaze Vivado project | `vivado/microblaze/SNN_ECG_MB_FULL_REPLAY.xpr` |
+| GPDK045 core-only flow | `design/digital/asic/gpdk45/` |
+| GPDK045 PPA 결과와 한계 | `verification/asic_gpdk45_core/`, `tables/asic_gpdk45_ppa.csv` |
 | timing pipeline 이력 | `verification/timing_optimization/` |
 | compact 36-case 통합 acceptance | `verification/xmodel_rtl_acceptance_36case/` |
 | raw XMODEL replay audit | `verification/xmodel_rtl_e2e/` |

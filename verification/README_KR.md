@@ -2,8 +2,10 @@
 
 | 하위 경로 | 내용 |
 |---|---|
+| `xmodel_rtl_acceptance_36case/` | 과거 고정 환경의 compact 36-case input/output acceptance |
 | `xmodel_rtl_e2e/` | 실제 보유 XMODEL ADC 입력의 Pure RTL replay와 출처 |
 | `fpga_implementation/` | Vivado 배치·배선, 자원, timing 원본 |
+| `asic_gpdk45_core/` | Generic GPDK045 core-only mapping·LEC·signal post-route·PPA 증거 |
 | `integration_evidence/` | 통합 전후 상태와 의도적 제외 자료 |
 | `timing_optimization/` | critical path 관측과 pipeline 최적화 이력 |
 

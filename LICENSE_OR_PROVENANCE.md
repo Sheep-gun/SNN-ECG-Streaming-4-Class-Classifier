@@ -20,3 +20,5 @@ PhysioNet의 NSRDB, CHFDB, MIT-BIH Arrhythmia Database와 AFDB 원시 waveform�
 
 개인 연락처, 학번, 서명과 직인이 포함된 신청서 원본 및 비공개 제출 자료는 Git에
 포함하지 않는다. 공개 Figure는 `figures/final_submission/`의 파일만을 기준으로 한다.
+
+GPDK045 GSCLIB v4.7과 Cadence 도구는 외부 licensed dependency로만 사용했다. Liberty, LEF, QRC, cell Verilog, CDL, GDS, 라이선스 정보와 tool work database는 이 저장소에 포함하지 않는다. 공개 범위는 프로젝트가 작성한 wrapper·SDC·script, sanitize된 report와 파생 PPA 요약이다.

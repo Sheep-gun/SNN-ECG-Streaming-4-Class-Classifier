@@ -41,7 +41,10 @@ PhysioNet 원시 waveform, 개인 식별정보, 서명과 제출 원본 PDF/HWP�
 - FPGA 36/36은 최종 클래스와 막전위의 기능 정합이며 분류 정확도 100%가 아니다.
 - Pure RTL 구현은 9,719 LUT, 5,038 FF, BRAM 0, DSP 0, WNS 8.184 ns이다.
 - 2.991 µW는 완전 power-gating을 가정한 산출값이며 FPGA 또는 ASIC 실측값이 아니다.
-- 물리 AFE PCB, ADC silicon, ASIC post-layout와 임상 검증은 수행하지 않았다.
+- GPDK045 core-only mapping·LEC·signal post-route·extraction을 수행했고 explicit setup WNS +2.980 ns, hold WNS −0.050 ns와 clock slew 위반 86개를 기록했다.
+- Historical mapped netlist의 `SDFFQX1` 995개에는 scan chain이 정의되지 않았고 antenna 정보·physical-only cell·metal fill도 불완전해 PPA QoR와 parasitic fidelity에 한계가 있다.
+- GPDK045 3.35554239 mW는 default activity의 vectorless 추정치이며 workload 또는 실리콘 실측 전력이 아니다.
+- 물리 AFE PCB, ADC silicon, ASIC setup/hold·clock-rule closure, scan-aware remapping, PG/IR, physical-only cell·metal fill, foundry DRC/LVS, pad/package/fabrication과 임상 검증은 수행하지 않았다.
 
 ## 검사
 

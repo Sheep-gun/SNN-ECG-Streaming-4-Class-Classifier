@@ -1,0 +1,12 @@
+work/
+logs/
+outputs/
+fv/
+*.cmd
+*.log
+*.logv
+innovus_temp_*/
+genus_temp_*/
+xcelium.d/
+__pycache__/
+*.pyc

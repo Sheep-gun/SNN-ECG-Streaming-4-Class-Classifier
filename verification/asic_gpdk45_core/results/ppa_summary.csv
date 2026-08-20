@@ -1,0 +1,24 @@
+stage,metric,value,unit,corner_or_mode,evidence,limitation
+genus_syn_map,cell_count,35188,count,slow_1p08v_125c,reports/genus_summary.txt,syn_opt not run
+genus_syn_map,cell_area,93585.906,um2,slow_1p08v_125c,reports/genus_summary.txt,library area only
+genus_syn_map,setup_wns,3.3491,ns,slow_1p08v_125c_100mhz,reports/genus_summary.txt,pre-route wireload estimate
+innovus_postroute,instance_count,35663,count,extracted,reports/innovus_summary.txt,includes CTS and route-added cells
+innovus_postroute,cell_area,95321.556,um2,extracted,reports/innovus_summary.txt,standard-cell area only
+innovus_postroute,placeable_area,143983,um2,placed,reports/innovus_summary.txt,reported placement denominator
+innovus_postroute,placement_density,66.20,percent,placed,reports/innovus_summary.txt,not chip utilization including pads
+innovus_postroute,def_database_units,2000,DBU_per_um,block_floorplan,reports/innovus_summary.txt,conversion factor for DEF coordinates
+innovus_postroute,die_width,421.000,um,block_floorplan,reports/innovus_summary.txt,padless block boundary
+innovus_postroute,die_height,418.190,um,block_floorplan,reports/innovus_summary.txt,padless block boundary
+innovus_postroute,die_area,176057.990,um2,block_floorplan,reports/innovus_summary.txt,not fabricated die area
+innovus_postroute,setup_wns,2.980,ns,setup_slow_100mhz,reports/innovus_summary.txt,explicit data-path report; 86 clock slew violations remain
+innovus_postroute,hold_wns,-0.050,ns,hold_fast,reports/innovus_summary.txt,hold not closed; scan-capable cell SI and SE paths are present
+innovus_postroute,clock_slew_violations,86,count,ccopt_clock_tree,reports/innovus_summary.txt,target 0.060 ns worst 0.062 ns
+innovus_postroute,scan_capable_sdffqx1,995,count,historical_mapped_netlist,reports/innovus_summary.txt,undefined scan chain on 10.70 percent of flops affects QoR confidence
+innovus_postroute,setup_clock_skew,0.022,ns,slow_delay_setup_late,reports/innovus_summary.txt,CCOpt report value
+innovus_postroute,setup_clock_avg_insertion,0.140,ns,slow_delay_setup_late,reports/innovus_summary.txt,CCOpt report value
+innovus_postroute,wire_length,449894,um,signal_route,reports/innovus_summary.txt,no PG routing
+innovus_postroute,via_count,259424,count,signal_route,reports/innovus_summary.txt,no PG routing
+innovus_postroute,power_internal,2.42385086,mW,setup_slow_1p08v_vectorless,reports/innovus_summary.txt,default activity 0.10
+innovus_postroute,power_switching,0.92844734,mW,setup_slow_1p08v_vectorless,reports/innovus_summary.txt,default activity 0.10
+innovus_postroute,power_leakage,0.00324419,mW,setup_slow_1p08v_vectorless,reports/innovus_summary.txt,not measured
+innovus_postroute,power_total,3.35554239,mW,setup_slow_1p08v_vectorless,reports/innovus_summary.txt,not ECG workload based

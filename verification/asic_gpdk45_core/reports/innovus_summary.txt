@@ -1,0 +1,45 @@
+Cadence Innovus 23.14 / IQuantus public summary
+Design: snn_ecg_asic_core_top
+Scope: core-only standard-cell placement, CTS, regular signal routing and RC extraction
+
+Post-route instances: 35663
+Post-route cell area: 95321.556 um2
+Reported placement density: 66.20 percent (95321 / 143983)
+DEF database units: 2000 per um
+Floorplan DIEAREA: 421.000 x 418.190 um
+
+Clock sinks/sources: 6045 / 1
+Setup-late min/avg/max insertion delay: 0.125 / 0.140 / 0.147 ns
+Setup-late clock skew: 0.022 ns
+Clock slew violations: 86 (target 0.060 ns, worst 0.062 ns)
+
+Historical mapped scan-capable cells: 995 SDFFQX1
+Undefined scan-chain scope: 10.70 percent of flops
+Placement/timing QoR warning: present; scan chains were not defined
+
+Total routed wire length: 449894 um
+Total vias: 259424
+Internal route-rule DRC: 1 Metal1 spacing violation
+Internal process-antenna violations: 0
+Internal antenna completeness: incomplete library ANTENNAGATEAREA data; zero is not signoff PASS
+Regular signal connectivity problems: 0
+Power-ground routing: not implemented; VDD and VSS reported as unrouted
+Filler/decap/endcap/welltap insertion: not implemented; filler and decap count 0
+Metal fill: OFF
+
+Extraction: IQuantus high effort, status 0
+Timing delay mode: SI-aware
+Extracted setup WNS: +2.980 ns at setup_slow, 100 MHz
+Extracted hold WNS: -0.050 ns at hold_fast
+
+Vectorless power view: setup_slow, 1.08 V
+Primary-input activity: 0.10
+Sequential-element activity: 0.10
+Internal power: 2.42385086 mW
+Switching power: 0.92844734 mW
+Leakage power: 0.00324419 mW
+Total power: 3.35554239 mW
+Instances with no power data: 0
+Instances with no activity: 0
+
+The two timing views reuse the same gpdk045.tch with unit RC scaling. No setup/hold optimization, timeDesign closure summary, PG network, IR-drop, DFT, physical-only cell insertion, metal fill, pads, foundry DRC/LVS, signoff or silicon measurement is included.

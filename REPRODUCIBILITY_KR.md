@@ -8,6 +8,7 @@
 - XMODEL fixed source: `4756a5086023547328ef44fd5fd87da3c250dc39`
 - Vivado: 2020.2
 - FPGA: Artix-7 XC7A100T-CSG324-1
+- ASIC exploratory flow: Cadence Xcelium 23.09, Genus/Innovus 23.14, Conformal 24.1, GPDK045 GSCLIB v4.7
 - Stream: 1 kSPS signed 12-bit two's complement
 
 ## 1. 데이터 준비
@@ -62,7 +63,13 @@ python tools/verification/run_xmodel_adc_pure_rtl_replay.py
 
 현재 저장소는 raw full-30분 XMODEL accepted file 4개만 보존한다. 32개를 재생성하지 않으면 이 단계는 4-case audit로 완료되며 36-case raw replay PASS를 선언하지 않는다.
 
-## 6. repository 검사
+## 6. GPDK045 core-only ASIC flow
+
+Wrapper, 100 MHz SDC와 tool script는 `design/digital/asic/gpdk45/`에 있다. GPDK045 library와 Cadence tool은 외부 licensed dependency이며 저장소에 포함하지 않는다. 실행은 `snn_ecg_asic_core_top`, `PROFILE_EN=0`, 100 MHz, slow 1.08 V/125 °C setup과 fast 1.32 V/0 °C hold view를 사용한다. 두 view에 같은 `gpdk045.tch`를 사용했으므로 독립적으로 특성화된 max/min RC corner로 해석하지 않는다.
+
+새 실행은 외부 임시 workspace에서 수행하고 필요한 결과를 local에 회수해 SHA-256을 확인한 뒤 원격 work directory와 process를 삭제한다. 공개 결과와 제약은 `verification/asic_gpdk45_core/README_KR.md`와 `tables/asic_gpdk45_ppa.csv`를 따른다. 실제 실행 파일은 `verification/asic_gpdk45_core/executed_snapshot/`, post-run hardened flow는 `design/digital/asic/gpdk45/`로 구분한다. 접속 정보, 라이선스 서버와 절대경로는 Git에 기록하지 않는다.
+
+## 7. repository 검사
 
 ```powershell
 python tools/check_clean_workspace.py

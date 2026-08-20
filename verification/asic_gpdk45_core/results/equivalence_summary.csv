@@ -1,0 +1,4 @@
+check,design_scope,stimulus_or_compare_scope,result,equivalent,non_equivalent,aborted,claim_boundary
+xcelium_wrapper_smoke,wrapper versus original top,synthetic 16 samples with reduced 8x2 snapshot parameters,PASS,cycle mismatch 0,,,not default workload not 36-case not formal
+genus_check_design,snn_ecg_asic_core_top,unresolved references and empty modules,PASS,0 unresolved and 0 empty,,,elaboration integrity only
+conformal_rtl_to_fv_map,canonical RTL wrapper to Genus fv_map,hierarchical formal comparison,PASS,13 modules,0,0,does not cover final routed netlist or functional accuracy

@@ -12,9 +12,9 @@ ECG는 심장의 전기적 활동을 시간에 따라 기록한 전압 파형이
 
 데이터 구성과 분할을 마친 뒤, 아날로그부는 MATLAB에서 0.5–150 Hz ECG 대역의 필터, 이득 및 ADC 동적 범위를 설계하고, 이를 ±1.65 V LTspice AFE–S/H–ADC 회로로 구현하여 주파수 응답과 비이상적 조건을 검증하였다. 이때 공개 ECG는 이미 ADC를 거친 디지털 기록이므로, 표본값을 시간축과 전압축에 맞춘 PWL 전압 자극으로 재구성하여 AFE–ADC 검증 입력으로 사용하였다. 이어 동일한 회로 동작을 SystemVerilog XMODEL로 구현하여 1 kSPS signed 12-bit ECG 스트림을 생성하고 디지털 RTL에 전달하였다. 동일한 10초 ECG에 대한 LTspice와 XMODEL의 ADC 출력은 평균 절대 오차 0.6445 LSB와 상관계수 0.999518을 보여 두 모델 간 정합성을 확인하였다.
 
-디지털부는 Python으로 RTL과 동일한 정수 연산을 수행하는 기준 모델을 구축하고, 박동 간격, 리듬 변동, 파형 형태와 질환 관련 사건을 분류 증거로 변환하는 규칙을 설계하였다. 분류 구조의 가중치와 임계값은 학습 및 검증 데이터로 결정하고 RTL로 구현한 뒤 최종 시험 전에 고정하였다. RTL은 표본별 변화량과 강한 사건을 검출하고, 각 60초 구간의 리듬과 파형 증거를 Snapshot 뉴런층에 요약한 뒤 30개의 Snapshot을 Final Membrane에 누적하도록 구현하였다. 설계 고정 후 처음 한 번만 수행한 최종 시험에서는 36개 구간 중 29개를 정확히 분류하여 정확도 80.56%를 기록하였다. Pure RTL 분류 가속기는 9,719 LUT와 5,038 FF를 사용하고 BRAM과 DSP 없이 구현되었으며, 배치 및 배선 후 WNS 8.184 ns를 확보하였다. 1 kSPS 연속 처리 할당전력은 142.0 mW로 추정되었으며, 30분 기록을 36.0129 ms 동안 burst 처리한 뒤 완전히 power-gating하는 이상적 조건에서는 평균 전력이 2.991 µW로 계산되었다.
+디지털부는 Python으로 RTL과 동일한 정수 연산을 수행하는 기준 모델을 구축하고, 박동 간격, 리듬 변동, 파형 형태와 질환 관련 사건을 분류 증거로 변환하는 규칙을 설계하였다. 분류 구조의 가중치와 임계값은 학습 및 검증 데이터로 결정하고 RTL로 구현한 뒤 최종 시험 전에 고정하였다. RTL은 표본별 변화량과 강한 사건을 검출하고, 각 60초 구간의 리듬과 파형 증거를 Snapshot 뉴런층에 요약한 뒤 30개의 Snapshot을 Final Membrane에 누적하도록 구현하였다. 설계 고정 후 처음 한 번만 수행한 최종 시험에서는 36개 구간 중 29개를 정확히 분류하여 정확도 80.56%를 기록하였다. Pure RTL 분류 가속기는 9,719 LUT와 5,038 FF를 사용하고 BRAM과 DSP 없이 구현되었으며, 배치 및 배선 후 WNS 8.184 ns를 확보하였다. 1 kSPS 연속 처리 할당전력은 142.0 mW로 추정되었으며, 30분 기록을 36.0129 ms 동안 burst 처리한 뒤 완전히 power-gating하는 이상적 조건에서는 평균 전력이 2.991 µW로 계산되었다. 추가로 generic GPDK045 GSCLIB v4.7에서 digital core-only RTL-to-post-route를 수행했다. explicit setup WNS는 +2.980 ns였지만 hold WNS −0.050 ns와 clock slew 위반 86개가 남고 scan-aware QoR도 닫히지 않아 physical timing closure는 달성하지 못했다. 3.35554239 mW는 default activity의 vectorless 추정치다.
 
-XMODEL 통합 환경에서 AFE–ADC와 고정 RTL 코어를 직접 연결해 수행한 End-to-End full replay에서는 30분 입력 36개 모두의 최종 클래스와 네 개의 Final Membrane이 독립 RTL/XSim 결과와 일치하였다. 또한 RTL을 AXI 기반 IP로 패키징해 MicroBlaze 시스템에 통합하고 동일한 입력을 FPGA에서 재생한 결과도 XSim 기준과 일치하였다. 결과적으로 본 작품은 ECG 전체를 저장하지 않고 질환 증거를 순차적으로 누적하여 NSR, CHF, ARR, AF를 판정하는 다중 시간 척도 저전력 스트리밍 분류 가속기 IP를 구현하였다.
+과거 고정 XMODEL 통합 환경의 compact acceptance에서는 AFE 생성 36개 chunk의 입력과 최종 출력이 독립 RTL/XSim 기준과 일치하였다. 현재 저장소에 보존된 실제 full-30분 raw XMODEL accepted dump는 4/36개이며, 보유 4개만 독립 재실행에서 bit-exact하다. 또한 RTL을 AXI 기반 IP로 패키징해 MicroBlaze 시스템에 통합하고 동일한 입력을 FPGA에서 재생한 결과도 XSim 기준과 일치하였다. 결과적으로 본 작품은 ECG 전체를 저장하지 않고 질환 증거를 순차적으로 누적하여 NSR, CHF, ARR, AF를 판정하는 다중 시간 척도 저전력 스트리밍 분류 가속기 IP를 구현하였다.
 
 # II. 설계결과물 설명서
 
@@ -42,9 +42,9 @@ ECG 분류에는 개별 박동의 형태뿐 아니라 장시간에 걸친 박동
 
 사전 분석에서는 원천 데이터베이스의 beat 및 rhythm annotation으로 각 30분 구간이 원천 라벨을 뒷받침하는 박동 및 리듬 증거를 충분히 포함하는지 점검하고, RR 간격, PNN 계열 규칙성, 연속 RR 차이, early–late pair, ΔECG 방향 변화, R-peak 진폭, QRS 폭과 말단 활동 후보를 계산하였다. 클래스별 분포, 결측률, 단순 분류율과 하드웨어 구현 가능성을 함께 비교하여 최종 증거 경로를 선정하였다. annotation은 구간의 라벨 대표성 및 데이터 품질 점검과 후보 특징 선정에만 사용했으며, 최종 RTL은 annotation 없이 signed 12-bit ECG에서 사건과 증거를 자체 생성한다. 상세 근거는 [사전 특징 선정 기록](../docs/FEATURE_SELECTION_AND_ANNOTATION_KR.md)과 [`analysis/feature_selection/`](../analysis/feature_selection/)에 보존한다.
 
-2026년 6월부터 7월까지 아날로그·디지털 각 파트의 정합성을 확인한 뒤, 단일 XMODEL 환경에서 AFE–ADC와 고정 Pure RTL 코어를 직접 연결해 36개의 30분 입력의 End-to-End 동작을 검증하였다. AFE–ADC에서 RTL로 전달된 signed 12-bit ECG 스트림은 디지털 검증 입력과 SHA-256 해시값이 36/36 일치했으며, 최종 클래스와 네 개의 Final Membrane도 독립 RTL/XSim 결과와 모든 사례에서 bit-exact하게 일치하였다. 이후 RTL을 AXI IP로 패키징해 MicroBlaze에 통합하고, FPGA 재생 결과가 XSim과 일치함을 확인하였다.
+2026년 6월부터 7월까지 아날로그·디지털 각 파트의 정합성을 확인하였다. 당시 고정 통합 환경에서 생성한 compact acceptance에는 AFE 생성 36개 chunk와 디지털 replay 입력의 SHA-256 및 최종 출력 36/36 정합이 기록되어 있다. 다만 현재 저장소에 보존된 실제 full-30분 raw XMODEL accepted dump는 4/36개이며, 이 4개만 독립 재실행에서 입력 SHA, 최종 클래스와 네 Final Membrane이 bit-exact했다. 나머지 32개 raw dump가 없어 저장소 단독의 36-case raw XMODEL 재실행 기준은 FAIL이다. 이후 RTL을 AXI IP로 패키징해 MicroBlaze에 통합하고, FPGA 재생 결과가 XSim과 일치함을 확인하였다.
 
-2026년 7월 현재 데이터 분석, 알고리즘 개발, MATLAB, LTspice, XMODEL, Python, Exact C++, RTL 구현과 AXI IP 패키징, MicroBlaze 통합, End-to-End 및 FPGA 검증을 완료하였다. 현재 개발 범위는 모델 기반 AFE–ADC와 FPGA 디지털 IP의 통합 설계 및 검증 단계이며, ASIC 제작과 post-layout 검증은 후속 과제이다.
+2026년 8월 현재 데이터 분석, 알고리즘 개발, MATLAB, LTspice, XMODEL, Python, Exact C++, RTL 구현과 AXI IP 패키징, MicroBlaze 통합, End-to-End 및 FPGA 검증을 완료하였다. 이어 generic GPDK045에서 digital core-only Genus mapping, Conformal 논리 등가성, Innovus signal post-route와 IQuantus 추출까지 수행했다. hold WNS −0.050 ns, clock slew 위반 86개, undefined scan 10.70% flops, VDD/VSS 미배선, physical-only cell·metal fill 미삽입과 internal route DRC 1건이 남아 physical timing closure, power-grid/sign-off, ASIC 제작은 후속 과제이다.
 
 ## 2. 설계기술 설명서
 
@@ -175,19 +175,21 @@ MATLAB과 LTspice의 0.5–150 Hz 대역 및 60 Hz 노치 형상은 유사했으
 
 **그림 11. 아날로그-디지털 통합 검증 흐름**
 
-AFE–ADC XMODEL과 고정 Pure RTL 코어를 단일 XMODEL 환경에 직접 연결해 36개의 30분 ECG를 중간 파일 없이 처리하였다. AFE–ADC가 RTL에 전달한 signed 12-bit 표본열은 독립 RTL/XSim의 기준 입력과 SHA-256으로 비교하고, 최종 클래스와 네 개의 Final Membrane도 기준 결과와 대조하였다. AXI IP의 제어와 데이터 전송 동작은 XSim에서 별도로 검증하였다.
+AFE–ADC XMODEL과 고정 Pure RTL 코어를 연결한 과거 통합 실행은 36-case compact acceptance로 보존되어 있다. 현재 실제 raw XMODEL accepted dump를 이용해 독립 재실행할 수 있는 범위는 대표 4개이며, AFE–ADC가 RTL에 전달한 signed 12-bit 표본열의 SHA-256과 최종 클래스, 네 Final Membrane을 기준 결과와 대조했다. AXI IP의 제어와 데이터 전송 동작은 XSim에서 별도로 검증하였다.
 
 **표 5. AFE–ADC XMODEL–RTL End-to-End 및 AXI/IP 검증 결과**
 
 | 검증 항목 | 방법 | 결과 |
 |---|---|---|
-| 입력 데이터 무결성 | AFE–ADC가 RTL에 전달한 signed 12-bit 표본열과 독립 RTL/XSim 기준 입력의 SHA-256 비교 | 36/36 스트림 SHA-256 일치 |
-| End-to-End full replay | AFE–ADC와 Pure RTL을 통합한 XMODEL 환경에 36개의 30분 ECG PWL 입력 | 36/36 일치; 각 30분 입력의 전체 표본 처리 후 1회 최종 판정 |
-| 최종 출력 기능 정합 | 통합 출력과 독립 RTL/XSim 잠금 기준값 비교 | 최종 클래스 36/36, 네 개의 Final Membrane 144/144 bit-exact |
+| Compact acceptance | 과거 고정 통합 환경의 AFE 생성 36개 chunk와 digital replay 입력·출력 비교 | 입력 SHA와 최종 출력 36/36 정합; raw dump 36개 보존을 뜻하지 않음 |
+| Raw XMODEL full replay | 저장소가 실제 보유한 full-30분 accepted dump를 Pure RTL로 독립 재실행 | 보유 4/4는 입력 SHA·class·membrane bit-exact, 전체 기준은 4/36 FAIL |
+| Raw archive 완전성 | 전체 36-case 기준 실제 XMODEL accepted dump 존재 여부 확인 | 4/36 보존, 32/36 누락 |
 | AXI/IP 인터페이스 | XSim에서 AXI-Lite 제어/결과 레지스터, AXI-Stream 대기, TLAST, done & IRQ 확인 | 인터페이스 동작 정상, 2/2 testbench PASS |
 | MicroBlaze FPGA 통합 | Nexys A7-100T에서 36개 최종 시험 입력 재생 후 UART 출력과 XSim 기준값 비교 | 최종 클래스 36/36, 네 개의 Final Membrane 144/144 bit-exact |
 
-표 5와 같이 단일 XMODEL 환경에서 AFE–ADC와 Pure RTL을 직접 연결한 36개 End-to-End 시험의 입력과 최종 출력이 모두 기준값과 일치하였다. AXI/IP의 제어, 표본 전송, 처리 완료 및 IRQ 동작도 정상적으로 확인되었으며, MicroBlaze 통합 FPGA 재생에서 최종 클래스와 네 개의 Final Membrane이 기준값과 일치하였다.
+표 5와 같이 과거 36-case compact acceptance와 현재 재실행 가능한 raw XMODEL 4-case 증거를 구분한다. 보유 4개 raw dump는 모두 bit-exact했지만 32개가 누락되어 raw 36-case PASS를 선언하지 않는다. AXI/IP의 제어, 표본 전송, 처리 완료 및 IRQ 동작은 정상적으로 확인되었으며, MicroBlaze 통합 FPGA 재생에서 최종 클래스와 네 개의 Final Membrane이 기준값과 일치하였다.
+
+ASIC core wrapper는 Xcelium의 synthetic 16-sample reduced-parameter smoke에서 cycle mismatch 0으로 PASS했고, 실제 코어 RTL과 Genus mapped netlist의 Conformal LEC에서 13개 hierarchical module이 모두 PASS하여 diff 0, abort 0을 기록했다. Wrapper smoke는 default workload·실제 ECG 36-case wrapper regression이 아니며, Conformal 결과는 합성 전후 논리 등가성이지 분류 정확도 100%를 뜻하지 않는다.
 
 고정 설계의 재현 절차와 실행 진입점은 [REPRODUCIBILITY_KR.md](../REPRODUCIBILITY_KR.md)에, 각 주장별 근거와 한계는 [claim registry](../project_registry/claim_registry.csv)와 [evidence map](INTEGRATED_TECHNICAL_REPORT_EVIDENCE_MAP.csv)에 기록하였다.
 
@@ -205,6 +207,31 @@ AFE–ADC XMODEL과 고정 Pure RTL 코어를 단일 XMODEL 환경에 직접 연
 
 Pure RTL 분류기를 AXI IP로 패키징하여 MicroBlaze, Sample Feeder, Local Memory, AXI INTC 및 UARTLite와 통합하였다. Pure RTL은 9,719 LUT, 5,038 FF, BRAM 0, DSP 0 및 WNS 8.184 ns로 구현되었다. MicroBlaze 통합 시스템은 12,494 LUT, 8,494 FF, 16 BRAM, 3 DSP 및 WNS 0.097 ns를 확보했으며, 추가된 BRAM과 DSP는 프로세서와 주변장치 자원이다. 기능 정합 결과는 표 5에 제시하였다.
 
+![그림 14. GPDK045 digital core-only signal post-route 결과](../figures/final_submission/설계회로%20구현결과/GPDK045%20코어%20배치배선%20결과.gif)
+
+**그림 14. GPDK045 digital core-only signal post-route 결과**
+
+그림 14는 표준셀 코어의 배치, CTS와 일반 신호 배선 결과다. VDD/VSS power grid, pad ring과 package는 포함하지 않으며, Innovus 내부 Metal1 spacing 위반 1건이 남아 있다.
+
+**표 6. GPDK045 digital core-only 구현과 PPA**
+
+| 항목 | 결과 | 해석 범위 |
+|---|---:|---|
+| 코어 경계 | `snn_ecg_asic_core_top`, `PROFILE_EN=0`, 12-bit ADC | profiler/debug 출력 제외, 분류 기능 코어 유지 |
+| PVT/RC | setup slow 1.08 V·125 °C, hold fast 1.32 V·0 °C | 양 뷰에 같은 `gpdk045.tch` 사용 |
+| Genus mapping | 35,188 cells, 93,585.906 µm², setup slack +3.349 ns | `syn_map` 기준; `syn_opt` 미실행 |
+| Historical scan-capable mapping | `SDFFQX1` 995개, undefined scan 10.70% flops | scan chain 미정의; placement/timing QoR 한계 |
+| Conformal LEC | 13 hierarchical modules PASS, diff 0, abort 0 | RTL-to-mapped 논리 등가성 |
+| Innovus post-route | 35,663 instances, 95,321.556 µm² | signal route 완료 |
+| Innovus DIE boundary | 421.000 × 418.190 µm | DEF 2,000 DBU/µm 변환; core-only block boundary, pad/package 제외 |
+| IQuantus extraction | high extraction status 0 | extracted timing 기반 |
+| 100 MHz extracted timing | setup WNS +2.980 ns, hold WNS −0.050 ns | explicit report; setup/hold closure 아님 |
+| CCOpt clock slew | 86 violations, target 0.060 ns, worst 0.062 ns | clock design-rule closure 아님 |
+| post-route vectorless power | internal 2.42385086, switching 0.92844734, leakage 0.00324419, total 3.35554239 mW | setup-slow, default PI/sequential activity 0.10; workload 전력 아님 |
+| physical completeness | VDD/VSS unrouted, internal route DRC 1, antenna data incomplete | PG/IR, filler/decap/tap/endcap·metal fill, foundry DRC/LVS, DFT, pad/package 미수행 |
+
+표 6은 generic representative 45 nm library에서 디지털 코어가 표준셀 매핑과 신호 배선까지 진행되고 explicit setup WNS가 양수였음을 보여준다. 다만 hold WNS −0.050 ns, clock slew 위반 86개, scan-chain 미정의 QoR 한계, VDD/VSS 미배선과 internal route DRC 1건을 숨기지 않고 남겨 두었다. Antenna 정보와 physical-only cell·metal fill도 불완전해 foundry sign-off나 fabricated ASIC 결과로 표현하지 않는다. 상세 결과와 한계는 [GPDK045 PPA evidence](../verification/asic_gpdk45_core/README_KR.md)와 [PPA table](../tables/asic_gpdk45_ppa.csv)에 보존한다.
+
 #### RTL timing 병목 분석과 파이프라인 최적화
 
 초기 주요 병목은 `class_score_neurons` 내부의 `rdm_level_spike → pred_class` 조합 경로였다. 이 경로는 약 90 logic levels와 52개의 CARRY4를 포함한 긴 누산, 비교 및 WTA 경로였고, `class_score_neurons`는 주요 자원 및 timing hotspot이었다. 이를 clock 완화가 아니라 다음과 같은 구조적 파이프라인 분할로 해결하였다.
@@ -220,7 +247,7 @@ Pure RTL 분류기를 AXI IP로 패키징하여 MicroBlaze, Sample Feeder, Local
 
 개선은 **critical path 관측 → pipeline 분할 → timing 재검증 → 기능 등가성 확인** 순서로 수행하였다. 기존 RDM-to-prediction critical path를 제거하고 Python/RTL 및 FPGA 기능 등가성을 유지하면서 timing closure를 달성하였다. 최적화 전 약 17.5k LUT는 historical OOC hotspot 수치이므로 최종 Pure RTL 9,719 LUT와 직접 비교하지 않는다. 설계 이력 commit은 `c7c75cfebf7add12bfcc32bb59d5edf38ac6e5aa`와 `5e2e5d0a46be47d8086b8642e055066079bfa4e6`, 고정 최종 RTL은 `c6b80de19cdcad5b7e43fe7835588b629d847f75`이며, 상세 근거는 [RTL timing 최적화 이력](../verification/timing_optimization/RTL_TIMING_OPTIMIZATION_HISTORY_KR.md)에 보존한다.
 
-**표 6. 고정 최종 시험의 NSR·CHF·ARR·AF 혼동 행렬**
+**표 7. 고정 최종 시험의 NSR·CHF·ARR·AF 혼동 행렬**
 
 | 정답 / 예측 | NSR | CHF | ARR | AF | 합계 |
 |---|---:|---:|---:|---:|---:|
@@ -232,7 +259,7 @@ Pure RTL 분류기를 AXI IP로 패키징하여 MicroBlaze, Sample Feeder, Local
 
 분류 성능은 학습/검증 데이터와 원천 record가 겹치지 않고 모델 선택에도 사용되지 않은 fully held-out 최종 시험 데이터로, 설계 고정 후 최초 한 번만 평가하였다. 36개 30분 ECG 중 29개를 정확히 판정하여 정확도 80.56%, Macro-F1 80.44%, 균형 정확도 80.56%를 기록하였다.
 
-**표 7. 가속기 처리시간 및 전력 분석**
+**표 8. 가속기 처리시간 및 전력 분석**
 
 | 항목 | 결과 | 산출 기준 |
 |---|---:|---|
@@ -248,7 +275,7 @@ Pure RTL 분류기를 AXI IP로 패키징하여 MicroBlaze, Sample Feeder, Local
 
 ### 2.6 목표 대비 결과 비교
 
-**표 8. 설계 목표 대비 최종 결과**
+**표 9. 설계 목표 대비 최종 결과**
 
 | 설계목표 | 목표값 | 최종 결과 | 판정 및 보완 방향 |
 |---|---|---|---|
@@ -257,14 +284,15 @@ Pure RTL 분류기를 AXI IP로 패키징하여 MicroBlaze, Sample Feeder, Local
 | Pure RTL 메모리, 연산자원 | BRAM 0, DSP 0 | 9,719 LUT, 5,038 FF, BRAM 0, DSP 0 | 달성 |
 | Pure RTL FPGA timing | 양의 slack | WNS 8.184 ns | 달성 |
 | FPGA 기능 정합 | 클래스, 막전위 전 사례 일치 | 최종 클래스 36/36, 막전위 144/144 bit-exact | 달성 |
+| ASIC core exploratory implementation | mapping, LEC, place/CTS/route, extracted timing | GPDK045 mapping·LEC·signal route·IQuantus 추출 완료 | 부분 달성. setup WNS 양수이나 hold −0.050 ns·clock slew 86·scan QoR·PG·fill·DRC 미해소 |
 | 장시간 ECG 처리 | 24시간 이상 확장 지향 | 30분 검증 | 조건부 달성. 공개 데이터 길이의 제약 극복 필요 |
-| 웨어러블 저전력 가능성 | 저전력 분류 IP | FPGA 연속 처리 142.0 mW 추정, power-gating 가정 2.991 µW 산출 | 조건부 달성. ASIC 구현과 power-gating 적용 후 전력 실측 필요 |
+| 웨어러블 저전력 가능성 | 저전력 분류 IP | FPGA 연속 142.0 mW 추정, 이상적 2.991 µW 산출, GPDK045 vectorless 3.35554239 mW | 조건부 달성. ASIC 수치는 workload activity·PG·sign-off·silicon 실측 미포함 |
 
-본 설계 범위의 모듈 구현과 통합 및 검증을 완료하였으며, 표 8과 같이 분류 성능, 스트리밍 입력, 하드웨어 자원, timing 및 FPGA 기능 정합 목표를 달성하였다. 다만 장시간 처리와 저전력 목표는 각각 30분 입력 검증과 이상적인 power-gating 조건의 산출값에 근거하므로 조건부 달성으로 평가하였다.
+본 설계 범위의 모듈 구현과 통합 및 검증을 완료하였으며, 표 9와 같이 분류 성능, 스트리밍 입력, FPGA 하드웨어 자원, timing 및 기능 정합 목표를 달성하였다. GPDK045 core-only 구현은 explicit setup WNS가 양수였지만 hold, clock slew, scan-aware QoR, PG·fill과 internal DRC가 남아 부분 달성으로 평가했다. 장시간 처리와 저전력 목표도 각각 30분 입력 검증, 이상적 power-gating 산출과 vectorless ASIC 추정에 근거하므로 조건부로 유지한다.
 
-본 작품은 웨어러블 기기에 적용 가능한 저전력 반도체 IP를 지향한다. 관련 ECG 전용 ASIC을 조사한 결과, Abubakar 등의 65 nm TNN 기반 프로세서는 13종 비정상 리듬 검출에서 746 nW의 실측 전력을 달성했으며 [7], Zhang 등의 55 nm ANN 기반 프로세서는 개별 심박의 5-클래스 분류에서 12.88 µW를 보고하였다 [8]. 본 작품의 이상적 평균 전력 2.991 µW도 이들과 유사한 저전력 범위에 해당한다. 따라서 웨어러블용 저전력 분류 IP로서의 구조적 가능성을 확인하였다. 또한 선행연구가 주로 개별 심박이나 짧은 이상 리듬을 검출·분류하는 데 비해, 본 작품은 연속 ECG에서 박동·리듬·파형 증거를 장시간 누적하여 기록 전체를 NSR, CHF, ARR, AF 중 하나로 판정한다는 차별점이 있다.
+본 작품은 웨어러블 기기에 적용 가능한 저전력 반도체 IP를 지향한다. 관련 ECG 전용 ASIC을 조사한 결과, Abubakar 등의 65 nm TNN 기반 프로세서는 13종 비정상 리듬 검출에서 746 nW의 실측 전력을 달성했으며 [7], Zhang 등의 55 nm ANN 기반 프로세서는 개별 심박의 5-클래스 분류에서 12.88 µW를 보고하였다 [8]. 본 작품의 2.991 µW는 완전 power-gating 가정의 산출값이고 GPDK045 3.35554239 mW는 default activity의 vectorless 추정치이므로, 서로 다른 workload·공정·계측 범위의 실리콘 실측 수치와 직접 우열을 비교하지 않는다. 또한 선행연구가 주로 개별 심박이나 짧은 이상 리듬을 검출·분류하는 데 비해, 본 작품은 연속 ECG에서 박동·리듬·파형 증거를 장시간 누적하여 기록 전체를 NSR, CHF, ARR, AF 중 하나로 판정한다는 차별점이 있다.
 
-다만 이러한 저전력 가능성과 장시간 분류 구조의 실효성을 최종적으로 입증하려면, ASIC 구현과 power gating 적용, post-layout 분석 및 실리콘 전력 실측이 필요하다. 현재 실제 검증 입력은 30분이며, 24시간 정확도, 처리시간과 전력은 검증하지 않았다. 물리 AFE PCB, ADC silicon, fabricated silicon과 임상 검증도 수행하지 않았다. 또한 공개 데이터베이스별 클래스 결합에 따른 database–class confounding이 남아 있으므로, 동일한 측정 환경에서 수집한 장시간 다중 클래스 ECG로 분류 성능과 실제 24시간 동작을 추가 검증해야 한다. 2.991 µW는 완전 power-gating을 가정한 산출값이지 FPGA 또는 ASIC의 실측 소비전력이 아니다.
+다만 이러한 저전력 가능성과 장시간 분류 구조의 실효성을 최종적으로 입증하려면, hold·clock slew 해소, scan-free remapping 또는 실제 DFT 정의, power grid·IR·power gating과 physical-only cell·metal fill 구현, complete antenna data와 foundry DRC/LVS sign-off, workload activity 반영과 실리콘 전력 실측이 필요하다. 현재 실제 검증 입력은 30분이며, 24시간 정확도, 처리시간과 전력은 검증하지 않았다. 물리 AFE PCB, ADC silicon, pad/DFT/package, fabricated silicon과 임상 검증도 수행하지 않았다. 또한 공개 데이터베이스별 클래스 결합에 따른 database–class confounding이 남아 있으므로, 동일한 측정 환경에서 수집한 장시간 다중 클래스 ECG로 분류 성능과 실제 24시간 동작을 추가 검증해야 한다. 2.991 µW와 GPDK045 3.35554239 mW는 각각 조건부 산출과 vectorless 추정이지 FPGA 또는 ASIC의 실측 소비전력이 아니다.
 
 ### 2.7 국내외 수상 실적
 
@@ -278,7 +306,7 @@ Pure RTL 분류기를 AXI IP로 패키징하여 MicroBlaze, Sample Feeder, Local
 
 ## 기술성
 
-AFE–ADC는 LTspice 회로와 XMODEL로, SNN 분류 가속기는 Pure RTL과 AXI 기반 FPGA IP로 구현하였다. 아날로그부는 목표 ECG 대역과 60 Hz 간섭 억제 특성을 재현해 1 kSPS signed 12-bit 출력을 RTL에 직접 전달하였다. 디지털부는 원시 파형을 저장하지 않고 사건·리듬·파형 증거를 60초와 30분의 두 시간 척도로 누적한다. 설계 고정 후 정확도 80.56%, Macro-F1 80.44%를 기록했으며, Pure RTL은 BRAM·DSP 0과 timing closure를 달성하고 Exact C++보다 49.36배 짧은 활성시간을 보였다. XMODEL–RTL과 MicroBlaze FPGA의 36개 시험도 모두 기준값과 일치하였다. 연속 처리 전력은 142.0 mW로 추정되며, 이상적 power-gating 평균 전력 2.991 µW는 ASIC 저전력화 가능성을 제시한다.
+AFE–ADC는 LTspice 회로와 XMODEL로, SNN 분류 가속기는 Pure RTL과 AXI 기반 FPGA IP로 구현하였다. 아날로그부는 목표 ECG 대역과 60 Hz 간섭 억제 특성을 재현해 1 kSPS signed 12-bit 출력을 RTL에 전달하였다. 디지털부는 원시 파형을 저장하지 않고 사건·리듬·파형 증거를 60초와 30분의 두 시간 척도로 누적한다. 설계 고정 후 정확도 80.56%, Macro-F1 80.44%를 기록했으며, Pure RTL은 BRAM·DSP 0과 FPGA timing closure를 달성하고 Exact C++보다 49.36배 짧은 활성시간을 보였다. XMODEL–RTL은 36-case compact acceptance와 현재 보유 raw dump 4/36 재실행을 구분하고, MicroBlaze FPGA 36-case replay는 모두 XSim 기준값과 일치하였다. 추가로 GPDK045 core-only mapping, LEC, signal post-route와 extraction을 수행해 explicit setup WNS +2.980 ns를 확인했지만 hold WNS −0.050 ns, clock slew 위반 86개와 scan/physical 미완료 항목을 보고한다. FPGA 연속 처리 142.0 mW, 이상적 2.991 µW와 ASIC vectorless 3.35554239 mW는 서로 다른 가정의 추정치로 구분한다.
 
 ## 사업성
 
@@ -286,7 +314,7 @@ AFE–ADC는 LTspice 회로와 XMODEL로, SNN 분류 가속기는 Pure RTL과 AX
 
 ## 완성도
 
-MATLAB 설계부터 LTspice, XMODEL, 기준 모델, RTL/XSim, Vivado와 FPGA까지 단계별 검증을 완료하였다. 공개 디지털 ECG를 PWL 자극으로 재구성해 아날로그 모델 간 정합을 확인하고, 디지털부는 출력과 내부 상태를 기준 모델과 대조하였다. AFE–ADC와 Pure RTL을 직접 연결한 36개 XMODEL End-to-End 시험에서 입력 SHA-256 36/36, 클래스 36/36, Final Membrane 144/144가 정확히 일치했으며, AXI/IP와 MicroBlaze 통합 FPGA도 정상 동작하였다. 최종 시험은 학습, 검증에 쓰인 record와 겹치지 않고 설계 과정에서 한 번도 사용하지 않은 fully held-out 데이터로, 가중치, 임계값을 고정한 뒤 단 한 번만 수행하였다.
+MATLAB 설계부터 LTspice, XMODEL, 기준 모델, RTL/XSim, Vivado와 FPGA까지 단계별 검증하였다. 공개 디지털 ECG를 PWL 자극으로 재구성해 아날로그 모델 간 정합을 확인하고, 디지털부는 출력과 내부 상태를 기준 모델과 대조하였다. AFE–ADC와 Pure RTL의 compact acceptance는 36-case 정합을 기록하지만, 실제 raw XMODEL accepted dump의 현재 저장소 재실행은 4/36이며 나머지 32개 누락으로 전체 기준은 FAIL이다. AXI/IP와 MicroBlaze 통합 FPGA는 별도 36-case replay에서 정상 동작하였다. GPDK045에서는 profiler를 제외한 코어 wrapper를 합성·LEC·배치·CTS·신호 배선·RC 추출 단계까지 확장했다. 이는 기존 FPGA-only 근거보다 디지털 ASIC flow 근거를 보강하지만, hold·clock-slew closure, scan-aware QoR, PG·fill, signoff와 fabrication은 완료되지 않았다. 최종 분류 시험은 학습, 검증에 쓰인 record와 겹치지 않고 설계 과정에서 한 번도 사용하지 않은 fully held-out 데이터로, 가중치, 임계값을 고정한 뒤 단 한 번만 수행하였다.
 
 # 참고문헌
 

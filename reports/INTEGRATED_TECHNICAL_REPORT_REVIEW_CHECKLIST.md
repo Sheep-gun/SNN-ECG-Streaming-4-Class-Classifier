@@ -16,7 +16,13 @@
 - [x] 49.36배를 active kernel time 비교로 제한했다.
 - [x] 142.0 mW를 allocated estimate, 2.991 µW를 ideal power-gating derived value로 제한했다.
 - [x] compact 36-case acceptance와 raw-dump rerun 4/36을 구분했다.
-- [x] physical AFE, ADC silicon, ASIC/post-layout와 clinical validation 부재를 유지했다.
+- [x] GPDK045 core-only mapping·LEC·signal post-route·extraction과 full timing closure/sign-off/fabrication을 구분했다.
+- [x] setup +2.980 ns와 hold −0.050 ns를 함께 제시해 full timing closure로 과장하지 않았다.
+- [x] clock slew 위반 86개와 `SDFFQX1` 995개·undefined scan 10.70% flops의 QoR 한계를 제시했다.
+- [x] incomplete antenna data와 physical-only cell·metal fill 미삽입을 signoff 한계로 제시했다.
+- [x] 3.35554239 mW를 default activity 0.10의 vectorless estimate로 제한했다.
+- [x] VDD/VSS 미배선, internal route DRC 1, PG/IR·foundry DRC/LVS·DFT·pad/package/fabrication 부재를 유지했다.
+- [x] physical AFE, ADC silicon과 clinical validation 부재를 유지했다.
 - [x] 대표 선행연구의 DOI 또는 공식 출판 경로를 등록했다.
 - [x] 본문 선행연구와 참고문헌 `[1]`~`[8]`을 번호로 연결했다.
 - [x] 세계 최초 또는 동일 연구 부재를 단정하지 않았다.

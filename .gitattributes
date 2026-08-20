@@ -7,6 +7,12 @@
 *.json text eol=lf
 *.svg text eol=lf
 *.pdf binary
+*.gif binary
+
+# Cadence executed snapshots are byte-evidence. Preserve their remote-run bytes
+# so the published SHA-256 values do not depend on checkout EOL conversion.
+/verification/asic_gpdk45_core/executed_snapshot/** -text
+/verification/asic_gpdk45_core/executed_snapshot/README_KR.md text eol=lf
 
 # Imported component snapshots override generic rules and preserve their native
 # line endings. CRLF is therefore a valid end-of-line sequence in redacted
