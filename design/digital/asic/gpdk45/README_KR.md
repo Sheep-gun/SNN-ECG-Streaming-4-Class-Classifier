@@ -75,7 +75,7 @@ Xcelium file list는 repository-relative이므로 smoke는 repository root에서
 mkdir -p "$RUN_ROOT/work/genus" "$RUN_ROOT/work/innovus" "$RUN_ROOT/logs"
 
 cd "$REPO_ROOT"
-xrun -64bit -sv -f design/digital/asic/gpdk45/scripts/xcelium_wrapper_smoke.f -R >! "$RUN_ROOT/logs/xrun_wrapper_smoke.console.log"
+xrun -64bit -sv -f design/digital/asic/gpdk45/scripts/xcelium_wrapper_smoke.f >! "$RUN_ROOT/logs/xrun_wrapper_smoke.console.log"
 
 cd "$RUN_ROOT/work/genus"
 genus -no_gui -files "$REPO_ROOT/design/digital/asic/gpdk45/scripts/run_genus.tcl" >! "$RUN_ROOT/logs/genus_core.console.log"

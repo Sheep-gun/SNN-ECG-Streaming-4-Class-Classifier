@@ -1,0 +1,62 @@
+{
+  "profiles": {
+    "core": {
+      "final_checks": "reports/final_checks/iter1"
+    },
+    "axi": {
+      "root": "axi_run",
+      "candidate_reports": "reports/drv_closure/cts50_drv2",
+      "candidate_outputs": "outputs/drv_closure/cts50_drv2",
+      "candidate_basename": "snn_ecg_axi_asic_top_cts50_drv2",
+      "final_checks": "reports/final_checks/cts50_drv2"
+    }
+  },
+  "regression": {
+    "rtl36_results": "reports/core_wrapper_rtl_canonical36.csv",
+    "raw4_results": "reports/core_wrapper_rtl_raw_xmodel4.csv"
+  },
+  "lec": {
+    "core_result": "reports/lec_postroute_iter1/result_summary.txt",
+    "axi_result": "axi_run/reports/lec_postroute_cts50_drv2/result_summary.txt"
+  },
+  "pg": {
+    "run_log": "logs/innovus_core_pg_fillers.console.log",
+    "assumptions": "reports/innovus_pg/pg_assumptions.txt",
+    "connectivity": "reports/innovus_pg/connectivity_pg.rpt",
+    "geometry": "reports/innovus_pg/geometry_internal.rpt",
+    "filler": "reports/innovus_pg/check_filler.rpt"
+  },
+  "gate": {
+    "unmodified_four_state_result": "reports/core_mapped_gate_raw_case0_notiming_nonotifier.csv",
+    "xpr_log": "logs/xrun_core_mapped_gate16_xpess2.console.log",
+    "mapped_seed_logs": {
+      "seed11": "logs/xrun_core_mapped_gate_raw_case0_powerup_release10_seed11.console.log",
+      "seed22": "logs/xrun_core_mapped_gate_raw_case0_powerup_release10_seed22.console.log",
+      "seed33": "logs/xrun_core_mapped_gate_raw_case0_powerup_release10_seed33.console.log"
+    }
+  },
+  "sdf": {
+    "max_annotation_log": "logs/sdf_annotation_core_iter1_max_ntc.log",
+    "max_simulation_log": "logs/xrun_core_iter1_sdfmax_raw_case0_powerup_release10_seed11.console.log"
+  },
+  "power": {
+    "prefix_manifest": "power_prefix/raw_aff_prefix_100_manifest.json",
+    "runs": {
+      "accelerated_gap2": {
+        "tag": "raw_aff_accelerated_access_seed11",
+        "stimulus_log": "logs/xrun_xcelium_raw_aff_access_namedtop_seed11.console.log",
+        "launch_record": "provenance/access_activity_launch_records.json"
+      },
+      "active_wait_idle": {
+        "tag": "prefix100_idle_access_seed11",
+        "stimulus_log": "logs/xrun_xcelium_prefix100_idle_access_namedtop_seed11.console.log",
+        "launch_record": "provenance/access_activity_launch_records.json"
+      },
+      "literal_1ksps_prefix": {
+        "tag": "prefix100_literal1ksps_access_seed11",
+        "stimulus_log": "logs/xrun_xcelium_prefix100_literal1ksps_access_namedtop_seed11.console.log",
+        "launch_record": "provenance/access_activity_launch_records.json"
+      }
+    }
+  }
+}

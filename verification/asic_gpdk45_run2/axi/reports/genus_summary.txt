@@ -1,0 +1,10 @@
+profile=axi
+top=snn_ecg_axi_asic_top
+mapped_leaf_cells=37293
+mapped_sequential_cells=6244
+mapped_cell_area_um2=96548.994
+mapped_setup_slack_ns=3.3498
+unresolved_references=0
+empty_modules=0
+qor_evidence=axi_run/reports/genus/qor_mapped.rpt
+elaboration_evidence=axi_run/reports/genus/check_design_unresolved.rpt

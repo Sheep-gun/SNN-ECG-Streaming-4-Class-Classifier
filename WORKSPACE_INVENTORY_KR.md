@@ -40,6 +40,7 @@
 - timing/pipeline 개발 이력: `verification/timing_optimization/`
 - FPGA implementation: `verification/fpga_implementation/`
 - GPDK045 core-only PPA: `verification/asic_gpdk45_core/`, `tables/asic_gpdk45_ppa.csv`
+- GPDK045 run-2 scan-free core/AXI PPA·regression·LEC·conditioned activity evidence: `verification/asic_gpdk45_run2/`, `tables/asic_gpdk45_run2_*.csv`
 - 통합 acceptance: `verification/xmodel_rtl_acceptance_36case/`
 - raw replay audit: `verification/xmodel_rtl_e2e/`
 - final figures: `figures/final_submission/`

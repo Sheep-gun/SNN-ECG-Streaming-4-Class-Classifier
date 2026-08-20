@@ -1,0 +1,25 @@
+profile,stage,metric,value,unit,evidence,limitation
+axi,genus_syn_map,cell_count,37293,count,axi_run/reports/genus/qor_mapped.rpt,mapped leaf cells
+axi,genus_syn_map,sequential_cells,6244,count,axi_run/reports/genus/qor_mapped.rpt,scan-free mapped sequential cells
+axi,genus_syn_map,cell_area,96548.994,um2,axi_run/reports/genus/qor_mapped.rpt,timing-library cell area
+axi,genus_syn_map,setup_slack,3.3498,ns,axi_run/reports/genus/qor_mapped.rpt,pre-route mapped report
+axi,postroute_candidate,instance_count,43901,count,axi_run/reports/drv_closure/cts50_drv2/area.rpt,candidate standard-cell instances
+axi,postroute_candidate,cell_area,123650.1,um2,axi_run/reports/drv_closure/cts50_drv2/area.rpt,candidate standard-cell area
+axi,postroute_candidate,die_width,426.2,um,axi_run/outputs/drv_closure/cts50_drv2/snn_ecg_axi_asic_top_cts50_drv2.def,derived from DEF DBU and DIEAREA
+axi,postroute_candidate,die_height,425.03,um,axi_run/outputs/drv_closure/cts50_drv2/snn_ecg_axi_asic_top_cts50_drv2.def,derived from DEF DBU and DIEAREA
+axi,postroute_candidate,die_area,181147.786,um2,axi_run/outputs/drv_closure/cts50_drv2/snn_ecg_axi_asic_top_cts50_drv2.def,padless block boundary
+axi,postroute_candidate,placement_density,83.215,percent,axi_run/reports/drv_closure/cts50_drv2/time_design_hold/snn_ecg_axi_asic_top_postRoute_hold.summary.gz,timeDesign reported placeable-area density
+axi,postroute_candidate,routed_wire_length,935700.505,um,axi_run/outputs/drv_closure/cts50_drv2/snn_ecg_axi_asic_top_cts50_drv2.def,regular NETS Manhattan length; SPECIALNETS excluded
+axi,postroute_candidate,via_count,337893,count,axi_run/outputs/drv_closure/cts50_drv2/snn_ecg_axi_asic_top_cts50_drv2.def,regular NETS via-master tokens
+axi,postroute_candidate,setup_wns,2.781,ns,axi_run/reports/drv_closure/cts50_drv2/timing_setup.rpt,explicit first/worst path
+axi,postroute_candidate,hold_wns,-0.016,ns,axi_run/reports/drv_closure/cts50_drv2/timing_hold.rpt,explicit first/worst path
+axi,postroute_candidate,hold_tns,-0.518,ns,axi_run/reports/drv_closure/cts50_drv2/time_design_hold/snn_ecg_axi_asic_top_postRoute_hold.summary.gz,timeDesign aggregate all-path summary
+axi,postroute_candidate,hold_violating_paths,107,count,axi_run/reports/drv_closure/cts50_drv2/time_design_hold/snn_ecg_axi_asic_top_postRoute_hold.summary.gz,timeDesign aggregate all-path summary
+axi,postroute_candidate,max_transition_violating_nets,73,count,axi_run/reports/drv_closure/cts50_drv2/time_design_setup/snn_ecg_axi_asic_top_postRoute.tran.gz,nets with at least one negative transition slack
+axi,postroute_candidate,max_transition_violating_terminals,469,count,axi_run/reports/drv_closure/cts50_drv2/time_design_setup/snn_ecg_axi_asic_top_postRoute.tran.gz,report terminal count cross-checked against summary
+axi,postroute_candidate,max_transition_worst_slack,-0.476,ns,axi_run/reports/drv_closure/cts50_drv2/time_design_setup/snn_ecg_axi_asic_top_postRoute.tran.gz,worst parsed rise/fall transition slack
+axi,postroute_candidate,clock_slew_violations,0,count,axi_run/reports/final_checks/cts50_drv2/ccopt_clock_trees_60ps.rpt,final CCOpt report
+axi,postroute_candidate,power_internal,2.46300876,mW,axi_run/reports/drv_closure/cts50_drv2/power_vectorless.rpt,vectorless candidate report
+axi,postroute_candidate,power_switching,1.22617043,mW,axi_run/reports/drv_closure/cts50_drv2/power_vectorless.rpt,vectorless candidate report
+axi,postroute_candidate,power_leakage,0.00417679,mW,axi_run/reports/drv_closure/cts50_drv2/power_vectorless.rpt,vectorless candidate report
+axi,postroute_candidate,power_total,3.69335598,mW,axi_run/reports/drv_closure/cts50_drv2/power_vectorless.rpt,vectorless candidate report

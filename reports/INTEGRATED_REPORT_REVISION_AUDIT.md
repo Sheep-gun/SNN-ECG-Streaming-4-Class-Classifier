@@ -48,3 +48,18 @@
 - Incomplete antenna data, physical-only cell·metal fill 미삽입과 historical clock-source transition 미지정을 공개했다.
 - 3.35554239 mW를 default activity 0.10의 vectorless estimate로 제한하고 FPGA 추정치·이상적 power-gating 산출값·실측 전력과 구분했다.
 - VDD/VSS 미배선, internal route DRC 1, PG/IR, foundry DRC/LVS, DFT, pad/package와 fabrication 미수행을 claim 경계로 남겼다.
+
+## 2026-08-21 GPDK045 run-2 정적 결과 개정
+
+- Run-1 historical core baseline을 보존하고 run-2 scan-free core와 AXI-inclusive accelerator block을 별도 profile로 추가했다.
+- Core는 mapped 36,565 cells/94,421.754 µm², post-route 42,958 instances/120,287.898 µm²이고 AXI block은 mapped 37,293 cells/96,548.994 µm², post-route 43,901 instances/123,650.100 µm²로 기록했다.
+- 100 MHz에서 core/AXI setup WNS +2.469/+2.781 ns, hold WNS −0.008/−0.016 ns와 data-net max-transition residual을 함께 공개해 physical timing closure로 표현하지 않았다.
+- Slow-early 0.95와 fast-late 1.05의 fixed global engineering derate는 foundry-characterized AOCV/POCV/LVF가 아님을 명시했다.
+- Core/AXI post-route vectorless 3.71626492/3.69335598 mW를 default activity 기반 추정치로 제한했다.
+- Canonical digital RTL 36/36과 actual raw XMODEL 4/4를 분리했으며 raw XMODEL archive 범위는 4/36으로 유지했다.
+- Mapped-to-postroute LEC는 core 6,178/AXI 6,287 compare point에서 diff·abort·unknown 0이지만 timing·accuracy·four-state GLS·sign-off와 구분했다.
+- Exploratory PG attempt는 171 connectivity·715 geometry violation으로 실패했으며 PG/IR/EM 구현 근거가 아님을 남겼다.
+- Unmodified four-state gate output X와 XPR license 부재를 보존하고, forced mapped seeds 11/22/33 및 timing check를 끈 single-seed MAX-SDF 결과를 testbench-conditioned sampled sensitivity로 제한했다.
+- Core seed11-conditioned activity 분석을 accelerated gap2 2.02536072 mW, active-wait idle 1.91083992 mW, literal 1 kSPS 100-sample prefix 1.91084079 mW, matched total delta 0.00000087 mW로 추가했다.
+- Mapped gate 6,045/6,045, `-access +rwc`, zero delay, normalized SAIF parse PASS, fully-X/Z preserve와 unannotated default 0을 방법 경계로 기록했다.
+- Parse/annotation PASS는 numeric annotation coverage PASS가 아니며 prefix는 Snapshot/decision에 도달하지 않고 matched delta는 silicon power·energy/decision이 아님을 명시했다. AXI power는 vectorless only로 유지했다.

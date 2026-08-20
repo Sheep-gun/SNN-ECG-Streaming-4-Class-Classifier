@@ -1,0 +1,13 @@
+profile,check,result,status,evidence,claim_boundary
+run2_core,scan_free_mapping,scan_capable_cells_0,PASS,verification/asic_gpdk45_run2/core/results/physical_checks.csv,scan-free functional mapping not DFT insertion
+run2_core,wrapper_RTL_canonical_digital,36/36,PASS,verification/asic_gpdk45_run2/regression/regression_summary.csv,regenerated canonical digital cohort not raw XMODEL 36
+run2_core,wrapper_RTL_actual_raw_XMODEL,4/4,PASS,verification/asic_gpdk45_run2/regression/regression_summary.csv,actual raw XMODEL archive remains 4 of 36
+run2_core,mapped_to_postroute_LEC,6178_points_diff0_abort0_unknown0,PASS,verification/asic_gpdk45_run2/lec/equivalence_summary.csv,logical equivalence not timing or classification accuracy
+run2_axi,mapped_to_postroute_LEC,6287_points_diff0_abort0_unknown0,PASS,verification/asic_gpdk45_run2/lec/equivalence_summary.csv,AXI-inclusive block logical equivalence
+run2_pg,exploratory_power_grid,171_connectivity_715_geometry,FAIL,verification/asic_gpdk45_run2/pg/attempt_summary.csv,geometry-only assumptions no top PG source no IR or EM and no implemented PG claim
+run2_gate,unmodified_four_state_full_raw_case0,output_X,FAIL,verification/asic_gpdk45_run2/gate/gate_verification_summary.csv,unmodified four-state GLS did not produce a known result
+run2_gate,XPR_mode,license_unavailable,NOT_RUN,verification/asic_gpdk45_run2/gate/x_pessimism_boundary.txt,X-pessimism removal app not available
+run2_gate,forced_two_state_release10ns_mapped,seeds_11_22_33_exact_PASS,CONDITIONAL_PASS,verification/asic_gpdk45_run2/gate/gate_verification_summary.csv,testbench-only forced initialization sampled sensitivity not unmodified GLS or power-up proof
+run2_gate,forced_two_state_sequential_coverage,6045/6045_releaseX0,CONDITIONAL_PASS,verification/asic_gpdk45_run2/gate/gate_verification_summary.csv,coverage applies to the mapped seed-conditioned experiment
+run2_sdf,MAX_SDF_postroute_seed11,6044/6044_exact_PASS,CONDITIONAL_PASS,verification/asic_gpdk45_run2/sdf/sdf_pilot_summary.csv,testbench-only forced initialization single-seed SDF pilot with timing checks disabled
+run2_sdf,SDF_annotation_port_alias,88_SDFNCAP_warnings,PARTIAL,verification/asic_gpdk45_run2/sdf/sdf_pilot_summary.csv,annotation warnings retained and no general SDF GLS claim

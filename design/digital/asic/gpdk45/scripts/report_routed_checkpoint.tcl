@@ -5,7 +5,15 @@ foreach required_env {RUN_ROOT} {
 }
 
 set run_root [file normalize $::env(RUN_ROOT)]
-set top snn_ecg_asic_core_top
+set profile core
+if {[info exists ::env(ASIC_PROFILE)]} {
+    set profile [string tolower [string trim $::env(ASIC_PROFILE)]]
+}
+switch -- $profile {
+    core { set top snn_ecg_asic_core_top }
+    axi { set top snn_ecg_axi_asic_top }
+    default { error "ASIC_PROFILE must be core or axi, got: $profile" }
+}
 set report_dir [file join $run_root reports innovus]
 set output_dir [file join $run_root outputs innovus]
 set checkpoint [file join $output_dir ${top}_routed_preextract.enc.dat]

@@ -90,10 +90,150 @@ metrics:
     ppa_evidence: verification/asic_gpdk45_core/results/ppa_summary.csv
     physical_evidence: verification/asic_gpdk45_core/results/physical_checks.csv
     equivalence_evidence: verification/asic_gpdk45_core/results/equivalence_summary.csv
+  asic_gpdk45_run2:
+    process_scope: generic GPDK045 GSCLIB v4.7 scan-free exploratory blocks
+    clock_mhz: 100
+    ocv_assumption:
+      type: fixed global engineering derate
+      percent: 5
+      slow_early: 0.95
+      fast_late: 1.05
+      same_gpdk045_tch_both_rc_views: true
+      rc_scale_factors: 1.0
+      foundry_characterized: false
+    scan_free_core:
+      top: snn_ecg_asic_core_top
+      mapped_cells: 36565
+      mapped_cell_area_um2: 94421.754
+      sequential_cells: 6045
+      mapped_setup_slack_ns: 3.3509
+      postroute_instances: 42958
+      postroute_cell_area_um2: 120287.898
+      die_boundary_um: [422.800, 419.900]
+      die_area_um2: 177533.720
+      placement_density_percent: 82.775
+      setup_wns_ns: 2.469
+      hold_wns_ns: -0.008
+      hold_tns_ns: -0.094
+      hold_violating_paths: 37
+      max_transition_violating_nets: 3
+      max_transition_violating_terminals: 6
+      max_transition_worst_slack_ns: -0.026
+      clock_slew_violations_at_60ps: 0
+      internal_drc_count: 0
+      vectorless_power_mw: 3.71626492
+      vectorless_activity_assumption: default PI and sequential activity 0.10
+      ppa_evidence: verification/asic_gpdk45_run2/core/results/ppa_summary.csv
+    axi_accelerator_block:
+      top: snn_ecg_axi_asic_top
+      excludes_microblaze_soc: true
+      mapped_cells: 37293
+      mapped_cell_area_um2: 96548.994
+      sequential_cells: 6244
+      mapped_setup_slack_ns: 3.3498
+      postroute_instances: 43901
+      postroute_cell_area_um2: 123650.100
+      die_boundary_um: [426.200, 425.030]
+      die_area_um2: 181147.786
+      placement_density_percent: 83.215
+      setup_wns_ns: 2.781
+      hold_wns_ns: -0.016
+      hold_tns_ns: -0.518
+      hold_violating_paths: 107
+      max_transition_violating_nets: 73
+      max_transition_violating_terminals: 469
+      max_transition_worst_slack_ns: -0.476
+      clock_slew_violations_at_60ps: 0
+      internal_drc_count: 0
+      vectorless_power_mw: 3.69335598
+      vectorless_activity_assumption: default PI and sequential activity 0.10
+      ppa_evidence: verification/asic_gpdk45_run2/axi/results/ppa_summary.csv
+    regression:
+      profile: snn_ecg_asic_core_top
+      canonical_digital_exact: 36/36
+      actual_raw_xmodel_exact: 4/4
+      raw_xmodel_archive_scope: 4/36
+      axi_profile_full_case_regression_performed: false
+      axi_profile_rtl_smoke_samples: 16
+      evidence: verification/asic_gpdk45_run2/regression/regression_summary.csv
+    postroute_lec:
+      core_compare_points: 6178
+      axi_compare_points: 6287
+      non_equivalent: 0
+      abort: 0
+      unknown: 0
+      evidence: verification/asic_gpdk45_run2/lec/equivalence_summary.csv
+    exploratory_pg:
+      status: failed
+      connectivity_violations: 171
+      geometry_violations: 715
+      selected_core_axi_checkpoints_signal_only: true
+      selected_core_axi_vdd_vss_routed: false
+      ir_em_analyzed: false
+      evidence: verification/asic_gpdk45_run2/pg/attempt_summary.csv
+    conditional_gate_sensitivity:
+      unmodified_four_state_result: X
+      xpr_license_available: false
+      mapped_forced_release_ns: 10
+      mapped_full_seeds_exact: [11, 22, 33]
+      mapped_sequential_coverage: 6045/6045
+      mapped_release_unknowns: 0
+      max_sdf_seed: 11
+      max_sdf_sequential_coverage: 6044/6044
+      max_sdf_exact: true
+      max_sdf_timing_checks_disabled: true
+      sdfncap_warnings: 88
+      evidence: verification/asic_gpdk45_run2/gate/gate_verification_summary.csv
+      sdf_evidence: verification/asic_gpdk45_run2/sdf/sdf_pilot_summary.csv
+    conditional_activity_power:
+      profile: snn_ecg_asic_core_top mapped gate
+      status: PASS
+      stimulus_seed: 11
+      mapped_sequential_coverage: 6045/6045
+      release_unknowns: 0
+      xcelium_access: "+rwc"
+      delay_mode: zero
+      normalized_saif_parse_status: PASS
+      normalization_full_xz_entries_preserved: true
+      unannotated_default_activity: 0.0
+      numeric_annotation_coverage_claimed: false
+      accelerated_gap2:
+        sample_count: 1800000
+        window_cycles: 5401263
+        internal_mw: 1.52085678
+        switching_mw: 0.50045621
+        leakage_mw: 0.00404773
+        total_mw: 2.02536072
+      active_wait_idle:
+        sample_count: 0
+        window_cycles: 10000000
+        window_seconds: 0.1
+        internal_mw: 1.48928157
+        switching_mw: 0.41750333
+        leakage_mw: 0.00405502
+        total_mw: 1.91083992
+      literal_1ksps_prefix:
+        sample_count: 100
+        window_cycles: 10000000
+        window_seconds: 0.1
+        internal_mw: 1.48928212
+        switching_mw: 0.41750554
+        leakage_mw: 0.00405312
+        total_mw: 1.91084079
+      literal_minus_active_wait_idle_total_delta_mw: 0.00000087
+      prefix_snapshot_reached: false
+      prefix_decision_reached: false
+      energy_per_decision_supported: false
+      silicon_power: false
+      axi_activity_power_available: false
+      evidence: verification/asic_gpdk45_run2/power/activity_power_summary.csv
+      annotation_boundary: verification/asic_gpdk45_run2/power/activity_annotation_summary.txt
 claim_boundaries:
   validated_input_duration: 30 minutes
   holter_direction: 24 hours or longer
-  unvalidated: [24-hour accuracy, 24-hour latency, physical AFE PCB, ADC silicon, ASIC setup-hold and clock-rule closure, scan-aware QoR, power grid and IR, physical-only cell and metal fill insertion, foundry DRC and LVS, DFT and pads, package, fabricated silicon, clinical validation, measured FPGA-board power, measured ASIC power]
+  unvalidated: [24-hour accuracy, 24-hour latency, physical AFE PCB, ADC silicon, ASIC hold and data-net transition closure, power grid and IR, physical-only cell and metal fill insertion, complete antenna checking, foundry DRC and LVS, DFT and pads, package, fabricated silicon, clinical validation, measured FPGA-board power, measured ASIC power]
   power_note: 2.991 uW is a conditional derived estimate under complete power-gating, not measured FPGA power.
   asic_power_note: 3.35554239 mW is a setup-slow vectorless estimate using default activity 0.10, not workload or measured silicon power.
+  run2_power_note: core 3.71626492 mW and AXI 3.69335598 mW are vectorless estimates. Core-only seed11-conditioned zero-delay activity windows are accelerated gap2 2.02536072 mW, active-wait idle 1.91083992 mW, and literal 1 kSPS 100-sample prefix 1.91084079 mW with matched total delta 0.00000087 mW; they are not silicon power or energy per decision, and AXI has no activity-based result.
+  run2_gate_note: forced two-state mapped and timing-check-disabled single-seed MAX-SDF results are sampled testbench-conditioned initialization sensitivity only.
   dataset_note: strict record-wise splitting prevents source-record leakage but does not remove database-class confounding.

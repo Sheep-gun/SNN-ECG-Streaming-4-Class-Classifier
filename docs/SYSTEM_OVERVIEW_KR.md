@@ -18,7 +18,7 @@ Public digitized ECG
   → 30-Snapshot Final Membrane
   → NSR / CHF / ARR / AF
   ├→ AXI IP / MicroBlaze / FPGA replay
-  └→ GPDK045 core-only mapping / LEC / signal post-route / extraction
+  └→ GPDK045 scan-free core / AXI block mapping / LEC / signal post-route / extraction
 ```
 
 ## 아날로그부
@@ -41,5 +41,8 @@ Pure RTL은 AXI-Lite 제어·결과 레지스터와 AXI-Stream 입력을 갖는 
 - Snapshot: 60초, 60,000 samples, 총 30개
 - 분류 결과: 29/36, 정확도 80.56%, Macro-F1 80.44%
 - FPGA 등가성: class 36/36, four membranes 144/144
-- ASIC exploratory result: explicit setup WNS +2.980 ns, hold WNS −0.050 ns, clock slew 위반 86개, vectorless 3.35554239 mW; scan-aware QoR/PG/sign-off 미완료
-- 미검증: physical AFE/ADC, ASIC full timing closure·PG/IR·foundry DRC/LVS·fabrication, clinical validation, actual 24-hour accuracy/time/power
+- Run-1 ASIC baseline: setup +2.980 ns, hold −0.050 ns, clock slew 86, scan QoR·PG·sign-off 미완료
+- Run-2 scan-free core / AXI: setup +2.469 / +2.781 ns, hold −0.008 / −0.016 ns; clock slew 0 @ 60 ps, internal DRC 0이지만 hold·data transition closure 미달성
+- Run-2 기능 근거: core wrapper canonical digital RTL 36/36, actual raw XMODEL 4/4, mapped-to-postroute LEC core 6,178·AXI 6,287 points clean; AXI 36-case replay 주장은 아님
+- Run-2 core activity: seed11-conditioned zero-delay normalized SAIF에서 accelerated gap2 2.02536072 mW, active-wait idle 1.91083992 mW, literal 1 kSPS 100-sample prefix 1.91084079 mW; parse PASS는 numeric coverage가 아니며 prefix는 Snapshot/decision·energy/decision 근거가 아님; AXI는 vectorless only
+- 미검증: physical AFE/ADC, successful PG/IR/EM, foundry DRC/LVS·fabrication, unmodified four-state gate robustness, clinical validation, actual 24-hour accuracy/time/power

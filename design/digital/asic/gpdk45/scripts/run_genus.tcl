@@ -8,9 +8,26 @@ set script_dir [file dirname [file normalize [info script]]]
 set repo_root [file normalize [file join $script_dir .. .. .. .. ..]]
 set run_root [file normalize $::env(RUN_ROOT)]
 set pdk_root [file normalize $::env(PDK_ROOT)]
-set top snn_ecg_asic_core_top
 set slow_lib [file join $pdk_root timing slow_vdd1v2_basicCells.lib]
-set sdc_file [file join $repo_root design digital asic gpdk45 constraints core_100mhz.sdc]
+set profile core
+if {[info exists ::env(ASIC_PROFILE)]} {
+    set profile [string tolower [string trim $::env(ASIC_PROFILE)]]
+}
+switch -- $profile {
+    core {
+        set top snn_ecg_asic_core_top
+        set sdc_file [file join $repo_root design digital asic gpdk45 constraints core_100mhz.sdc]
+        set rtl_list_script [file join $script_dir rtl_files.tcl]
+    }
+    axi {
+        set top snn_ecg_axi_asic_top
+        set sdc_file [file join $repo_root design digital asic gpdk45 axi_profile constraints axi_100mhz.sdc]
+        set rtl_list_script [file join $repo_root design digital asic gpdk45 axi_profile scripts rtl_files.tcl]
+    }
+    default {
+        error "ASIC_PROFILE must be core or axi, got: $profile"
+    }
+}
 set report_dir [file join $run_root reports genus]
 set output_dir [file join $run_root outputs genus]
 set mapped_v [file join $output_dir ${top}_mapped.v]
@@ -20,7 +37,11 @@ file mkdir $report_dir
 file mkdir $output_dir
 file mkdir [file join $run_root logs]
 
-source [file join $script_dir rtl_files.tcl]
+source $rtl_list_script
+if {$profile eq "axi"} {
+    set rtl_files $axi_profile_rtl_files
+    set rtl_include_dirs $axi_profile_include_dirs
+}
 set_db init_hdl_search_path $rtl_include_dirs
 set_db information_level 2
 
@@ -28,7 +49,11 @@ read_libs $slow_lib
 # This baseline has no scan-chain implementation. Prevent scan-capable flop
 # families from being repurposed as functional clock-enable cells, because
 # Innovus otherwise treats them as undefined scan chains and degrades QoR.
-set_db {lib_cell:slow_vdd1v2/S*DFF*} .avoid true
+set scan_cells [get_db lib_cells *S*DFF*]
+if {[llength $scan_cells] == 0} {
+    error "No scan-capable S*DFF* library cells were found to exclude"
+}
+set_db $scan_cells .avoid true
 read_hdl -v2001 $rtl_files
 elaborate $top
 check_design -unresolved > [file join $report_dir check_design_unresolved.rpt]

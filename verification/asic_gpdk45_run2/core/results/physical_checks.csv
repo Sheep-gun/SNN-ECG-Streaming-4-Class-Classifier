@@ -1,0 +1,14 @@
+profile,check,status,value,evidence,limitation
+core,unresolved_references,PASS,0,reports/genus/check_design_unresolved.rpt,Genus elaboration
+core,empty_modules,PASS,0,reports/genus/check_design_unresolved.rpt,Genus elaboration
+core,placement,PASS,0,reports/final_checks/iter1/check_place.rpt,internal checkPlace only
+core,signal_connectivity_excluding_pg,PASS,0,reports/final_checks/iter1/connectivity_signal.rpt,regular connectivity after separately reporting VDD/VSS no-route entries
+core,unrouted_pg_nets,NOT_COMPLETED,2,reports/final_checks/iter1/connectivity_signal.rpt,"VDD/VSS are signal-only checkpoint omissions, not implemented PG"
+core,internal_route_drc,PASS,0,reports/final_checks/iter1/internal_route_drc.rpt,not foundry DRC
+core,setup_timing,PASS,2.469,reports/closure/iter1/timing_setup.rpt,does not include hold/DRV closure
+core,hold_timing,FAIL,-0.008,reports/closure/iter1/timing_hold.rpt,candidate hold report
+core,hold_tns,FAIL,-0.094,reports/closure/iter1/time_design_hold/snn_ecg_asic_core_top_postRoute_hold.summary.gz,37 violating paths
+core,hold_violating_paths,FAIL,37,reports/closure/iter1/time_design_hold/snn_ecg_asic_core_top_postRoute_hold.summary.gz,aggregate all-path hold count
+core,max_transition_nets,FAIL,3,reports/closure/iter1/time_design_setup/snn_ecg_asic_core_top_postRoute.tran.gz,6 violating terminals
+core,max_transition_terminals,FAIL,6,reports/closure/iter1/time_design_setup/snn_ecg_asic_core_top_postRoute.tran.gz,worst slack -0.026 ns
+core,clock_slew,PASS,0,reports/final_checks/iter1/ccopt_clock_trees_60ps.rpt,CCOpt engineering target

@@ -53,6 +53,13 @@
 | GPDK045 core-only post-route | 35,663 instances, 95,321.556 µm², 421.000 × 418.190 µm | generic 45 nm exploratory block, pad/PG 제외 |
 | GPDK045 post-route timing | setup WNS +2.980 ns, hold WNS −0.050 ns, clock slew 위반 86개 | 100 MHz explicit report; setup/hold·clock-rule closure 아님 |
 | GPDK045 post-route power | 3.35554239 mW | setup-slow vectorless, default 0.10 activity; workload 전력·실측값 아님 |
+| GPDK045 run-2 scan-free core | mapped 36,565 cells / 94,421.754 µm²; post-route 42,958 instances / 120,287.898 µm² | run-1을 대체하지 않는 functional profile; DFT insertion·scan QoR 아님 |
+| Run-2 core timing | setup +2.469 ns; hold −0.008 ns, TNS −0.094 ns / 37 paths | slow-early 0.95·fast-late 1.05 engineering derate; hold·data-net transition closure 아님 |
+| GPDK045 run-2 AXI block | mapped 37,293 cells / 96,548.994 µm²; post-route 43,901 instances / 123,650.100 µm² | AXI accelerator block; MicroBlaze SoC·pad·package 제외 |
+| Run-2 AXI timing | setup +2.781 ns; hold −0.016 ns, TNS −0.518 ns / 107 paths | clock slew 0 @ 60 ps이지만 hold·data-net transition closure 아님 |
+| Run-2 vectorless power | core 3.71626492 mW; AXI 3.69335598 mW | default PI/sequential activity 0.10 estimate; actual workload power 아님 |
+| Run-2 core conditioned activity | accelerated gap2 2.02536072 mW; active-wait idle 1.91083992 mW; literal 1 kSPS 100-sample prefix 1.91084079 mW; matched delta 0.00000087 mW | seed11, mapped 6,045/6,045, `-access +rwc`, zero-delay normalized SAIF; prefix는 Snapshot/decision 아님; silicon power·energy/decision 아님; AXI는 vectorless only |
+| Run-2 regression / LEC | core wrapper canonical RTL 36/36, actual raw XMODEL 4/4; core LEC 6,178, AXI LEC 6,287 points clean | AXI 36-case replay 주장이 아니며 raw XMODEL archive는 여전히 4/36; LEC는 timing/accuracy 검증이 아님 |
 
 LTspice와 XMODEL의 동일 10초 ECG 비교에서는 MAE 0.6445 LSB, RMS 1.3020 LSB, 상관계수 0.999518, 지연 0표본을 기록했다. 이는 모델 간 정합이며 물리 AFE 또는 ADC 실측이 아니다.
 
@@ -79,6 +86,7 @@ LTspice와 XMODEL의 동일 10초 ECG 비교에서는 MAE 0.6445 LSB, RMS 1.3020
 | 하드웨어와 전력 | [docs/HARDWARE_IMPLEMENTATION_KR.md](docs/HARDWARE_IMPLEMENTATION_KR.md) |
 | GPDK045 core-only flow | [design/digital/asic/gpdk45/](design/digital/asic/gpdk45/) |
 | GPDK045 PPA 근거 | [verification/asic_gpdk45_core/README_KR.md](verification/asic_gpdk45_core/README_KR.md) |
+| GPDK045 run-2 static evidence | [verification/asic_gpdk45_run2/README_KR.md](verification/asic_gpdk45_run2/README_KR.md) |
 | 통합 검증 | [docs/INTEGRATION_VERIFICATION_KR.md](docs/INTEGRATION_VERIFICATION_KR.md) |
 | 최종 Figure | [figures/FIGURE_INDEX.md](figures/FIGURE_INDEX.md) |
 | 재현 명령 | [REPRODUCIBILITY_KR.md](REPRODUCIBILITY_KR.md) |
@@ -91,4 +99,4 @@ LTspice와 XMODEL의 동일 10초 ECG 비교에서는 MAE 0.6445 LSB, RMS 1.3020
 
 ## 한계
 
-GPDK045 결과는 generic demonstration library의 core-only exploratory post-route 결과다. hold WNS −0.050 ns, clock slew 위반 86개, 미배선 VDD/VSS와 Innovus internal route DRC 1건이 남고, historical netlist의 scan-capable `SDFFQX1` 995개에는 scan chain이 정의되지 않아 placement/timing QoR 한계가 있다. Filler/decap/tap/endcap·metal fill, pad/DFT/package, PG/IR, foundry DRC/LVS와 fabricated silicon도 완료하지 않아 timing closure나 sign-off가 아니다. 물리 AFE PCB, ADC silicon, 임상 검증과 실제 24시간 입력 검증은 수행하지 않았다. FPGA 전력은 추정치이고 2.991 µW는 이상적 power-gating 가정값이며, GPDK045 3.35554239 mW도 default activity의 vectorless 추정치이다. 본 결과는 임상 진단이나 상용 의료기기 대비 우월성을 뜻하지 않는다.
+Run-1 GPDK045 결과는 generic demonstration library의 historical core-only baseline이며 scan-capable cell·clock slew·hold·DRC 한계를 보존한다. Run-2는 scan-free core와 AXI-inclusive block으로 확장해 clock slew 0 @ 60 ps와 internal DRC 0을 확인했지만, core hold WNS −0.008 ns·AXI hold WNS −0.016 ns와 data-net max-transition 위반이 남아 physical timing closure가 아니다. Slow-early 0.95와 fast-late 1.05는 foundry AOCV/POCV/LVF가 아닌 fixed engineering assumption이다. Exploratory PG는 171 connectivity·715 geometry violation으로 실패했고, 선택한 core/AXI checkpoint는 signal-only이며 VDD/VSS가 unrouted이므로 PG/IR/EM 구현 근거가 아니다. Unmodified four-state gate run은 X를 남겼으며, forced two-state seed 결과와 timing check를 끈 single-seed MAX-SDF pilot은 testbench-conditioned sampled sensitivity로만 해석한다. Run-2 core 3.71626492 mW와 AXI 3.69335598 mW는 vectorless 추정치다. Core에는 별도로 seed11-conditioned zero-delay activity windows를 분석했지만 normalized SAIF parse PASS는 numeric annotation coverage PASS가 아니며 fully-X/Z entry를 보존하고 unannotated default 0을 사용했다. Prefix는 Snapshot/decision에 도달하지 않고 matched delta도 energy/decision이 아니며, AXI는 activity 결과 없이 vectorless only다. 물리 AFE PCB, ADC silicon, physical fill, foundry DRC/LVS, pad/package/fabrication, 실리콘 전력, 임상 검증과 실제 24시간 입력 검증은 수행하지 않았다.

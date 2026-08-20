@@ -22,6 +22,19 @@
 - [x] incomplete antenna data와 physical-only cell·metal fill 미삽입을 signoff 한계로 제시했다.
 - [x] 3.35554239 mW를 default activity 0.10의 vectorless estimate로 제한했다.
 - [x] VDD/VSS 미배선, internal route DRC 1, PG/IR·foundry DRC/LVS·DFT·pad/package/fabrication 부재를 유지했다.
+- [x] Run-1 GPDK045 historical baseline과 run-2 scan-free core·AXI-inclusive accelerator block을 별도 결과로 유지했다.
+- [x] Run-2 core/AXI mapped·post-route cell/area와 setup·hold·max-transition residual을 함께 제시했다.
+- [x] Run-2 slow-early 0.95·fast-late 1.05를 fixed global engineering derate로 제한하고 foundry AOCV/POCV/LVF로 표현하지 않았다.
+- [x] Run-2 core/AXI clock-tree slew 0 @ 60 ps와 internal DRC 0을 data-net max-transition closure 또는 foundry DRC sign-off로 확대하지 않았다.
+- [x] Run-2 vectorless 3.71626492/3.69335598 mW를 workload activity·판정당 에너지·silicon 실측값으로 확대하지 않았다.
+- [x] Run-2 core activity의 accelerated/idle/literal 세 window와 matched delta를 별도 cadence로 제시하고 AXI vectorless-only 범위를 유지했다.
+- [x] Seed11, mapped 6,045/6,045, `-access +rwc`, zero delay, fully-X/Z preserve와 unannotated default 0을 명시했다.
+- [x] Normalized SAIF parse/annotation PASS를 numeric annotation coverage PASS로 확대하지 않았다.
+- [x] 100-sample prefix를 Snapshot/decision 또는 energy/decision 근거로 확대하지 않고 silicon 실측과 구분했다.
+- [x] Canonical digital RTL 36/36과 actual raw XMODEL 4/4를 분리하고, raw archive 범위를 4/36으로 유지했다.
+- [x] Core/AXI post-route LEC 6,178/6,287 compare point PASS를 timing·accuracy·four-state GLS·sign-off로 확대하지 않았다.
+- [x] Exploratory PG attempt의 171 connectivity·715 geometry violation을 실패로 기록하고 PG/IR/EM 완료를 주장하지 않았다.
+- [x] Unmodified four-state gate output X와 XPR license 부재를 남기고, forced seed와 timing check를 끈 single-seed MAX-SDF 결과를 testbench-conditioned sampled sensitivity로 제한했다.
 - [x] physical AFE, ADC silicon과 clinical validation 부재를 유지했다.
 - [x] 대표 선행연구의 DOI 또는 공식 출판 경로를 등록했다.
 - [x] 본문 선행연구와 참고문헌 `[1]`~`[8]`을 번호로 연결했다.

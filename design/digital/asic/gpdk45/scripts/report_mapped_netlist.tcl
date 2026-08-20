@@ -9,9 +9,22 @@ set repo_root [file normalize [file join $script_dir .. .. .. .. ..]]
 set run_root [file normalize $::env(RUN_ROOT)]
 set pdk_root [file normalize $::env(PDK_ROOT)]
 set mapped_netlist [file normalize $::env(MAPPED_NETLIST)]
-set top snn_ecg_asic_core_top
+set profile core
+if {[info exists ::env(ASIC_PROFILE)]} {
+    set profile [string tolower [string trim $::env(ASIC_PROFILE)]]
+}
+switch -- $profile {
+    core {
+        set top snn_ecg_asic_core_top
+        set sdc_file [file join $repo_root design digital asic gpdk45 constraints core_100mhz.sdc]
+    }
+    axi {
+        set top snn_ecg_axi_asic_top
+        set sdc_file [file join $repo_root design digital asic gpdk45 axi_profile constraints axi_100mhz.sdc]
+    }
+    default { error "ASIC_PROFILE must be core or axi, got: $profile" }
+}
 set slow_lib [file join $pdk_root timing slow_vdd1v2_basicCells.lib]
-set sdc_file [file join $repo_root design digital asic gpdk45 constraints core_100mhz.sdc]
 set report_dir [file join $run_root reports genus]
 set output_dir [file join $run_root outputs genus]
 

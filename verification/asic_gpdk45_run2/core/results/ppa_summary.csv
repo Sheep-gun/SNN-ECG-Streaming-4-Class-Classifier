@@ -1,0 +1,25 @@
+profile,stage,metric,value,unit,evidence,limitation
+core,genus_syn_map,cell_count,36565,count,reports/genus/qor_mapped.rpt,mapped leaf cells
+core,genus_syn_map,sequential_cells,6045,count,reports/genus/qor_mapped.rpt,scan-free mapped sequential cells
+core,genus_syn_map,cell_area,94421.754,um2,reports/genus/qor_mapped.rpt,timing-library cell area
+core,genus_syn_map,setup_slack,3.3509,ns,reports/genus/qor_mapped.rpt,pre-route mapped report
+core,postroute_candidate,instance_count,42958,count,reports/closure/iter1/area.rpt,candidate standard-cell instances
+core,postroute_candidate,cell_area,120287.898,um2,reports/closure/iter1/area.rpt,candidate standard-cell area
+core,postroute_candidate,die_width,422.8,um,outputs/closure/iter1/snn_ecg_asic_core_top_iter1.def,derived from DEF DBU and DIEAREA
+core,postroute_candidate,die_height,419.9,um,outputs/closure/iter1/snn_ecg_asic_core_top_iter1.def,derived from DEF DBU and DIEAREA
+core,postroute_candidate,die_area,177533.72,um2,outputs/closure/iter1/snn_ecg_asic_core_top_iter1.def,padless block boundary
+core,postroute_candidate,placement_density,82.775,percent,reports/closure/iter1/time_design_hold/snn_ecg_asic_core_top_postRoute_hold.summary.gz,timeDesign reported placeable-area density
+core,postroute_candidate,routed_wire_length,836058.34,um,outputs/closure/iter1/snn_ecg_asic_core_top_iter1.def,regular NETS Manhattan length; SPECIALNETS excluded
+core,postroute_candidate,via_count,315926,count,outputs/closure/iter1/snn_ecg_asic_core_top_iter1.def,regular NETS via-master tokens
+core,postroute_candidate,setup_wns,2.469,ns,reports/closure/iter1/timing_setup.rpt,explicit first/worst path
+core,postroute_candidate,hold_wns,-0.008,ns,reports/closure/iter1/timing_hold.rpt,explicit first/worst path
+core,postroute_candidate,hold_tns,-0.094,ns,reports/closure/iter1/time_design_hold/snn_ecg_asic_core_top_postRoute_hold.summary.gz,timeDesign aggregate all-path summary
+core,postroute_candidate,hold_violating_paths,37,count,reports/closure/iter1/time_design_hold/snn_ecg_asic_core_top_postRoute_hold.summary.gz,timeDesign aggregate all-path summary
+core,postroute_candidate,max_transition_violating_nets,3,count,reports/closure/iter1/time_design_setup/snn_ecg_asic_core_top_postRoute.tran.gz,nets with at least one negative transition slack
+core,postroute_candidate,max_transition_violating_terminals,6,count,reports/closure/iter1/time_design_setup/snn_ecg_asic_core_top_postRoute.tran.gz,report terminal count cross-checked against summary
+core,postroute_candidate,max_transition_worst_slack,-0.026,ns,reports/closure/iter1/time_design_setup/snn_ecg_asic_core_top_postRoute.tran.gz,worst parsed rise/fall transition slack
+core,postroute_candidate,clock_slew_violations,0,count,reports/final_checks/iter1/ccopt_clock_trees_60ps.rpt,final CCOpt report
+core,postroute_candidate,power_internal,2.5195822,mW,reports/closure/iter1/power_vectorless.rpt,vectorless candidate report
+core,postroute_candidate,power_switching,1.19263629,mW,reports/closure/iter1/power_vectorless.rpt,vectorless candidate report
+core,postroute_candidate,power_leakage,0.00404644,mW,reports/closure/iter1/power_vectorless.rpt,vectorless candidate report
+core,postroute_candidate,power_total,3.71626492,mW,reports/closure/iter1/power_vectorless.rpt,vectorless candidate report

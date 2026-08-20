@@ -1,0 +1,8 @@
+unmodified_four_state_result=output_X
+xpr_status=license_unavailable
+forced_mapped_seeds=11,22,33
+forced_mapped_sequential_coverage=6045/6045
+forced_mapped_release_unknowns=0
+boundary=Forced initialization is a testbench-conditioned sampled sensitivity experiment.
+boundary=Finite seeds do not prove unmodified GLS, reset robustness, or physical power-up state.
+boundary=Zero monitored release X does not prove absence of every internal X state.

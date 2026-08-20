@@ -1,0 +1,14 @@
+profile,check,status,value,evidence,limitation
+axi,unresolved_references,PASS,0,axi_run/reports/genus/check_design_unresolved.rpt,Genus elaboration
+axi,empty_modules,PASS,0,axi_run/reports/genus/check_design_unresolved.rpt,Genus elaboration
+axi,placement,PASS,0,axi_run/reports/final_checks/cts50_drv2/check_place.rpt,internal checkPlace only
+axi,signal_connectivity_excluding_pg,PASS,0,axi_run/reports/final_checks/cts50_drv2/connectivity_signal.rpt,regular connectivity after separately reporting VDD/VSS no-route entries
+axi,unrouted_pg_nets,NOT_COMPLETED,2,axi_run/reports/final_checks/cts50_drv2/connectivity_signal.rpt,"VDD/VSS are signal-only checkpoint omissions, not implemented PG"
+axi,internal_route_drc,PASS,0,axi_run/reports/final_checks/cts50_drv2/internal_route_drc.rpt,not foundry DRC
+axi,setup_timing,PASS,2.781,axi_run/reports/drv_closure/cts50_drv2/timing_setup.rpt,does not include hold/DRV closure
+axi,hold_timing,FAIL,-0.016,axi_run/reports/drv_closure/cts50_drv2/timing_hold.rpt,candidate hold report
+axi,hold_tns,FAIL,-0.518,axi_run/reports/drv_closure/cts50_drv2/time_design_hold/snn_ecg_axi_asic_top_postRoute_hold.summary.gz,107 violating paths
+axi,hold_violating_paths,FAIL,107,axi_run/reports/drv_closure/cts50_drv2/time_design_hold/snn_ecg_axi_asic_top_postRoute_hold.summary.gz,aggregate all-path hold count
+axi,max_transition_nets,FAIL,73,axi_run/reports/drv_closure/cts50_drv2/time_design_setup/snn_ecg_axi_asic_top_postRoute.tran.gz,469 violating terminals
+axi,max_transition_terminals,FAIL,469,axi_run/reports/drv_closure/cts50_drv2/time_design_setup/snn_ecg_axi_asic_top_postRoute.tran.gz,worst slack -0.476 ns
+axi,clock_slew,PASS,0,axi_run/reports/final_checks/cts50_drv2/ccopt_clock_trees_60ps.rpt,CCOpt engineering target

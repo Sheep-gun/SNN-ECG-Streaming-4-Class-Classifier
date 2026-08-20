@@ -1,0 +1,4 @@
+9 3 1800000 0 0 0 30 <REDACTED>/data/ECG-SoC-Integrated/datasets/xmodel_afe_adc_outputs/representative_4case/accepted_AFF_afdb_06995_chunk01.mem
+35 2 1800000 0 3 27 0 <REDACTED>/data/ECG-SoC-Integrated/datasets/xmodel_afe_adc_outputs/representative_4case/accepted_ARR_mitdb_102_chunk00.mem
+83 1 1800000 0 33 0 7 <REDACTED>/data/ECG-SoC-Integrated/datasets/xmodel_afe_adc_outputs/representative_4case/accepted_CHF_chfdb_chf06_chunk06.mem
+104 0 1800000 17 0 6 7 <REDACTED>/data/ECG-SoC-Integrated/datasets/xmodel_afe_adc_outputs/representative_4case/accepted_NSR_nsrdb_16272_chunk03.mem

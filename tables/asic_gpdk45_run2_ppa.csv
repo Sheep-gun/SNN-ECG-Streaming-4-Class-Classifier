@@ -1,0 +1,51 @@
+scope,stage,metric,value,unit,status,evidence,claim_boundary
+gpdk045_run2_core,mapping,scan_free_mapped_cells,36565,count,OBSERVED,verification/asic_gpdk45_run2/core/results/ppa_summary.csv,scan-free core-only syn_map
+gpdk045_run2_core,mapping,mapped_cell_area,94421.754,um2,OBSERVED,verification/asic_gpdk45_run2/core/results/ppa_summary.csv,library cell area not silicon die area
+gpdk045_run2_core,mapping,sequential_cells,6045,count,OBSERVED,verification/asic_gpdk45_run2/core/results/ppa_summary.csv,scan-capable S-DFF family excluded
+gpdk045_run2_core,mapping,setup_slack,3.3509,ns,PASS,verification/asic_gpdk45_run2/core/results/ppa_summary.csv,pre-route mapped estimate
+gpdk045_run2_core,postroute,instances,42958,count,OBSERVED,verification/asic_gpdk45_run2/core/results/ppa_summary.csv,iter1 scan-free core signal-route profile
+gpdk045_run2_core,postroute,cell_area,120287.898,um2,OBSERVED,verification/asic_gpdk45_run2/core/results/ppa_summary.csv,standard-cell area only
+gpdk045_run2_core,postroute,die_width,422.800,um,OBSERVED,verification/asic_gpdk45_run2/core/results/ppa_summary.csv,padless block boundary
+gpdk045_run2_core,postroute,die_height,419.900,um,OBSERVED,verification/asic_gpdk45_run2/core/results/ppa_summary.csv,padless block boundary
+gpdk045_run2_core,postroute,die_area,177533.720,um2,OBSERVED,verification/asic_gpdk45_run2/core/results/ppa_summary.csv,not fabricated die area
+gpdk045_run2_core,postroute,placement_density,82.775,percent,OBSERVED,verification/asic_gpdk45_run2/core/results/ppa_summary.csv,reported placeable-area denominator
+gpdk045_run2_core,timing,setup_WNS,2.469,ns,PASS,verification/asic_gpdk45_run2/core/results/ppa_summary.csv,100 MHz explicit OCV-view report
+gpdk045_run2_core,timing,hold_WNS,-0.008,ns,FAIL,verification/asic_gpdk45_run2/core/results/ppa_summary.csv,residual hold violation
+gpdk045_run2_core,timing,hold_TNS,-0.094,ns,FAIL,verification/asic_gpdk45_run2/core/results/ppa_summary.csv,37 violating hold paths
+gpdk045_run2_core,timing,hold_violating_paths,37,count,FAIL,verification/asic_gpdk45_run2/core/results/physical_checks.csv,no hold closure
+gpdk045_run2_core,timing,max_transition_violating_nets,3,count,FAIL,verification/asic_gpdk45_run2/core/results/physical_checks.csv,6 violating terminals worst slack -0.026 ns
+gpdk045_run2_core,timing,clock_slew_violations_at_60ps,0,count,PASS,verification/asic_gpdk45_run2/core/results/physical_checks.csv,does not override data-net max-transition or hold failures
+gpdk045_run2_core,route,internal_DRC_violations,0,count,PASS,verification/asic_gpdk45_run2/core/results/physical_checks.csv,Innovus internal check not foundry DRC signoff
+gpdk045_run2_core,power,vectorless_total_power,3.71626492,mW,ESTIMATE,verification/asic_gpdk45_run2/core/results/ppa_summary.csv,default PI and sequential activity 0.10 not workload or measured power
+gpdk045_run2_axi,mapping,scan_free_mapped_cells,37293,count,OBSERVED,verification/asic_gpdk45_run2/axi/results/ppa_summary.csv,AXI-inclusive accelerator block not MicroBlaze SoC
+gpdk045_run2_axi,mapping,mapped_cell_area,96548.994,um2,OBSERVED,verification/asic_gpdk45_run2/axi/results/ppa_summary.csv,library cell area
+gpdk045_run2_axi,mapping,sequential_cells,6244,count,OBSERVED,verification/asic_gpdk45_run2/axi/results/ppa_summary.csv,PROFILE_EN=0 AXI profile
+gpdk045_run2_axi,mapping,setup_slack,3.3498,ns,PASS,verification/asic_gpdk45_run2/axi/results/ppa_summary.csv,pre-route mapped estimate
+gpdk045_run2_axi,postroute,instances,43901,count,OBSERVED,verification/asic_gpdk45_run2/axi/results/ppa_summary.csv,final cts50_drv2 profile
+gpdk045_run2_axi,postroute,cell_area,123650.100,um2,OBSERVED,verification/asic_gpdk45_run2/axi/results/ppa_summary.csv,standard-cell area only
+gpdk045_run2_axi,postroute,die_width,426.200,um,OBSERVED,verification/asic_gpdk45_run2/axi/results/ppa_summary.csv,padless block boundary
+gpdk045_run2_axi,postroute,die_height,425.030,um,OBSERVED,verification/asic_gpdk45_run2/axi/results/ppa_summary.csv,padless block boundary
+gpdk045_run2_axi,postroute,die_area,181147.786,um2,OBSERVED,verification/asic_gpdk45_run2/axi/results/ppa_summary.csv,not fabricated die area
+gpdk045_run2_axi,postroute,placement_density,83.215,percent,OBSERVED,verification/asic_gpdk45_run2/axi/results/ppa_summary.csv,reported placeable-area denominator
+gpdk045_run2_axi,timing,setup_WNS,2.781,ns,PASS,verification/asic_gpdk45_run2/axi/results/ppa_summary.csv,100 MHz explicit OCV-view report
+gpdk045_run2_axi,timing,hold_WNS,-0.016,ns,FAIL,verification/asic_gpdk45_run2/axi/results/ppa_summary.csv,residual hold violation
+gpdk045_run2_axi,timing,hold_TNS,-0.518,ns,FAIL,verification/asic_gpdk45_run2/axi/results/ppa_summary.csv,107 violating hold paths
+gpdk045_run2_axi,timing,hold_violating_paths,107,count,FAIL,verification/asic_gpdk45_run2/axi/results/physical_checks.csv,no hold closure
+gpdk045_run2_axi,timing,max_transition_violating_nets,73,count,FAIL,verification/asic_gpdk45_run2/axi/results/physical_checks.csv,469 violating terminals worst slack -0.476 ns
+gpdk045_run2_axi,timing,clock_slew_violations_at_60ps,0,count,PASS,verification/asic_gpdk45_run2/axi/results/physical_checks.csv,clock tree meets 60 ps target but data-net transition and hold fail
+gpdk045_run2_axi,route,internal_DRC_violations,0,count,PASS,verification/asic_gpdk45_run2/axi/results/physical_checks.csv,Innovus internal check not foundry DRC signoff
+gpdk045_run2_axi,power,vectorless_total_power,3.69335598,mW,ESTIMATE,verification/asic_gpdk45_run2/axi/results/ppa_summary.csv,default PI and sequential activity 0.10 not workload or measured power
+gpdk045_run2_common,timing,OCV_derate_assumption,5,percent,ASSUMED,verification/asic_gpdk45_run2/run_manifest.json,fixed global engineering derate not foundry-characterized AOCV or POCV
+gpdk045_run2_core_activity,accelerated_gap2,internal_power,1.52085678,mW,ESTIMATE,verification/asic_gpdk45_run2/power/activity_power_summary.csv,seed11 conditioned mapped gate 6045/6045 -access +rwc zero-delay normalized SAIF; accelerated full-record raw case not wall-time 1 kSPS or silicon power
+gpdk045_run2_core_activity,accelerated_gap2,switching_power,0.50045621,mW,ESTIMATE,verification/asic_gpdk45_run2/power/activity_power_summary.csv,seed11 conditioned mapped gate 6045/6045 -access +rwc zero-delay normalized SAIF; accelerated full-record raw case not wall-time 1 kSPS or silicon power
+gpdk045_run2_core_activity,accelerated_gap2,leakage_power,0.00404773,mW,ESTIMATE,verification/asic_gpdk45_run2/power/activity_power_summary.csv,seed11 conditioned mapped gate 6045/6045 -access +rwc zero-delay normalized SAIF; accelerated full-record raw case not wall-time 1 kSPS or silicon power
+gpdk045_run2_core_activity,accelerated_gap2,total_power,2.02536072,mW,ESTIMATE,verification/asic_gpdk45_run2/power/activity_power_summary.csv,seed11 conditioned mapped gate 6045/6045 -access +rwc zero-delay normalized SAIF; accelerated full-record raw case not wall-time 1 kSPS decision energy or silicon power
+gpdk045_run2_core_activity,active_wait_idle,internal_power,1.48928157,mW,ESTIMATE,verification/asic_gpdk45_run2/power/activity_power_summary.csv,matched 0.1 s active-wait window; includes leakage clock and idle-state activity and is not pure clock power
+gpdk045_run2_core_activity,active_wait_idle,switching_power,0.41750333,mW,ESTIMATE,verification/asic_gpdk45_run2/power/activity_power_summary.csv,matched 0.1 s active-wait window; includes leakage clock and idle-state activity and is not pure clock power
+gpdk045_run2_core_activity,active_wait_idle,leakage_power,0.00405502,mW,ESTIMATE,verification/asic_gpdk45_run2/power/activity_power_summary.csv,matched 0.1 s active-wait window; includes leakage clock and idle-state activity and is not pure clock power
+gpdk045_run2_core_activity,active_wait_idle,total_power,1.91083992,mW,ESTIMATE,verification/asic_gpdk45_run2/power/activity_power_summary.csv,matched 0.1 s active-wait window; includes leakage clock and idle-state activity and is not pure clock power
+gpdk045_run2_core_activity,literal_1ksps_prefix,internal_power,1.48928212,mW,ESTIMATE,verification/asic_gpdk45_run2/power/activity_power_summary.csv,100-sample 0.1 s literal 1 kSPS prefix only; no Snapshot or decision and not silicon power
+gpdk045_run2_core_activity,literal_1ksps_prefix,switching_power,0.41750554,mW,ESTIMATE,verification/asic_gpdk45_run2/power/activity_power_summary.csv,100-sample 0.1 s literal 1 kSPS prefix only; no Snapshot or decision and not silicon power
+gpdk045_run2_core_activity,literal_1ksps_prefix,leakage_power,0.00405312,mW,ESTIMATE,verification/asic_gpdk45_run2/power/activity_power_summary.csv,100-sample 0.1 s literal 1 kSPS prefix only; no Snapshot or decision and not silicon power
+gpdk045_run2_core_activity,literal_1ksps_prefix,total_power,1.91084079,mW,ESTIMATE,verification/asic_gpdk45_run2/power/activity_power_summary.csv,100-sample 0.1 s literal 1 kSPS prefix only; no Snapshot or decision and not silicon power
+gpdk045_run2_core_activity,literal_minus_active_wait_idle,matched_total_delta,0.00000087,mW,DERIVED,verification/asic_gpdk45_run2/power/activity_power_summary.csv,matched short-prefix total difference only; not numeric annotation coverage pure clock power snapshot decision or energy per decision

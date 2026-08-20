@@ -1,0 +1,750 @@
+{
+  "claim_boundary": [
+    "Parsed engineering evidence only; no unparsed metric is inferred.",
+    "SDF/gate pilots do not replace full functional regression.",
+    "Literal-1-kSPS prefix power does not represent a snapshot or final decision.",
+    "Executed direct-SAIF normalization preserved fully-X/Z signal entries; unannotated default activity was 0.0, and matched idle/literal runs retain the same X/Z population.",
+    "PG checks are exploratory and not IR/EM or foundry signoff."
+  ],
+  "def_parser_crosscheck": {
+    "evidence": "outputs/closure/iter1/snn_ecg_asic_core_top_iter1.def",
+    "expected_vias": 315926,
+    "expected_wire_um": 836058,
+    "rounded_wire_um": 836058,
+    "route_statements": 615910,
+    "status": "PASS",
+    "via_count": 315926,
+    "wire_dbu": 1672116680,
+    "wire_um": 836058.34
+  },
+  "gate": {
+    "mapped_release_unknowns": 0,
+    "mapped_seeds": [
+      {
+        "evidence": "logs/xrun_core_mapped_gate_raw_case0_powerup_release10_seed11.console.log",
+        "initial_unknown": 0,
+        "initialized_instances": 6045,
+        "ones": 3124,
+        "release_ns": 10,
+        "release_unknown": 0,
+        "runtime_x_transitions": 0,
+        "samples": 1800000,
+        "seed": 11,
+        "status": "CONDITIONAL_PASS",
+        "zeros": 2921
+      },
+      {
+        "evidence": "logs/xrun_core_mapped_gate_raw_case0_powerup_release10_seed22.console.log",
+        "initial_unknown": 0,
+        "initialized_instances": 6045,
+        "ones": 3099,
+        "release_ns": 10,
+        "release_unknown": 0,
+        "runtime_x_transitions": 0,
+        "samples": 1800000,
+        "seed": 22,
+        "status": "CONDITIONAL_PASS",
+        "zeros": 2946
+      },
+      {
+        "evidence": "logs/xrun_core_mapped_gate_raw_case0_powerup_release10_seed33.console.log",
+        "initial_unknown": 0,
+        "initialized_instances": 6045,
+        "ones": 3043,
+        "release_ns": 10,
+        "release_unknown": 0,
+        "runtime_x_transitions": 0,
+        "samples": 1800000,
+        "seed": 33,
+        "status": "CONDITIONAL_PASS",
+        "zeros": 3002
+      }
+    ],
+    "mapped_sequential_coverage": "6045/6045",
+    "unmodified_four_state": {
+      "case_id": "9",
+      "result": "output_X",
+      "samples": 1800000
+    },
+    "xpr": {
+      "result": "license_unavailable",
+      "status": "NOT_RUN"
+    }
+  },
+  "lec": {
+    "axi": {
+      "abort": 0,
+      "evidence": "axi_run/reports/lec_postroute_cts50_drv2/result_summary.txt",
+      "non_equivalent": 0,
+      "profile": "axi",
+      "status": "PASS",
+      "total": 6287,
+      "unknown": 0
+    },
+    "core": {
+      "abort": 0,
+      "evidence": "reports/lec_postroute_iter1/result_summary.txt",
+      "non_equivalent": 0,
+      "profile": "core",
+      "status": "PASS",
+      "total": 6178,
+      "unknown": 0
+    }
+  },
+  "override_sha256": "4f66cbc0ddde7c3147fbd55b924c7da684f5b9e8556813c3445b925fb5a28691",
+  "pg": {
+    "assumptions": {
+      "decap_and_metal_fill_inserted": "false",
+      "ir_em_analyzed": "false",
+      "ring_offset_um": "2.00",
+      "ring_spacing_um": "0.50",
+      "ring_width_um": "1.00",
+      "scope": "exploratory geometry only",
+      "stripe_pitch_um": "40.00",
+      "stripe_spacing_um": "0.40",
+      "stripe_width_um": "0.80",
+      "tap_endcap_available": "false",
+      "top_pg_pads_or_sources": "false"
+    },
+    "connectivity_violations": 171,
+    "errors": [],
+    "geometry_violations": 715,
+    "status": "FAILED"
+  },
+  "power": {
+    "accelerated_gap2": {
+      "activity_annotation_status": "PASS",
+      "annotation_evidence": "reports/activity_power/raw_aff_accelerated_access_seed11/activity_annotation.rpt",
+      "cadence": "seed-conditioned zero-delay mapped-gate accelerated full-record replay",
+      "claim_boundary": "seed-conditioned zero-delay mapped-gate accelerated activity; not unmodified GLS, wall-time 1 kSPS, or silicon power",
+      "delay_mode": "zero",
+      "dump_scope": "tb_snn_ecg_asic_core_manifest.snn_ecg_asic_core_top",
+      "initial_unknowns": 0,
+      "internal_mw": 1.52085678,
+      "launch_evidence": "provenance/access_activity_launch_records.json",
+      "leakage_mw": 0.00404773,
+      "mapped_sequential_coverage": "6045/6045",
+      "mode": "accelerated_gap2",
+      "normalization_full_xz_mode": "preserve",
+      "power_evidence": "reports/activity_power/raw_aff_accelerated_access_seed11/power_detailed.rpt",
+      "profile": "core",
+      "release_unknowns": 0,
+      "runtime_x_transitions": 0,
+      "sample_count": 1800000,
+      "status": "PASS",
+      "stimulus_evidence": "logs/xrun_xcelium_raw_aff_access_namedtop_seed11.console.log",
+      "stimulus_seed": 11,
+      "switching_mw": 0.50045621,
+      "tag": "raw_aff_accelerated_access_seed11",
+      "total_mw": 2.02536072,
+      "unannotated_report_status": "1",
+      "window_cycles": 5401263,
+      "window_seconds": "",
+      "xcelium_access": "+rwc"
+    },
+    "active_wait_idle": {
+      "activity_annotation_status": "PASS",
+      "annotation_evidence": "reports/activity_power/prefix100_idle_access_seed11/activity_annotation.rpt",
+      "cadence": "active-wait idle matched window",
+      "claim_boundary": "seed-conditioned zero-delay mapped-gate short prefix only; not unmodified GLS, snapshot, decision, or energy/decision",
+      "delay_mode": "zero",
+      "dump_scope": "tb_snn_ecg_asic_power_prefix.snn_ecg_asic_core_top",
+      "initial_unknowns": 0,
+      "internal_mw": 1.48928157,
+      "launch_evidence": "provenance/access_activity_launch_records.json",
+      "leakage_mw": 0.00405502,
+      "mapped_sequential_coverage": "6045/6045",
+      "mode": "active_wait_idle",
+      "normalization_full_xz_mode": "preserve",
+      "power_evidence": "reports/activity_power/prefix100_idle_access_seed11/power_detailed.rpt",
+      "profile": "core",
+      "release_unknowns": 0,
+      "runtime_x_transitions": 0,
+      "sample_count": 0,
+      "status": "PASS",
+      "stimulus_evidence": "logs/xrun_xcelium_prefix100_idle_access_namedtop_seed11.console.log",
+      "stimulus_seed": 11,
+      "switching_mw": 0.41750333,
+      "tag": "prefix100_idle_access_seed11",
+      "total_mw": 1.91083992,
+      "unannotated_report_status": "NOT_REPORTED",
+      "window_cycles": 10000000,
+      "window_seconds": 0.1,
+      "xcelium_access": "+rwc"
+    },
+    "literal_1ksps_prefix": {
+      "activity_annotation_status": "PASS",
+      "annotation_evidence": "reports/activity_power/prefix100_literal1ksps_access_seed11/activity_annotation.rpt",
+      "cadence": "literal 1 kSPS short raw prefix",
+      "claim_boundary": "seed-conditioned zero-delay mapped-gate short prefix only; not unmodified GLS, snapshot, decision, or energy/decision",
+      "delay_mode": "zero",
+      "dump_scope": "tb_snn_ecg_asic_power_prefix.snn_ecg_asic_core_top",
+      "initial_unknowns": 0,
+      "internal_mw": 1.48928212,
+      "launch_evidence": "provenance/access_activity_launch_records.json",
+      "leakage_mw": 0.00405312,
+      "mapped_sequential_coverage": "6045/6045",
+      "mode": "literal_1ksps_prefix",
+      "normalization_full_xz_mode": "preserve",
+      "power_evidence": "reports/activity_power/prefix100_literal1ksps_access_seed11/power_detailed.rpt",
+      "profile": "core",
+      "release_unknowns": 0,
+      "runtime_x_transitions": 0,
+      "sample_count": 100,
+      "status": "PASS",
+      "stimulus_evidence": "logs/xrun_xcelium_prefix100_literal1ksps_access_namedtop_seed11.console.log",
+      "stimulus_seed": 11,
+      "switching_mw": 0.41750554,
+      "tag": "prefix100_literal1ksps_access_seed11",
+      "total_mw": 1.91084079,
+      "unannotated_report_status": "NOT_REPORTED",
+      "window_cycles": 10000000,
+      "window_seconds": 0.1,
+      "xcelium_access": "+rwc"
+    },
+    "literal_minus_active_wait_idle": {
+      "activity_annotation_status": "PASS_BOTH",
+      "annotation_evidence": "reports/activity_power/prefix100_idle_access_seed11/activity_annotation.rpt;reports/activity_power/prefix100_literal1ksps_access_seed11/activity_annotation.rpt",
+      "cadence": "matched literal prefix minus matched active-wait idle",
+      "claim_boundary": "incremental short-prefix estimate; not pure clock power or energy/decision",
+      "delay_mode": "zero",
+      "dump_scope": "idle:tb_snn_ecg_asic_power_prefix.snn_ecg_asic_core_top;literal:tb_snn_ecg_asic_power_prefix.snn_ecg_asic_core_top",
+      "initial_unknowns": 0,
+      "internal_mw": 5.4999999998806e-07,
+      "launch_evidence": "provenance/access_activity_launch_records.json;provenance/access_activity_launch_records.json",
+      "leakage_mw": -1.899999999999992e-06,
+      "mapped_sequential_coverage": "6045/6045",
+      "mode": "literal_minus_active_wait_idle",
+      "normalization_full_xz_mode": "preserve",
+      "power_evidence": "reports/activity_power/prefix100_idle_access_seed11/power_detailed.rpt;reports/activity_power/prefix100_literal1ksps_access_seed11/power_detailed.rpt",
+      "profile": "core",
+      "release_unknowns": 0,
+      "runtime_x_transitions": 0,
+      "sample_count": 100,
+      "status": "DERIVED_MATCHED_WINDOW",
+      "stimulus_evidence": "logs/xrun_xcelium_prefix100_idle_access_namedtop_seed11.console.log;logs/xrun_xcelium_prefix100_literal1ksps_access_namedtop_seed11.console.log",
+      "stimulus_seed": 11,
+      "switching_mw": 2.2100000000024878e-06,
+      "tag": "prefix100_literal1ksps_access_seed11_minus_prefix100_idle_access_seed11",
+      "total_mw": 8.700000000416708e-07,
+      "unannotated_report_status": "idle:NOT_REPORTED;literal:NOT_REPORTED",
+      "window_cycles": 10000000,
+      "window_seconds": 0.1,
+      "xcelium_access": "+rwc"
+    }
+  },
+  "profiles": {
+    "axi": {
+      "cell_area_um2": 123650.1,
+      "clock": {
+        "slew_target_ns": 0.06,
+        "slew_violations": 0,
+        "slew_worst_ns": 0.058
+      },
+      "connectivity": {
+        "reported_problems": 2,
+        "signal_problems_excluding_pg": 0,
+        "unrouted_pg_nets": 2
+      },
+      "drc": 0,
+      "genus": {
+        "cell_area_um2": 96548.994,
+        "check_report": "axi_run/reports/genus/check_design_unresolved.rpt",
+        "empty_modules": 0,
+        "leaf_cells": 37293,
+        "qor_report": "axi_run/reports/genus/qor_mapped.rpt",
+        "sequential_cells": 6244,
+        "setup_slack_ns": 3.3498,
+        "unresolved_references": 0
+      },
+      "geometry": {
+        "dbu_per_um": 2000,
+        "die_area_um2": 181147.786,
+        "die_height_um": 425.03,
+        "die_width_um": 426.2
+      },
+      "hold_summary": {
+        "all_paths": 6287,
+        "density_percent": 83.215,
+        "tns_ns": -0.518,
+        "violating_paths": 107,
+        "wns_ns": -0.016
+      },
+      "hold_wns_ns": -0.016,
+      "instances": 43901,
+      "max_transition": {
+        "violating_nets": 73,
+        "violating_terminals": 469,
+        "worst_slack_ns": -0.476
+      },
+      "ocv": {
+        "fast_early": 1.0,
+        "fast_late": 1.05,
+        "slow_early": 0.95,
+        "slow_late": 1.0
+      },
+      "placement": 0,
+      "routing": {
+        "route_statements": 661819,
+        "via_count": 337893,
+        "wire_dbu": 1871401010,
+        "wire_um": 935700.505
+      },
+      "setup_wns_ns": 2.781,
+      "top": "snn_ecg_axi_asic_top",
+      "vectorless_power": {
+        "internal": 2.46300876,
+        "leakage": 0.00417679,
+        "switching": 1.22617043,
+        "total": 3.69335598,
+        "unit": "mW"
+      }
+    },
+    "core": {
+      "cell_area_um2": 120287.898,
+      "clock": {
+        "slew_target_ns": 0.06,
+        "slew_violations": 0,
+        "slew_worst_ns": 0.059
+      },
+      "connectivity": {
+        "reported_problems": 2,
+        "signal_problems_excluding_pg": 0,
+        "unrouted_pg_nets": 2
+      },
+      "drc": 0,
+      "genus": {
+        "cell_area_um2": 94421.754,
+        "check_report": "reports/genus/check_design_unresolved.rpt",
+        "empty_modules": 0,
+        "leaf_cells": 36565,
+        "qor_report": "reports/genus/qor_mapped.rpt",
+        "sequential_cells": 6045,
+        "setup_slack_ns": 3.3509,
+        "unresolved_references": 0
+      },
+      "geometry": {
+        "dbu_per_um": 2000,
+        "die_area_um2": 177533.72,
+        "die_height_um": 419.9,
+        "die_width_um": 422.8
+      },
+      "hold_summary": {
+        "all_paths": 6182,
+        "density_percent": 82.775,
+        "tns_ns": -0.094,
+        "violating_paths": 37,
+        "wns_ns": -0.008
+      },
+      "hold_wns_ns": -0.008,
+      "instances": 42958,
+      "max_transition": {
+        "violating_nets": 3,
+        "violating_terminals": 6,
+        "worst_slack_ns": -0.026
+      },
+      "ocv": {
+        "fast_early": 1.0,
+        "fast_late": 1.05,
+        "slow_early": 0.95,
+        "slow_late": 1.0
+      },
+      "placement": 0,
+      "routing": {
+        "route_statements": 615910,
+        "via_count": 315926,
+        "wire_dbu": 1672116680,
+        "wire_um": 836058.34
+      },
+      "setup_wns_ns": 2.469,
+      "top": "snn_ecg_asic_core_top",
+      "vectorless_power": {
+        "internal": 2.5195822,
+        "leakage": 0.00404644,
+        "switching": 1.19263629,
+        "total": 3.71626492,
+        "unit": "mW"
+      }
+    }
+  },
+  "raw_inputs": [
+    {
+      "path": "axi_run/outputs/drv_closure/cts50_drv2/snn_ecg_axi_asic_top_cts50_drv2.def",
+      "sha256": "a1ca165119e7b4225526bc53ea7b729e5abe789e0d736c34fee468e27e44ec78"
+    },
+    {
+      "path": "axi_run/reports/drv_closure/cts50_drv2/area.rpt",
+      "sha256": "93d6f09a88e36b44659083a3b0011636ebcf0fdc03c7e642c21bc315447bb41a"
+    },
+    {
+      "path": "axi_run/reports/drv_closure/cts50_drv2/power_vectorless.rpt",
+      "sha256": "f53ed93fe6ced615fe1476f7caf5dd36d421aa69d59189d225953ad8713047a2"
+    },
+    {
+      "path": "axi_run/reports/drv_closure/cts50_drv2/time_design_hold/snn_ecg_axi_asic_top_postRoute_hold.summary.gz",
+      "sha256": "1cb4de0f05aeb9cf33971f3821c456162c3e8d8b6a69eefd969248f62a13f1a9"
+    },
+    {
+      "path": "axi_run/reports/drv_closure/cts50_drv2/time_design_setup/snn_ecg_axi_asic_top_postRoute.tran.gz",
+      "sha256": "4854ef387390c3f9a5e2acbf69ba31f5cd775a1dc3d18eb87a074f3718cc0012"
+    },
+    {
+      "path": "axi_run/reports/drv_closure/cts50_drv2/timing_hold.rpt",
+      "sha256": "c27b9a4ceb63eca54e8f2ac95e839d19873796d4198626cf337c47cb154af231"
+    },
+    {
+      "path": "axi_run/reports/drv_closure/cts50_drv2/timing_setup.rpt",
+      "sha256": "d7b9e201debe9532de447d207c3b89ca5051ae0a3fefc9eb7d9efaff6474fb42"
+    },
+    {
+      "path": "axi_run/reports/final_checks/cts50_drv2/ccopt_clock_trees_60ps.rpt",
+      "sha256": "9d66d2fb4ab4b6e0ddf10738dd87d1d5a34c9194f3b08a28ef5732c5c8bafebd"
+    },
+    {
+      "path": "axi_run/reports/final_checks/cts50_drv2/check_place.rpt",
+      "sha256": "8efc8cae64b1dfc29ac1c267c4a9b7e5ac776f66b957ab63872f055f32b45d13"
+    },
+    {
+      "path": "axi_run/reports/final_checks/cts50_drv2/connectivity_signal.rpt",
+      "sha256": "1ada6fbd9e4722aaf8994440ca75d96a232f611b21158e2062728a6da916c0fa"
+    },
+    {
+      "path": "axi_run/reports/final_checks/cts50_drv2/internal_route_drc.rpt",
+      "sha256": "41f2a5d9776e2c53f2444ae55a29b9aedd56403fb99f4ae7d5f1b03f1676f71a"
+    },
+    {
+      "path": "axi_run/reports/genus/check_design_unresolved.rpt",
+      "sha256": "c769f772257c55c7c71a5fdda8ea0108f171585fb5a5b5ef4086124f5cedb4b2"
+    },
+    {
+      "path": "axi_run/reports/genus/qor_mapped.rpt",
+      "sha256": "03155f069d72a8af3c9e1e15b1f77e15703bd1f6a89fdb9966db1124c03fe4b3"
+    },
+    {
+      "path": "axi_run/reports/innovus/timing_derate_fast.rpt",
+      "sha256": "523bc671e191eac37e448a0c4f7189a62efd8d00b2c91e1dc0d9bca139d63376"
+    },
+    {
+      "path": "axi_run/reports/innovus/timing_derate_slow.rpt",
+      "sha256": "40d875d235d5f1bbf2fe1a3fa4bce24bbabab08e192a9368812861712f428a3e"
+    },
+    {
+      "path": "axi_run/reports/lec_postroute_cts50_drv2/result_summary.txt",
+      "sha256": "a5a97aae407b516732ad4db0b4d22b7c215f583d0dec1fb13905685fa774f1f4"
+    },
+    {
+      "path": "logs/innovus_core_pg_fillers.console.log",
+      "sha256": "3bdbb1e65d4971e4e5871a93e6bb1026e0701fe8c84d4a9e8660f28f8ee927f7"
+    },
+    {
+      "path": "logs/sdf_annotation_core_iter1_max_ntc.log",
+      "sha256": "538de7c1984d501c6605b73cde929a2ae7c829a92469696c245975fcd8418c86"
+    },
+    {
+      "path": "logs/xrun_core_iter1_sdfmax_raw_case0_powerup_release10_seed11.console.log",
+      "sha256": "0cc1a5f3c16305b8c986ae260422a03bc9cff0d7f176baddb66b5d206981547f"
+    },
+    {
+      "path": "logs/xrun_core_mapped_gate16_xpess2.console.log",
+      "sha256": "17dd88e5de3508f6205173cd7872a7fec6bbe59f18bc889820f5a28202111bf9"
+    },
+    {
+      "path": "logs/xrun_core_mapped_gate_raw_case0_powerup_release10_seed11.console.log",
+      "sha256": "1159a8dd668aa49163bbbb4af85ee5e367179fc982c9fa74476cf3bd7c9728a8"
+    },
+    {
+      "path": "logs/xrun_core_mapped_gate_raw_case0_powerup_release10_seed22.console.log",
+      "sha256": "e76c00151c1749d1dd0d0f13d58e8e88b1e52b388ab79faad63634036ee9608e"
+    },
+    {
+      "path": "logs/xrun_core_mapped_gate_raw_case0_powerup_release10_seed33.console.log",
+      "sha256": "e28495085ab90fbbd62029040e4cb884b447a9e405596494364571528cc2b04c"
+    },
+    {
+      "path": "logs/xrun_xcelium_prefix100_idle_access_namedtop_seed11.console.log",
+      "sha256": "63c0d67cab944d32a9b73c671efdc62f4f17fdc78b92a3de4a6157714f6e1c8f"
+    },
+    {
+      "path": "logs/xrun_xcelium_prefix100_literal1ksps_access_namedtop_seed11.console.log",
+      "sha256": "50286674063bc1c7a0cb0cb5ecbf7a59c01f03cf1e4251aa62441116089e5b81"
+    },
+    {
+      "path": "logs/xrun_xcelium_raw_aff_access_namedtop_seed11.console.log",
+      "sha256": "2c7001398e1a0df777ba4efd40eccf1b16f199f30964f79be7374186a984b23c"
+    },
+    {
+      "path": "manifests/canonical_digital_36.manifest",
+      "sha256": "5166abdde11dd8144f3940e86aeed100b7cd65b675080f514e60da226d4fa4a1"
+    },
+    {
+      "path": "manifests/manifest_audit.json",
+      "sha256": "6daf59a20df8f637fb7dc4aa846f9d5e2850eb51ddbbcf440e2cfbf58a44eaf8"
+    },
+    {
+      "path": "manifests/raw_xmodel_4.manifest",
+      "sha256": "81ceb5c2851ce2ba6d53fd1825862d7e0e06bc590f512e71f5a8c44203712e0b"
+    },
+    {
+      "path": "outputs/closure/iter1/snn_ecg_asic_core_top_iter1.def",
+      "sha256": "83e56e2870bfee2b2a99d38968a6e9019ba89a0b80e442cf839dc50214c31bf9"
+    },
+    {
+      "path": "power_prefix/raw_aff_prefix_100_manifest.json",
+      "sha256": "35bd7c76404f628596e7ae21c9f8700fe61438afbe30c9875fc84b814cde1e04"
+    },
+    {
+      "path": "provenance/access_activity_launch_records.json",
+      "sha256": "19a2d9b0c50b36f3aac24ffbda3dcbe685a6a1a2a572f93b39850a1412c0613e"
+    },
+    {
+      "path": "reports/activity_power/prefix100_idle_access_seed11/activity_annotation.rpt",
+      "sha256": "9b998ce1a1452c1379684620e6b1891d6b17ee65e862d3240d4e743cbf45ce88"
+    },
+    {
+      "path": "reports/activity_power/prefix100_idle_access_seed11/activity_power_status.txt",
+      "sha256": "714fdb69e984c70545b25aa4e3f9b9fe428c21afcfced65589d83da130fa14c6"
+    },
+    {
+      "path": "reports/activity_power/prefix100_idle_access_seed11/power_detailed.rpt",
+      "sha256": "b9205bd8c31168e077b344481699f711702ce1ba8a9a97a0dcccf21b338c9e28"
+    },
+    {
+      "path": "reports/activity_power/prefix100_literal1ksps_access_seed11/activity_annotation.rpt",
+      "sha256": "0ee797147bcc67f46485123899c06189985db2490bf62bb72f0e38b9dbe1db38"
+    },
+    {
+      "path": "reports/activity_power/prefix100_literal1ksps_access_seed11/activity_power_status.txt",
+      "sha256": "44d9e6f2527770085f8ed873ab445882e8e8077cff0a92e6852a528c04b37e12"
+    },
+    {
+      "path": "reports/activity_power/prefix100_literal1ksps_access_seed11/power_detailed.rpt",
+      "sha256": "e36ccc825282d72fe309644d02adbcaa7fb520b23a68c5be10bf97ecaa9c3c78"
+    },
+    {
+      "path": "reports/activity_power/raw_aff_accelerated_access_seed11/activity_annotation.rpt",
+      "sha256": "691f66068d64550a8ad6a2799cebb264605478cd417e4e68ba89b9d45fdcc290"
+    },
+    {
+      "path": "reports/activity_power/raw_aff_accelerated_access_seed11/activity_power_status.txt",
+      "sha256": "76df07be368b6eed1435574c1560bd6c989b37b9faf9b5d7f918054a976e5968"
+    },
+    {
+      "path": "reports/activity_power/raw_aff_accelerated_access_seed11/power_detailed.rpt",
+      "sha256": "e80bc4efeab3ab1b090685ddf718a5f5b950f2e98565a9b876af80629d75fd65"
+    },
+    {
+      "path": "reports/closure/iter1/area.rpt",
+      "sha256": "8511d19752c83d29b0d52e164558e1a2ad91355823109edbec9f67ca910be4e2"
+    },
+    {
+      "path": "reports/closure/iter1/power_vectorless.rpt",
+      "sha256": "26cc2f401f6f2efe68255b4c2b0ebf3b6941a28a5356b2e6565096f68dc9d623"
+    },
+    {
+      "path": "reports/closure/iter1/time_design_hold/snn_ecg_asic_core_top_postRoute_hold.summary.gz",
+      "sha256": "cd8ad3e14e402b425fdb5254f1aaab6c81679a63998f4e4056d57d73c5b90af6"
+    },
+    {
+      "path": "reports/closure/iter1/time_design_setup/snn_ecg_asic_core_top_postRoute.tran.gz",
+      "sha256": "49d869e8ad6ea729509f1b25f625d9a6eb862de840daeeea594292a6ec06b747"
+    },
+    {
+      "path": "reports/closure/iter1/timing_hold.rpt",
+      "sha256": "6baff154335497479f2b76cb7b36db2b691075d5c3ef8fddc1d39b9682afbcf8"
+    },
+    {
+      "path": "reports/closure/iter1/timing_setup.rpt",
+      "sha256": "fe1781e4963ac928a05b861109a5beb8001429a628203c0239053c0865d69f2e"
+    },
+    {
+      "path": "reports/core_mapped_gate_raw_case0_notiming_nonotifier.csv",
+      "sha256": "249d6fbc6747f55b37823a3df196c86f1517eeae1c615a547e248d63c1028176"
+    },
+    {
+      "path": "reports/core_wrapper_rtl_canonical36.csv",
+      "sha256": "8116b0c0ddc98e2d3db991ad0ae0a208aba7ab9ecddf91934dd1c108a3708de1"
+    },
+    {
+      "path": "reports/core_wrapper_rtl_raw_xmodel4.csv",
+      "sha256": "5c4fde389b477e19775af769a4142ca3ce1cd3317bb4c144707e3dc9d8ebd8f0"
+    },
+    {
+      "path": "reports/final_checks/iter1/ccopt_clock_trees_60ps.rpt",
+      "sha256": "eda85251920618f5565305d02d23470823bd1d9676c832e5f7c655195c652432"
+    },
+    {
+      "path": "reports/final_checks/iter1/check_place.rpt",
+      "sha256": "dc915220a3475fadf8d4beabbede9a4fdc5643b614d08dda2957b257ab6cb1dd"
+    },
+    {
+      "path": "reports/final_checks/iter1/connectivity_signal.rpt",
+      "sha256": "1469badca07e2ba714a003473108d82c39290f612ee632596e87815f0d679618"
+    },
+    {
+      "path": "reports/final_checks/iter1/internal_route_drc.rpt",
+      "sha256": "57dc24a6748903a52b58ce808a5adb6a4506fc35730d8ee6de61d7b2b9ae1330"
+    },
+    {
+      "path": "reports/genus/check_design_unresolved.rpt",
+      "sha256": "eb14e332748049f6bc800e615d8ce59d9715d392cd39251c25dd8f4fe96be339"
+    },
+    {
+      "path": "reports/genus/qor_mapped.rpt",
+      "sha256": "9296be42eda3e3ea76f9bef94e2ed14fd524df383d01f0c9e7473b616842256c"
+    },
+    {
+      "path": "reports/innovus/timing_derate_fast.rpt",
+      "sha256": "f1ee07570a6157d501974423b3bc6448093ac270888c45559b7c6497a94f377f"
+    },
+    {
+      "path": "reports/innovus/timing_derate_slow.rpt",
+      "sha256": "3bc48c5c0099f1ff3b45e61d3644d85cc9a8a50c5ba766a27f55f5a551d4a961"
+    },
+    {
+      "path": "reports/innovus_pg/check_filler.rpt",
+      "sha256": "4c33e416b97dbb0545800a26464d668d49bf3c8983c02e9e5d3d4a5429182b6c"
+    },
+    {
+      "path": "reports/innovus_pg/connectivity_pg.rpt",
+      "sha256": "217699764b219022ae23694b010086f0402cbaf56f4c72eb4fed08db0a4163aa"
+    },
+    {
+      "path": "reports/innovus_pg/geometry_internal.rpt",
+      "sha256": "a927068d974aeca6f8a6c5046bb3e303b7287fde6d6ff61bb4b3ef13bc1e0c0f"
+    },
+    {
+      "path": "reports/innovus_pg/pg_assumptions.txt",
+      "sha256": "1194b737a9cc48536d6e699d9268a8f0ca635ee6a45097fe2c83898b7dd82c6a"
+    },
+    {
+      "path": "reports/lec_postroute_iter1/result_summary.txt",
+      "sha256": "18864bd328d4fdbe9ccf4343d73e72044f67ed3090b000619cc9f93da6c343c0"
+    },
+    {
+      "path": "source/repo/design/digital/asic/gpdk45/scripts/run_innovus.tcl",
+      "sha256": "b7ddf0b823a26c1ba12ce85349dba12d8f6f8fa37c1ae787966aedba7747c2f5"
+    }
+  ],
+  "raw_root_name": "static_run2_extracted",
+  "regression": {
+    "canonical_digital_36": {
+      "cases": 36,
+      "failed": 0,
+      "passed": 36,
+      "status": "PASS"
+    },
+    "raw_xmodel_4": {
+      "cases": 4,
+      "failed": 0,
+      "passed": 4,
+      "status": "PASS"
+    }
+  },
+  "resolved_config": {
+    "def_reference": {
+      "core_iter1_def": "outputs/closure/iter1/snn_ecg_asic_core_top_iter1.def"
+    },
+    "gate": {
+      "mapped_seed_logs": {
+        "seed11": "logs/xrun_core_mapped_gate_raw_case0_powerup_release10_seed11.console.log",
+        "seed22": "logs/xrun_core_mapped_gate_raw_case0_powerup_release10_seed22.console.log",
+        "seed33": "logs/xrun_core_mapped_gate_raw_case0_powerup_release10_seed33.console.log"
+      },
+      "unmodified_four_state_result": "reports/core_mapped_gate_raw_case0_notiming_nonotifier.csv",
+      "xpr_log": "logs/xrun_core_mapped_gate16_xpess2.console.log"
+    },
+    "lec": {
+      "axi_result": "axi_run/reports/lec_postroute_cts50_drv2/result_summary.txt",
+      "core_result": "reports/lec_postroute_iter1/result_summary.txt"
+    },
+    "pg": {
+      "assumptions": "reports/innovus_pg/pg_assumptions.txt",
+      "connectivity": "reports/innovus_pg/connectivity_pg.rpt",
+      "expected_connectivity_violations": 171,
+      "expected_geometry_violations": 715,
+      "filler": "reports/innovus_pg/check_filler.rpt",
+      "geometry": "reports/innovus_pg/geometry_internal.rpt",
+      "run_log": "logs/innovus_core_pg_fillers.console.log"
+    },
+    "power": {
+      "prefix_manifest": "power_prefix/raw_aff_prefix_100_manifest.json",
+      "runs": {
+        "accelerated_gap2": {
+          "launch_record": "provenance/access_activity_launch_records.json",
+          "profile": "core",
+          "stimulus_log": "logs/xrun_xcelium_raw_aff_access_namedtop_seed11.console.log",
+          "tag": "raw_aff_accelerated_access_seed11"
+        },
+        "active_wait_idle": {
+          "launch_record": "provenance/access_activity_launch_records.json",
+          "profile": "core",
+          "stimulus_log": "logs/xrun_xcelium_prefix100_idle_access_namedtop_seed11.console.log",
+          "tag": "prefix100_idle_access_seed11"
+        },
+        "literal_1ksps_prefix": {
+          "launch_record": "provenance/access_activity_launch_records.json",
+          "profile": "core",
+          "stimulus_log": "logs/xrun_xcelium_prefix100_literal1ksps_access_namedtop_seed11.console.log",
+          "tag": "prefix100_literal1ksps_access_seed11"
+        }
+      }
+    },
+    "profiles": {
+      "axi": {
+        "candidate_basename": "snn_ecg_axi_asic_top_cts50_drv2",
+        "candidate_outputs": "outputs/drv_closure/cts50_drv2",
+        "candidate_reports": "reports/drv_closure/cts50_drv2",
+        "final_checks": "reports/final_checks/cts50_drv2",
+        "genus_reports": "reports/genus",
+        "innovus_reports": "reports/innovus",
+        "ocv_constraint_script": "source/repo/design/digital/asic/gpdk45/scripts/run_innovus.tcl",
+        "root": "axi_run",
+        "top": "snn_ecg_axi_asic_top"
+      },
+      "core": {
+        "candidate_basename": "snn_ecg_asic_core_top_iter1",
+        "candidate_outputs": "outputs/closure/iter1",
+        "candidate_reports": "reports/closure/iter1",
+        "final_checks": "reports/final_checks/iter1",
+        "genus_reports": "reports/genus",
+        "innovus_reports": "reports/innovus",
+        "ocv_constraint_script": "source/repo/design/digital/asic/gpdk45/scripts/run_innovus.tcl",
+        "root": ".",
+        "top": "snn_ecg_asic_core_top"
+      }
+    },
+    "regression": {
+      "canonical_manifest": "manifests/canonical_digital_36.manifest",
+      "manifest_audit": "manifests/manifest_audit.json",
+      "raw4_results": "reports/core_wrapper_rtl_raw_xmodel4.csv",
+      "raw_manifest": "manifests/raw_xmodel_4.manifest",
+      "rtl36_results": "reports/core_wrapper_rtl_canonical36.csv"
+    },
+    "sdf": {
+      "max_annotation_log": "logs/sdf_annotation_core_iter1_max_ntc.log",
+      "max_simulation_log": "logs/xrun_core_iter1_sdfmax_raw_case0_powerup_release10_seed11.console.log"
+    }
+  },
+  "schema_version": 1,
+  "sdf": {
+    "max": {
+      "annotation_codes": "SDFNCAP:88",
+      "annotation_errors": 0,
+      "annotation_evidence": "logs/sdf_annotation_core_iter1_max_ntc.log",
+      "annotation_fatals": 0,
+      "claim_boundary": "single-seed forced-initialization MAX-SDF pilot with timing checks disabled",
+      "corner": "max",
+      "disabled_timing_checks": 24188,
+      "release_ns": 10,
+      "release_unknowns": 0,
+      "result": "6044/6044_exact_PASS",
+      "sdfncap_warnings": 88,
+      "seed": 11,
+      "sequential_covered": 6044,
+      "sequential_expected": 6044,
+      "simulation_evidence": "logs/xrun_core_iter1_sdfmax_raw_case0_powerup_release10_seed11.console.log",
+      "status": "CONDITIONAL_PASS",
+      "timing_checks_disabled": true
+    }
+  }
+}

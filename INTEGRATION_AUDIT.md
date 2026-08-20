@@ -44,7 +44,11 @@ PhysioNet 원시 waveform, 개인 식별정보, 서명과 제출 원본 PDF/HWP�
 - GPDK045 core-only mapping·LEC·signal post-route·extraction을 수행했고 explicit setup WNS +2.980 ns, hold WNS −0.050 ns와 clock slew 위반 86개를 기록했다.
 - Historical mapped netlist의 `SDFFQX1` 995개에는 scan chain이 정의되지 않았고 antenna 정보·physical-only cell·metal fill도 불완전해 PPA QoR와 parasitic fidelity에 한계가 있다.
 - GPDK045 3.35554239 mW는 default activity의 vectorless 추정치이며 workload 또는 실리콘 실측 전력이 아니다.
-- 물리 AFE PCB, ADC silicon, ASIC setup/hold·clock-rule closure, scan-aware remapping, PG/IR, physical-only cell·metal fill, foundry DRC/LVS, pad/package/fabrication과 임상 검증은 수행하지 않았다.
+- Run-2 scan-free core는 setup +2.469 ns, hold −0.008 ns이고 AXI block은 setup +2.781 ns, hold −0.016 ns이며, slow-early 0.95·fast-late 1.05의 fixed engineering derate assumption을 사용했다.
+- Run-2 core wrapper canonical RTL 36/36과 actual raw XMODEL 4/4, mapped-to-postroute LEC core 6,178 points·AXI 6,287 points의 diff/abort/unknown 0을 확인했다. AXI profile의 36-case replay를 뜻하지 않는다.
+- Exploratory PG는 171 connectivity·715 geometry violation으로 실패했으며, forced two-state gate 결과와 timing check를 끈 single-seed MAX-SDF pilot은 조건부 sampled initialization sensitivity이다.
+- Run-2 core activity power는 seed11-conditioned mapped gate 6,045/6,045, `-access +rwc`, zero delay와 normalized SAIF에서 accelerated gap2 2.02536072 mW, active-wait idle 1.91083992 mW, literal 1 kSPS 100-sample prefix 1.91084079 mW, matched total delta 0.00000087 mW였다. SAIF parse PASS는 numeric annotation coverage PASS가 아니고 prefix는 Snapshot/decision이 아니며 silicon power·energy/decision 근거가 아니다. AXI는 vectorless only다.
+- 물리 AFE PCB, ADC silicon, ASIC physical timing closure, 성공한 PG/IR, physical-only cell·metal fill, foundry DRC/LVS, DFT, pad/package/fabrication과 임상 검증은 수행하지 않았다.
 
 ## 검사
 

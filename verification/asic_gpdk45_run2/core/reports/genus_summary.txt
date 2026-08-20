@@ -1,0 +1,10 @@
+profile=core
+top=snn_ecg_asic_core_top
+mapped_leaf_cells=36565
+mapped_sequential_cells=6045
+mapped_cell_area_um2=94421.754
+mapped_setup_slack_ns=3.3509
+unresolved_references=0
+empty_modules=0
+qor_evidence=reports/genus/qor_mapped.rpt
+elaboration_evidence=reports/genus/check_design_unresolved.rpt

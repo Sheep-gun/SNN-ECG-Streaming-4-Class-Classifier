@@ -1,0 +1,15 @@
+[core]
+total=6178
+non_equivalent=0
+abort=0
+unknown=0
+status=PASS
+evidence=reports/lec_postroute_iter1/result_summary.txt
+
+[axi]
+total=6287
+non_equivalent=0
+abort=0
+unknown=0
+status=PASS
+evidence=axi_run/reports/lec_postroute_cts50_drv2/result_summary.txt

@@ -32,6 +32,34 @@
 
 신호 배선은 완료되었지만 VDD/VSS는 배선하지 않았고 power grid·IR drop 분석을 수행하지 않았다. connectivity report의 2건은 미배선 PG 정보이며, Innovus internal route DRC 1건이 남아 있다. Library antenna 정보가 불완전해 internal antenna count 0도 signoff PASS가 아니다. Filler/decap/endcap/welltap, metal fill, foundry DRC/LVS deck, DFT, pad, package와 fabrication은 범위 밖이다. 따라서 이 결과는 **generic GPDK045 core-only exploratory post-route PPA**로만 해석한다.
 
+## GPDK045 run-2 scan-free core and AXI block
+
+Run-2는 run-1 historical baseline을 덮어쓰지 않고 scan-free core와 AXI-Lite/AXI-Stream 경계를 포함한 `snn_ecg_axi_asic_top`을 별도 profile로 구현했다. AXI profile은 `PROFILE_EN=0`이며 MicroBlaze, SmartConnect, BRAM, UART, board clock/reset, pad와 package를 포함하지 않는다.
+
+| 항목 | Run-2 scan-free core | Run-2 AXI-inclusive block |
+|---|---:|---:|
+| Mapped cells / area | 36,565 / 94,421.754 µm² | 37,293 / 96,548.994 µm² |
+| Sequential cells | 6,045 | 6,244 |
+| Mapped setup slack | +3.3509 ns | +3.3498 ns |
+| Post-route instances / cell area | 42,958 / 120,287.898 µm² | 43,901 / 123,650.100 µm² |
+| DIE boundary | 422.8 × 419.9 µm | 426.2 × 425.03 µm |
+| DIE boundary area | 177,533.720 µm² | 181,147.786 µm² |
+| Placement density | 82.775% | 83.215% |
+| Setup WNS | +2.469 ns | +2.781 ns |
+| Hold WNS / TNS / paths | −0.008 / −0.094 ns / 37 | −0.016 / −0.518 ns / 107 |
+| Max-transition residual | 3 nets / 6 terminals, worst −0.026 ns | 73 nets / 469 terminals, worst −0.476 ns |
+| Clock slew at 60 ps target | 0 violations | 0 violations |
+| Innovus internal DRC | 0 | 0 |
+| Vectorless total power | 3.71626492 mW | 3.69335598 mW |
+
+양 profile은 slow early 0.95와 fast late 1.05의 fixed engineering derate와 CPPR을 사용했다. Slow/fast RC view 모두 같은 `gpdk045.tch`와 scale 1.0을 사용했으므로 이는 OCV assumption이지 foundry-characterized AOCV/POCV/LVF가 아니다. Clock slew와 internal DRC는 개선되었지만 hold와 data-net transition 위반이 남아 physical timing closure는 아니다.
+
+`PROFILE_EN=0` core wrapper RTL은 regenerated canonical digital 36/36과 actual raw XMODEL 4/4에서 exact PASS했다. Raw XMODEL은 여전히 4/36만 보존하며 canonical 36과 혼합하지 않는다. Mapped-to-postroute LEC는 core 6,178 points와 AXI 6,287 points에서 diff, abort, unknown 0이었다.
+
+Unmodified four-state full raw case0 gate run은 output X를 남겼고 XPR 기능 license는 사용할 수 없었다. Testbench-only forced digital two-state initialization을 reset window에 적용한 mapped seeds 11/22/33은 6,045/6,045 sequential coverage와 release X 0으로 full raw case0 exact PASS했다. MAX-SDF postroute seed11 pilot은 같은 강제 초기화와 6,044/6,044 coverage에서 exact PASS했지만 timing check를 비활성화했고 88건의 `SDFNCAP` port-alias warning을 남겼다. 이 결과는 유한 seed의 **testbench-conditioned initialization sensitivity**이며 unmodified GLS, reset/power-up robustness, 일반 SDF timing PASS 또는 signoff가 아니다.
+
+Exploratory PG attempt은 geometry-only ring/stripe/filler 가정에서 171 connectivity와 715 geometry violation으로 실패했다. 선택한 core/AXI checkpoint는 signal-only이며 VDD/VSS가 unrouted이다. Top PG pad/source, foundry current-density rule, IR/EM이 없으므로 PG 구현으로 표현하지 않는다.
+
 ## MicroBlaze 통합 시스템
 
 - 12,494 LUT, 8,494 FF, 16 BRAM, 3 DSP
@@ -74,6 +102,18 @@ FPGA 활성시간은 3,601,290 cycles이며 36개 board case와 XSim에서 동�
 
 GPDK045 post-route vectorless power는 setup-slow 1.08 V view에서 internal 2.42385086 mW, switching 0.92844734 mW, leakage 0.00324419 mW, total 3.35554239 mW이다. PI/sequential default activity 0.10을 사용했고 모든 instance에 activity가 할당되었지만, 실제 ECG workload VCD/SAIF를 사용한 전력은 아니다. PG 배선·IR drop·power-gating이 제외되었으므로 실리콘 전력, 판정당 에너지 또는 wearable 평균전력으로 전환하지 않는다.
 
+Run-2 core 3.71626492 mW와 AXI 3.69335598 mW는 PI/sequential default activity 0.10의 vectorless 추정치다. AXI에는 activity-based power 결과가 없다.
+
+Run-2 core의 seed11-conditioned activity 분석은 다음과 같다.
+
+| Activity window | Internal | Switching | Leakage | Total |
+|---|---:|---:|---:|---:|
+| Accelerated raw full gap2 | 1.52085678 mW | 0.50045621 mW | 0.00404773 mW | 2.02536072 mW |
+| Active-wait idle, matched 0.1 s | 1.48928157 mW | 0.41750333 mW | 0.00405502 mW | 1.91083992 mW |
+| Literal 1 kSPS, 100-sample 0.1 s prefix | 1.48928212 mW | 0.41750554 mW | 0.00405312 mW | 1.91084079 mW |
+
+Literal prefix와 active-wait idle의 matched total delta는 0.00000087 mW다. 모든 window는 testbench-conditioned mapped gate 6,045/6,045, `-access +rwc`, zero delay에서 생성한 normalized SAIF를 사용했다. Parse/annotation status는 PASS이고 fully-X/Z entry를 보존했으며 unannotated default는 0이지만, numeric annotation coverage PASS를 뜻하지 않는다. Accelerated gap2는 wall-time 1 kSPS가 아니고 두 prefix는 Snapshot이나 decision에 도달하지 않는다. Active-wait idle은 pure clock power가 아니며 matched delta도 silicon power 또는 energy per decision으로 해석하지 않는다.
+
 ## 구현하지 않은 범위
 
-GPDK045 digital core-only exploratory post-route를 수행했지만 setup/hold 및 clock-slew closure, scan-aware QoR, VDD/VSS power routing, PG/IR, physical-only cell·metal-fill insertion, foundry DRC/LVS, DFT, pad, package와 fabricated silicon은 완료하지 않았다. physical AFE PCB, ADC silicon과 clinical validation도 미수행이다.
+GPDK045 run-2는 scan-free mapping, clock-slew 0와 internal DRC 0까지 개선했지만 core/AXI hold·data-net transition closure, 성공한 VDD/VSS PG/IR/EM, physical-only cell·metal fill, complete antenna data, foundry DRC/LVS, DFT, pad, package와 fabricated silicon은 완료하지 않았다. physical AFE PCB, ADC silicon과 clinical validation도 미수행이다.

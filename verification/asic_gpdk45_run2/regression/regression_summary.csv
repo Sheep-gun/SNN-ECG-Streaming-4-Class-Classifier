@@ -1,0 +1,3 @@
+cohort,cases,passed,failed,status,evidence
+canonical_digital_36,36,36,0,PASS,reports/core_wrapper_rtl_canonical36.csv
+raw_xmodel_4,4,4,0,PASS,reports/core_wrapper_rtl_raw_xmodel4.csv

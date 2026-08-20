@@ -69,6 +69,12 @@ Wrapper, 100 MHz SDC와 tool script는 `design/digital/asic/gpdk45/`에 있다. 
 
 새 실행은 외부 임시 workspace에서 수행하고 필요한 결과를 local에 회수해 SHA-256을 확인한 뒤 원격 work directory와 process를 삭제한다. 공개 결과와 제약은 `verification/asic_gpdk45_core/README_KR.md`와 `tables/asic_gpdk45_ppa.csv`를 따른다. 실제 실행 파일은 `verification/asic_gpdk45_core/executed_snapshot/`, post-run hardened flow는 `design/digital/asic/gpdk45/`로 구분한다. 접속 정보, 라이선스 서버와 절대경로는 Git에 기록하지 않는다.
 
+Run-2는 run-1을 덮어쓰지 않고 `verification/asic_gpdk45_run2/`에 별도 보존한다. Scan-free core와 `snn_ecg_axi_asic_top` AXI block은 같은 100 MHz·Liberty·LEF·QRC 기준을 사용하고, slow early 0.95와 fast late 1.05의 fixed engineering derate를 OCV assumption으로 적용했다. 이는 foundry-characterized AOCV/POCV/LVF가 아니다.
+
+Run-2 functional authority는 `manifests/canonical_digital_36.manifest`의 regenerated digital 36-case와 `manifests/raw_xmodel_4.manifest`의 actual XMODEL 4-case를 구분한다. Post-route LEC는 mapped→post-route 논리 등가성이며 timing 또는 분류 정확도 근거가 아니다. Forced two-state gate 결과와 timing check를 끈 single-seed MAX-SDF pilot은 unmodified four-state GLS PASS가 아닌 sampled initialization-sensitivity 실험으로만 사용한다. Exploratory PG attempt는 실패 근거로 보존하며 PG·IR·EM 구현을 주장하지 않는다.
+
+Core activity power는 `verification/asic_gpdk45_run2/power/activity_power_summary.csv`와 `activity_annotation_summary.txt`를 authority로 사용한다. 모든 window는 seed11-conditioned mapped gate 6,045/6,045, `-access +rwc`, zero delay이며, normalized SAIF parse에서 fully-X/Z entry를 보존하고 unannotated default 0을 사용했다. Parse/annotation status PASS는 numeric annotation coverage PASS가 아니다. Accelerated gap2 full-record, active-wait idle와 100-sample literal 1 kSPS prefix는 서로 다른 cadence이므로 혼합하지 않으며, prefix는 Snapshot/decision에 도달하지 않는다. Matched delta는 energy/decision이 아니고 AXI에는 activity-based result가 없다.
+
 ## 7. repository 검사
 
 ```powershell

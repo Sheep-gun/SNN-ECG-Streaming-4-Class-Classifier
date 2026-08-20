@@ -18,3 +18,21 @@ asic_gpdk45_core,hold_WNS_ns,-0.050,tables/asic_gpdk45_ppa.csv,양건,hold viola
 asic_gpdk45_core,clock_slew_violations,86,tables/asic_gpdk45_ppa.csv,양건,target 0.060 ns worst 0.062 ns
 asic_gpdk45_core,scan_capable_SDFFQX1,995,tables/asic_gpdk45_ppa.csv,양건,undefined scan chains on 10.70 percent of flops affect QoR confidence
 asic_gpdk45_core,vectorless_total_power_mW,3.35554239,tables/asic_gpdk45_ppa.csv,양건,default activity 0.10 not workload or measured power
+asic_gpdk45_run2_core,mapped_cells,36565,tables/asic_gpdk45_run2_ppa.csv,양건,scan-free core-only syn_map
+asic_gpdk45_run2_core,mapped_cell_area_um2,94421.754,tables/asic_gpdk45_run2_ppa.csv,양건,generic GPDK045 library area
+asic_gpdk45_run2_core,postroute_instances,42958,tables/asic_gpdk45_run2_ppa.csv,양건,iter1 padless signal-routed block
+asic_gpdk45_run2_core,postroute_cell_area_um2,120287.898,tables/asic_gpdk45_run2_ppa.csv,양건,standard-cell area only
+asic_gpdk45_run2_core,setup_WNS_ns,2.469,tables/asic_gpdk45_run2_ppa.csv,양건,positive setup under slow-early 0.95 and fast-late 1.05 engineering derates
+asic_gpdk45_run2_core,hold_WNS_ns,-0.008,tables/asic_gpdk45_run2_ppa.csv,양건,hold TNS -0.094 ns across 37 paths
+asic_gpdk45_run2_core,vectorless_total_power_mW,3.71626492,tables/asic_gpdk45_run2_ppa.csv,양건,default activity not workload or measured power
+asic_gpdk45_run2_axi,mapped_cells,37293,tables/asic_gpdk45_run2_ppa.csv,양건,AXI-inclusive accelerator block not MicroBlaze SoC
+asic_gpdk45_run2_axi,mapped_cell_area_um2,96548.994,tables/asic_gpdk45_run2_ppa.csv,양건,generic GPDK045 library area
+asic_gpdk45_run2_axi,postroute_instances,43901,tables/asic_gpdk45_run2_ppa.csv,양건,final cts50_drv2 padless block
+asic_gpdk45_run2_axi,postroute_cell_area_um2,123650.100,tables/asic_gpdk45_run2_ppa.csv,양건,standard-cell area only
+asic_gpdk45_run2_axi,setup_WNS_ns,2.781,tables/asic_gpdk45_run2_ppa.csv,양건,positive setup under slow-early 0.95 and fast-late 1.05 engineering derates
+asic_gpdk45_run2_axi,hold_WNS_ns,-0.016,tables/asic_gpdk45_run2_ppa.csv,양건,hold TNS -0.518 ns across 107 paths
+asic_gpdk45_run2_axi,vectorless_total_power_mW,3.69335598,tables/asic_gpdk45_run2_ppa.csv,양건,default activity not workload or measured power
+asic_gpdk45_run2_core_activity,accelerated_gap2_total_mW,2.02536072,verification/asic_gpdk45_run2/power/activity_power_summary.csv,양건,seed11-conditioned zero-delay mapped-gate full-record accelerated window; not wall-time 1 kSPS or silicon power
+asic_gpdk45_run2_core_activity,active_wait_idle_total_mW,1.91083992,verification/asic_gpdk45_run2/power/activity_power_summary.csv,양건,matched 0.1 s active-wait window including leakage clock and idle-state activity
+asic_gpdk45_run2_core_activity,literal_1ksps_prefix_total_mW,1.91084079,verification/asic_gpdk45_run2/power/activity_power_summary.csv,양건,100-sample 0.1 s prefix only; no Snapshot or decision
+asic_gpdk45_run2_core_activity,literal_minus_idle_total_delta_mW,0.00000087,verification/asic_gpdk45_run2/power/activity_power_summary.csv,양건,derived matched-window delta not energy per decision

@@ -1,0 +1,11 @@
+accelerated_gap2: tag=raw_aff_accelerated_access_seed11 status=PASS annotation=reports/activity_power/raw_aff_accelerated_access_seed11/activity_annotation.rpt
+active_wait_idle: tag=prefix100_idle_access_seed11 status=PASS annotation=reports/activity_power/prefix100_idle_access_seed11/activity_annotation.rpt
+literal_1ksps_prefix: tag=prefix100_literal1ksps_access_seed11 status=PASS annotation=reports/activity_power/prefix100_literal1ksps_access_seed11/activity_annotation.rpt
+prefix_manifest=power_prefix/raw_aff_prefix_100_manifest.json
+prefix_manifest_sha256=35bd7c76404f628596e7ae21c9f8700fe61438afbe30c9875fc84b814cde1e04
+method=direct Xcelium mapped-gate -access +rwc, normalized SAIF, Innovus zero-delay activity annotation
+boundary=all activity runs use testbench-conditioned seed 11 initialization with 6045/6045 coverage and release X 0
+boundary=executed normalization preserved fully-X/Z entries; unannotated default is 0.0 and matched idle/literal retains identical X/Z populations
+boundary=unannotated_report_status is retained as diagnostic metadata and is not an annotation-coverage PASS
+boundary=active-wait idle contains leakage, clock, and idle-state activity; it is not pure clock-tree power
+boundary=literal-minus-idle is a short-prefix matched-window delta, not full-decision energy

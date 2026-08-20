@@ -26,7 +26,15 @@ proc env_flag {name default_value} {
 set script_dir [file dirname [file normalize [info script]]]
 set run_root [file normalize $::env(RUN_ROOT)]
 set pdk_root [file normalize $::env(PDK_ROOT)]
-set top snn_ecg_asic_core_top
+set profile core
+if {[info exists ::env(ASIC_PROFILE)]} {
+    set profile [string tolower [string trim $::env(ASIC_PROFILE)]]
+}
+switch -- $profile {
+    core { set top snn_ecg_asic_core_top }
+    axi { set top snn_ecg_axi_asic_top }
+    default { error "ASIC_PROFILE must be core or axi, got: $profile" }
+}
 set report_dir [file join $run_root reports innovus]
 set output_dir [file join $run_root outputs innovus]
 set tech_lef [file join $pdk_root lef gsclib045_tech.lef]
@@ -34,6 +42,7 @@ set macro_lef [file join $pdk_root lef gsclib045_macro.lef]
 set mapped_netlist [file join $run_root outputs genus ${top}_mapped.v]
 set run_postroute_opt [env_flag RUN_POSTROUTE_OPT 0]
 set run_timedesign [env_flag RUN_TIMEDESIGN 0]
+set strict_closure [env_flag STRICT_CLOSURE 0]
 
 file mkdir $report_dir
 file mkdir $output_dir
@@ -51,6 +60,12 @@ init_design
 globalNetConnect VDD -type pgpin -pin VDD -all
 globalNetConnect VSS -type pgpin -pin VSS -all
 setDesignMode -process 45
+setAnalysisMode -analysisType onChipVariation -cppr both
+set_timing_derate -early 0.95 -late 1.00 -delay_corner slow_delay
+set_timing_derate -early 1.00 -late 1.05 -delay_corner fast_delay
+report_timing_derate -delay_corner slow_delay > [file join $report_dir timing_derate_slow.rpt]
+report_timing_derate -delay_corner fast_delay > [file join $report_dir timing_derate_fast.rpt]
+setDelayCalMode -SIAware true
 
 floorPlan -site CoreSite -su 1.0 0.65 20 20 20 20 -coreMarginsBy die
 createRow -site CoreSiteDouble
@@ -63,20 +78,25 @@ report_timing -max_paths 20 > [file join $report_dir timing_postplace.rpt]
 report_area > [file join $report_dir area_postplace.rpt]
 saveDesign [file join $output_dir ${top}_postplace.enc]
 
-set_ccopt_property buffer_cells {CLKBUFX2 CLKBUFX3 CLKBUFX4 CLKBUFX6 CLKBUFX8 CLKBUFX12}
-set_ccopt_property inverter_cells {CLKINVX1 CLKINVX2 CLKINVX3 CLKINVX4 CLKINVX6 CLKINVX8}
+set_ccopt_property buffer_cells {CLKBUFX2 CLKBUFX3 CLKBUFX4 CLKBUFX6 CLKBUFX8 CLKBUFX12 CLKBUFX16 CLKBUFX20}
+set_ccopt_property inverter_cells {CLKINVX1 CLKINVX2 CLKINVX3 CLKINVX4 CLKINVX6 CLKINVX8 CLKINVX12 CLKINVX16 CLKINVX20}
+set_ccopt_property use_inverters true
+set_ccopt_property -net_type top target_max_trans 60ps
+set_ccopt_property -net_type trunk target_max_trans 60ps
+set_ccopt_property -net_type leaf target_max_trans 55ps
 set ccopt_spec [file join $output_dir ccopt.spec]
 create_ccopt_clock_tree_spec -file $ccopt_spec
 source $ccopt_spec
 clock_opt_design
 optDesign -postCTS
+optDesign -postCTS -hold
 report_timing -max_paths 20 > [file join $report_dir timing_postcts.rpt]
 report_ccopt_clock_trees -file [file join $report_dir ccopt_clock_trees.rpt]
 report_ccopt_skew_groups -file [file join $report_dir ccopt_skew_groups.rpt]
 
 setNanoRouteMode -routeWithTimingDriven true
 setNanoRouteMode -routeWithSiDriven true
-routeDesign
+routeDesign -globalDetail -viaOpt -wireOpt
 saveDesign [file join $output_dir ${top}_routed_preextract.enc]
 defOut -netlist -floorplan -routing [file join $output_dir ${top}_routed_preextract.def]
 
@@ -134,6 +154,7 @@ if {$run_postroute_opt} {
 
     if {($setup_opt_status == 0) && ($hold_opt_status == 0)} {
         set reextract_status [catch {
+            routeDesign -wireOpt
             setExtractRCMode -engine postRoute -effortLevel high -coupled true
             extractRC
         } reextract_message]
@@ -227,5 +248,14 @@ write_sdf \
 rcOut -rc_corner max_rc -spef [file join $output_dir ${top}_postroute_max_rc.spef]
 rcOut -rc_corner min_rc -spef [file join $output_dir ${top}_postroute_min_rc.spef]
 saveDesign [file join $output_dir ${top}_routed.enc]
+
+if {$strict_closure} {
+    if {!$run_postroute_opt || ($setup_opt_status != 0) || ($hold_opt_status != 0) || ($reextract_status != 0)} {
+        error "STRICT_CLOSURE failed post-route optimization gate; see postroute_optimization_status.txt"
+    }
+    if {!$run_timedesign || ($timed_setup_status != 0) || ($timed_hold_status != 0)} {
+        error "STRICT_CLOSURE failed timeDesign gate; see time_design_status.txt"
+    }
+}
 
 exit

@@ -1,0 +1,2 @@
+corner,status,seed,result,sequential_covered,sequential_expected,release_ns,release_unknowns,timing_checks_disabled,disabled_timing_checks,sdfncap_warnings,annotation_errors,annotation_fatals,annotation_codes,annotation_evidence,simulation_evidence,claim_boundary
+max,CONDITIONAL_PASS,11,6044/6044_exact_PASS,6044,6044,10,0,True,24188,88,0,0,SDFNCAP:88,logs/sdf_annotation_core_iter1_max_ntc.log,logs/xrun_core_iter1_sdfmax_raw_case0_powerup_release10_seed11.console.log,single-seed forced-initialization MAX-SDF pilot with timing checks disabled

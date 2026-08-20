@@ -1,0 +1,326 @@
+{
+  "canonical_cases": 36,
+  "raw_xmodel_cases": 4,
+  "rows": [
+    {
+      "case_id": 9,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/AFF/06995/06995_30min_w001.mem",
+      "samples": 1800000,
+      "sha256": "fe984d3ac4957c3f0236f36ae517e47df26af2f7dfdf8bcbb15a61035cebb7a3",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/AFF/06995/06995_30min_w001.mem"
+    },
+    {
+      "case_id": 10,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/val/AFF/06995/06995_30min_w003.mem",
+      "samples": 1800000,
+      "sha256": "a7d6dbd67666581261b7d58b6f674d0e6fcb0378378b39483e78d4c815e5d47f",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/val/AFF/06995/06995_30min_w003.mem"
+    },
+    {
+      "case_id": 11,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/AFF/06995/06995_30min_w005.mem",
+      "samples": 1800000,
+      "sha256": "e7c0e16c78778b75e6e7f35d6e92e557b688e3805da46663153924abaf24df78",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/AFF/06995/06995_30min_w005.mem"
+    },
+    {
+      "case_id": 12,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/test/AFF/06995/06995_30min_w007.mem",
+      "samples": 1800000,
+      "sha256": "a62fc2ba7a5466d4457fa223f136df88da7c43e6b0ab6ebdab221eaed29c1455",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/test/AFF/06995/06995_30min_w007.mem"
+    },
+    {
+      "case_id": 13,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/AFF/06995/06995_30min_w010.mem",
+      "samples": 1800000,
+      "sha256": "d30b6af5c747b19e2ca1c79c33d99ca656e334e45293d617df0c73c7b2b2b9f6",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/AFF/06995/06995_30min_w010.mem"
+    },
+    {
+      "case_id": 14,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/val/AFF/06995/06995_30min_w012.mem",
+      "samples": 1800000,
+      "sha256": "6c1da7b13004485078533fcb70c9fac0ba1f132f92d7a743d1e3b6d818544594",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/val/AFF/06995/06995_30min_w012.mem"
+    },
+    {
+      "case_id": 15,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/AFF/06995/06995_30min_w014.mem",
+      "samples": 1800000,
+      "sha256": "7220ebd132794991ded661f0187cc58d067a977f7f6e59709599e93b1464d03d",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/AFF/06995/06995_30min_w014.mem"
+    },
+    {
+      "case_id": 16,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/test/AFF/06995/06995_30min_w016.mem",
+      "samples": 1800000,
+      "sha256": "48cab839586a8abfb3f2d0f89489817af1ed16bd52f4b41410591b237d121837",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/test/AFF/06995/06995_30min_w016.mem"
+    },
+    {
+      "case_id": 17,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/AFF/06995/06995_30min_w018.mem",
+      "samples": 1800000,
+      "sha256": "37ecff187d0bb43e96526c9b9bb534a110102c96c355bfccec38fee975572321",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/AFF/06995/06995_30min_w018.mem"
+    },
+    {
+      "case_id": 35,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/val/ARR/102/102_30min_w000.mem",
+      "samples": 1800000,
+      "sha256": "99a94295c8ee6d70da30ee93f543035a6b78202244880b923256c4a5f5db5fc5",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/val/ARR/102/102_30min_w000.mem"
+    },
+    {
+      "case_id": 37,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/val/ARR/105/105_30min_w000.mem",
+      "samples": 1800000,
+      "sha256": "85f3a1fc2f060a4b153c33a799df0a60ecc4d59b17d93a873cb689c174239b6c",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/val/ARR/105/105_30min_w000.mem"
+    },
+    {
+      "case_id": 45,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/test/ARR/118/118_30min_w000.mem",
+      "samples": 1800000,
+      "sha256": "cbe8acf71a0193dd6d26425d3495d8d90523ecd8eb671af7cb7d444e5abe1f91",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/test/ARR/118/118_30min_w000.mem"
+    },
+    {
+      "case_id": 49,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/test/ARR/202/202_30min_w000.mem",
+      "samples": 1800000,
+      "sha256": "f5c9160169aff6898b2a0220481b7086061df4fdd3a91b3364be96c9e4105413",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/test/ARR/202/202_30min_w000.mem"
+    },
+    {
+      "case_id": 52,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/ARR/208/208_30min_w000.mem",
+      "samples": 1800000,
+      "sha256": "1a8bf1ad0ac97ebff7acdcaf23dbdf48d9c1afafe9252f0310557af2a90f1e43",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/ARR/208/208_30min_w000.mem"
+    },
+    {
+      "case_id": 56,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/ARR/214/214_30min_w000.mem",
+      "samples": 1800000,
+      "sha256": "712de2a81e592b6672888b12e924c909294595197a410b1f0e4b0d9d4a729e31",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/ARR/214/214_30min_w000.mem"
+    },
+    {
+      "case_id": 58,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/ARR/217/217_30min_w000.mem",
+      "samples": 1800000,
+      "sha256": "00742ba0e768403b9a248c22cdfc2e72cd16596ad06835339c7ee5d3c9317de9",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/ARR/217/217_30min_w000.mem"
+    },
+    {
+      "case_id": 60,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/ARR/220/220_30min_w000.mem",
+      "samples": 1800000,
+      "sha256": "5c110d1f08e690e5cf545bf721bc81daa4fbc82f2b18b8a78825fffee279c461",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/ARR/220/220_30min_w000.mem"
+    },
+    {
+      "case_id": 64,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/ARR/231/231_30min_w000.mem",
+      "samples": 1800000,
+      "sha256": "d76ab5823cc7d5496713d78186a6e22ba68c57d3386af5ea74484c090a9ea939",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/ARR/231/231_30min_w000.mem"
+    },
+    {
+      "case_id": 83,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/CHF/chf06/chf06_30min_w006.mem",
+      "samples": 1800000,
+      "sha256": "a309866d9e85206b07b880de95ed53f8e07b2aa000a8a8b2310a944f1ad7a3a6",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/CHF/chf06/chf06_30min_w006.mem"
+    },
+    {
+      "case_id": 84,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/val/CHF/chf06/chf06_30min_w019.mem",
+      "samples": 1800000,
+      "sha256": "391daf86765abd24dfcbe1429b765422553f5320cc7adc8054fc6e63f5c94426",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/val/CHF/chf06/chf06_30min_w019.mem"
+    },
+    {
+      "case_id": 85,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/test/CHF/chf06/chf06_30min_w032.mem",
+      "samples": 1800000,
+      "sha256": "37a96f7d345869500f069ee3e579c1b731d09e55ca80d1c848e16407687f89a5",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/test/CHF/chf06/chf06_30min_w032.mem"
+    },
+    {
+      "case_id": 86,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/CHF/chf07/chf07_30min_w009.mem",
+      "samples": 1800000,
+      "sha256": "66f80c09125492f7c2a2ec6d721b24174d017c93102b9282bf49ccdc1141949f",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/CHF/chf07/chf07_30min_w009.mem"
+    },
+    {
+      "case_id": 87,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/test/CHF/chf07/chf07_30min_w029.mem",
+      "samples": 1800000,
+      "sha256": "8b96d5a5f6f040cec7caa92b18b825fda2d687b36f357b07a60bb5848538534a",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/test/CHF/chf07/chf07_30min_w029.mem"
+    },
+    {
+      "case_id": 90,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/CHF/chf09/chf09_30min_w009.mem",
+      "samples": 1800000,
+      "sha256": "f9c9c315d6b5e2eae6adb036b959b9c89b0a24b3dae559a573d89532377697c7",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/CHF/chf09/chf09_30min_w009.mem"
+    },
+    {
+      "case_id": 91,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/test/CHF/chf09/chf09_30min_w029.mem",
+      "samples": 1800000,
+      "sha256": "5b5d89f8424f8778583799e97fc66456e0130c1d03f813770d34573e1387e4db",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/test/CHF/chf09/chf09_30min_w029.mem"
+    },
+    {
+      "case_id": 100,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/CHF/chf15/chf15_30min_w003.mem",
+      "samples": 1800000,
+      "sha256": "0e2b422b4ba8bfc72a3c19c4d5deb48396f13bee39d87cd0a53fc34a4aa7468f",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/CHF/chf15/chf15_30min_w003.mem"
+    },
+    {
+      "case_id": 101,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/test/CHF/chf15/chf15_30min_w009.mem",
+      "samples": 1800000,
+      "sha256": "aab031ac3e0065e6bf8844662f5a64ac3ce95a26700826ece1667f2ffbdce183",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/test/CHF/chf15/chf15_30min_w009.mem"
+    },
+    {
+      "case_id": 104,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/NSR/16272/16272_30min_w003.mem",
+      "samples": 1800000,
+      "sha256": "fc626046541130cbe95cfb29bed597b8b52f55b706a40ddafb71105df4a43ecc",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/NSR/16272/16272_30min_w003.mem"
+    },
+    {
+      "case_id": 105,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/val/NSR/16272/16272_30min_w010.mem",
+      "samples": 1800000,
+      "sha256": "4b4bba5b02c6b548fc7b6dc55897b0e51cbbc2f5c567b3e0a509f90915cd3b4b",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/val/NSR/16272/16272_30min_w010.mem"
+    },
+    {
+      "case_id": 110,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/NSR/16483/16483_30min_w010.mem",
+      "samples": 1800000,
+      "sha256": "5565bf678225f3cecee412aaacb8ea5776e6b3d71714fb9962f2ee76fba56061",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/NSR/16483/16483_30min_w010.mem"
+    },
+    {
+      "case_id": 111,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/val/NSR/16483/16483_30min_w032.mem",
+      "samples": 1800000,
+      "sha256": "35fa40c7400b2b7ce20bca6432f1d3d76b294c0648f6a9beba4b474b0c31c245",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/val/NSR/16483/16483_30min_w032.mem"
+    },
+    {
+      "case_id": 116,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/NSR/16786/16786_30min_w011.mem",
+      "samples": 1800000,
+      "sha256": "094a1e3ff895f6617a3c13946bab4dfe1b3589cefcdf51675a5dbd579250e2f9",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/NSR/16786/16786_30min_w011.mem"
+    },
+    {
+      "case_id": 117,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/test/NSR/16786/16786_30min_w035.mem",
+      "samples": 1800000,
+      "sha256": "1062b5c0c7059f6905120eb7f7306c9f3c53d025fc82b460944a2d35c687010f",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/test/NSR/16786/16786_30min_w035.mem"
+    },
+    {
+      "case_id": 132,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/NSR/19093/19093_30min_w010.mem",
+      "samples": 1800000,
+      "sha256": "ced832e3e528697b6aeb17222b99529a70c09b797b463894dcc128feac57cba9",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/NSR/19093/19093_30min_w010.mem"
+    },
+    {
+      "case_id": 133,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/test/NSR/19093/19093_30min_w030.mem",
+      "samples": 1800000,
+      "sha256": "4f54ef41df1a576a6aa48bcba61dcdbdf1e24d1d59ea919b9339d33a10cd2737",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/test/NSR/19093/19093_30min_w030.mem"
+    },
+    {
+      "case_id": 134,
+      "cohort": "canonical_digital",
+      "manifest_path": "<REDACTED>/data/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/NSR/19140/19140_30min_w020.mem",
+      "samples": 1800000,
+      "sha256": "6af06af53dd12e36d02a52bcc83545150e74c469a377a6707ce6b5440333553d",
+      "source_path": "<LOCAL_PATH> ECG Classifier/generated_rtl_fpga_test_inputs_36case/fullrec_afe_30min_annotation_valid_balanced/train/NSR/19140/19140_30min_w020.mem"
+    },
+    {
+      "case_id": 9,
+      "cohort": "raw_xmodel",
+      "manifest_path": "<REDACTED>/data/ECG-SoC-Integrated/datasets/xmodel_afe_adc_outputs/representative_4case/accepted_AFF_afdb_06995_chunk01.mem",
+      "samples": 1800000,
+      "sha256": "aa1ad761304577bc5b0e155662eae8b3ef92764a8c8a87bb4ec45bc3fde5ac33",
+      "source_path": "<LOCAL_PATH> ECG Classifier/ECG-SoC-Integrated/datasets/xmodel_afe_adc_outputs/representative_4case/accepted_AFF_afdb_06995_chunk01.mem"
+    },
+    {
+      "case_id": 35,
+      "cohort": "raw_xmodel",
+      "manifest_path": "<REDACTED>/data/ECG-SoC-Integrated/datasets/xmodel_afe_adc_outputs/representative_4case/accepted_ARR_mitdb_102_chunk00.mem",
+      "samples": 1800000,
+      "sha256": "9598048fc02782870d749ae54ceea063e4d08ab3b5e2c844d58046743d0ae6e6",
+      "source_path": "<LOCAL_PATH> ECG Classifier/ECG-SoC-Integrated/datasets/xmodel_afe_adc_outputs/representative_4case/accepted_ARR_mitdb_102_chunk00.mem"
+    },
+    {
+      "case_id": 83,
+      "cohort": "raw_xmodel",
+      "manifest_path": "<REDACTED>/data/ECG-SoC-Integrated/datasets/xmodel_afe_adc_outputs/representative_4case/accepted_CHF_chfdb_chf06_chunk06.mem",
+      "samples": 1800000,
+      "sha256": "9d87db70fc9224c8fab7f2e035dec32201da14b79b1f61df015937974b221417",
+      "source_path": "<LOCAL_PATH> ECG Classifier/ECG-SoC-Integrated/datasets/xmodel_afe_adc_outputs/representative_4case/accepted_CHF_chfdb_chf06_chunk06.mem"
+    },
+    {
+      "case_id": 104,
+      "cohort": "raw_xmodel",
+      "manifest_path": "<REDACTED>/data/ECG-SoC-Integrated/datasets/xmodel_afe_adc_outputs/representative_4case/accepted_NSR_nsrdb_16272_chunk03.mem",
+      "samples": 1800000,
+      "sha256": "71541d54f921632c229570d0b1298ec6d87653eb0b2e85cc1f77217c2723f541",
+      "source_path": "<LOCAL_PATH> ECG Classifier/ECG-SoC-Integrated/datasets/xmodel_afe_adc_outputs/representative_4case/accepted_NSR_nsrdb_16272_chunk03.mem"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+check,seed,status,result,sequential_covered,sequential_expected,release_ns,release_unknowns,initial_unknowns,runtime_x_transitions,evidence,claim_boundary
+unmodified_four_state_full_raw_case0,,FAIL,output_X,,,,,,,reports/core_mapped_gate_raw_case0_notiming_nonotifier.csv,unmodified four-state full raw result remained X
+XPR_mode,,NOT_RUN,license_unavailable,,,,,,,logs/xrun_core_mapped_gate16_xpess2.console.log,XPR analysis could not execute without the app license
+forced_two_state_mapped_full_raw_case0,11,CONDITIONAL_PASS,exact_PASS,6045,6045,10,0,0,0,logs/xrun_core_mapped_gate_raw_case0_powerup_release10_seed11.console.log,testbench-conditioned finite-seed initialization sensitivity
+forced_two_state_mapped_full_raw_case0,22,CONDITIONAL_PASS,exact_PASS,6045,6045,10,0,0,0,logs/xrun_core_mapped_gate_raw_case0_powerup_release10_seed22.console.log,testbench-conditioned finite-seed initialization sensitivity
+forced_two_state_mapped_full_raw_case0,33,CONDITIONAL_PASS,exact_PASS,6045,6045,10,0,0,0,logs/xrun_core_mapped_gate_raw_case0_powerup_release10_seed33.console.log,testbench-conditioned finite-seed initialization sensitivity
+forced_two_state_sequential_coverage,"11,22,33",CONDITIONAL_PASS,6045/6045_releaseX0,6045,6045,10,0,0,0,logs/xrun_core_mapped_gate_raw_case0_powerup_release10_seed11.console.log;logs/xrun_core_mapped_gate_raw_case0_powerup_release10_seed22.console.log;logs/xrun_core_mapped_gate_raw_case0_powerup_release10_seed33.console.log,aggregate of three testbench-conditioned finite-seed runs

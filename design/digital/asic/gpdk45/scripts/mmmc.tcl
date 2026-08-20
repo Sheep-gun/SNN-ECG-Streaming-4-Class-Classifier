@@ -9,7 +9,16 @@ set pdk_root [file normalize $::env(PDK_ROOT)]
 set slow_lib [file join $pdk_root timing slow_vdd1v2_basicCells.lib]
 set fast_lib [file join $pdk_root timing fast_vdd1v2_basicCells.lib]
 set qrc_tech [file join $pdk_root qrc qx gpdk045.tch]
-set mapped_sdc [file join $run_root outputs genus snn_ecg_asic_core_top_mapped.sdc]
+set profile core
+if {[info exists ::env(ASIC_PROFILE)]} {
+    set profile [string tolower [string trim $::env(ASIC_PROFILE)]]
+}
+switch -- $profile {
+    core { set top snn_ecg_asic_core_top }
+    axi { set top snn_ecg_axi_asic_top }
+    default { error "ASIC_PROFILE must be core or axi, got: $profile" }
+}
+set mapped_sdc [file join $run_root outputs genus ${top}_mapped.sdc]
 
 create_library_set -name slow_libset -timing [list $slow_lib]
 create_library_set -name fast_libset -timing [list $fast_lib]

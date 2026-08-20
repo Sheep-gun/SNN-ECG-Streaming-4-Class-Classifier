@@ -2,7 +2,7 @@
 
 ## 결론
 
-현재 결과는 **100 MHz Artix-7에서 기능 정합된 ECG 가속기**와 **generic GPDK045 digital core-only exploratory post-route** 근거를 뒷받침한다. 다만 ASIC hold·clock-slew closure, scan-aware QoR, power grid·physical fill, workload activity, sign-off·silicon 실측과 전체 wearable 부품 예산이 없으므로 “웨어러블용 저전력 반도체 IP”를 최종 입증한 단계는 아니다.
+현재 결과는 **100 MHz Artix-7에서 기능 정합된 ECG 가속기**, **generic GPDK045 run-1 historical core baseline**, **run-2 scan-free core와 AXI-inclusive accelerator block의 exploratory post-route**, **run-2 core의 seed11-conditioned activity window** 근거를 뒷받침한다. 다만 ASIC hold·data-net transition residual, 성공한 power grid·physical fill, unconditioned reset-aware Snapshot/decision activity, sign-off·silicon 실측과 전체 wearable 부품 예산이 없으므로 “웨어러블용 저전력 반도체 IP”를 최종 입증한 단계는 아니다.
 
 ## 즉시 완료한 근거
 
@@ -20,12 +20,23 @@
 | power_opt burst top | 0.1775 W | ESTIMATED |
 | power_opt 1 kS/s top | 0.1660 W | ESTIMATED |
 | FPGA rail idle/active 차동 | 미측정 | NOT MEASURED |
-| GPDK045 core-only post-route vectorless total | 3.35554239 mW | ESTIMATED; default activity 0.10 |
-| GPDK045 extracted timing | setup WNS +2.980 ns, hold WNS −0.050 ns, clock slew 86건 | PARTIAL; physical timing closure 미달성 |
-| Historical scan-capable mapping | `SDFFQX1` 995개, undefined scan 10.70% flops | PARTIAL; placement/timing QoR 한계 |
+| GPDK045 run-1 core post-route vectorless total | 3.35554239 mW | ESTIMATED; default activity 0.10 |
+| GPDK045 run-1 extracted timing | setup WNS +2.980 ns, hold WNS −0.050 ns, clock slew 86건 | PARTIAL; historical baseline, physical timing closure 미달성 |
+| GPDK045 run-1 historical scan-capable mapping | `SDFFQX1` 995개, undefined scan 10.70% flops | PARTIAL; placement/timing QoR 한계 |
+| GPDK045 run-2 scan-free core post-route vectorless total | 3.71626492 mW | ESTIMATED; default PI/sequential activity 0.10, workload power 아님 |
+| GPDK045 run-2 AXI block post-route vectorless total | 3.69335598 mW | ESTIMATED; default PI/sequential activity 0.10, workload power 아님 |
+| GPDK045 run-2 core extracted timing | setup WNS +2.469 ns, hold WNS −0.008 ns, hold TNS −0.094 ns/37 paths | PARTIAL; data-net max-transition 3 nets도 잔존 |
+| GPDK045 run-2 AXI extracted timing | setup WNS +2.781 ns, hold WNS −0.016 ns, hold TNS −0.518 ns/107 paths | PARTIAL; data-net max-transition 73 nets도 잔존 |
+| GPDK045 run-2 clock/internal checks | core/AXI clock slew 0 @ 60 ps, internal DRC 0 | PARTIAL; data-net transition·foundry DRC sign-off를 뜻하지 않음 |
+| GPDK045 run-2 core accelerated gap2 activity | internal 1.52085678, switching 0.50045621, leakage 0.00404773, total 2.02536072 mW | ESTIMATED; seed11-conditioned zero-delay full-record accelerated window |
+| GPDK045 run-2 core active-wait idle | internal 1.48928157, switching 0.41750333, leakage 0.00405502, total 1.91083992 mW | ESTIMATED; matched 0.1 s, pure clock power 아님 |
+| GPDK045 run-2 core literal 1 kSPS prefix | internal 1.48928212, switching 0.41750554, leakage 0.00405312, total 1.91084079 mW | ESTIMATED; 100 samples, Snapshot/decision 미도달 |
+| GPDK045 run-2 matched literal-minus-idle delta | 0.00000087 mW total | DERIVED; short-prefix delta, energy/decision 아님 |
 | Foundry target ASIC sign-off/silicon | PG/IR·DRC/LVS·fabrication 부재 | NOT AVAILABLE |
 
 네 클래스에서 각각 실제 1,800,000샘플 burst SAIF와 실제 100샘플 literal 1 kS/s SAIF를 생성했다. 모든 burst 캡처는 잠긴 final prediction과 네 membrane 값을 통과했다. RTL SAIF의 routed-net 매칭률은 약 12%이며 나머지는 Vivado vectorless propagation이므로 confidence는 Medium이다. 따라서 이 결과는 기존 완전 vectorless 값보다 workload 관련성이 높지만 sign-off activity power는 아니다.
+
+GPDK045 activity 표의 수치는 FPGA SAIF와 별개다. Seed11-conditioned mapped gate 6,045/6,045를 `-access +rwc`, zero delay로 실행하고 normalized SAIF를 사용했다. Parse/annotation status는 PASS이며 fully-X/Z entry를 보존하고 unannotated default 0을 사용했지만, numeric annotation coverage PASS를 주장하지 않는다. Accelerated gap2는 wall-time 1 kSPS가 아니고 prefix는 Snapshot/decision에 도달하지 않으며, AXI activity power는 없다.
 
 ## Streaming과 preloaded burst 해석
 
@@ -40,10 +51,10 @@ MAX30001의 85 uW ECG AFE는 외부 datasheet reference로만 포함했다. 실�
 
 ## 남은 필수 근거
 
-1. GPDK045 hold·clock slew, scan-aware remapping, internal route DRC, VDD/VSS power routing과 PG/IR 해소
-2. Filler/decap/tap/endcap·metal fill, complete antenna data와 실제 ECG workload VCD/SAIF를 결합한 parasitic/leakage/dynamic power
+1. GPDK045 core/AXI hold·data-net max-transition, VDD/VSS power routing과 PG/IR 해소
+2. Filler/decap/tap/endcap·metal fill, complete antenna data와 quantified annotation coverage를 갖춘 unconditioned reset-aware Snapshot/decision VCD/SAIF power
 3. UPF/CPF 기반 retention·isolation·power-switch 및 wake overhead
 4. 실제 선정 MCU/BLE/memory/PMIC workload와 전체 전력 예산
 5. 외부 계측기와 ASIC silicon의 idle/stream/burst 실측
 
-물리 보드와 ASIC silicon 전력은 측정하지 않았다. Vivado 및 GPDK045 power는 **ESTIMATED**이고, 전력과 latency의 곱은 명시한 조건에서만 **DERIVED**이다. GPDK045 vectorless power로는 판정당 에너지를 산출하지 않았다.
+물리 보드와 ASIC silicon 전력은 측정하지 않았다. Vivado 및 GPDK045 power는 **ESTIMATED**이고, 전력과 latency의 곱은 명시한 조건에서만 **DERIVED**이다. Run-1/run-2 vectorless power와 run-2 conditioned activity windows로 ASIC 판정당 에너지를 산출하지 않았다. Matched 0.00000087 mW delta도 energy/decision이 아니며 AXI는 vectorless only다.

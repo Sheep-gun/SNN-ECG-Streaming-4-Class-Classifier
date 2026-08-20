@@ -1,0 +1,3 @@
+profile,total,non_equivalent,abort,unknown,status,evidence
+core,6178,0,0,0,PASS,reports/lec_postroute_iter1/result_summary.txt
+axi,6287,0,0,0,PASS,axi_run/reports/lec_postroute_cts50_drv2/result_summary.txt

@@ -1,0 +1,13 @@
+profile=core
+type=fixed global engineering derate
+slow_early=0.95
+slow_late=1.0
+fast_early=1.0
+fast_late=1.05
+constraint_script=source/repo/design/digital/asic/gpdk45/scripts/run_innovus.tcl
+constraint_script_sha256=b7ddf0b823a26c1ba12ce85349dba12d8f6f8fa37c1ae787966aedba7747c2f5
+slow_derate_report=reports/innovus/timing_derate_slow.rpt
+slow_derate_sha256=3bc48c5c0099f1ff3b45e61d3644d85cc9a8a50c5ba766a27f55f5a551d4a961
+fast_derate_report=reports/innovus/timing_derate_fast.rpt
+fast_derate_sha256=f1ee07570a6157d501974423b3bc6448093ac270888c45559b7c6497a94f377f
+boundary=engineering derates with shared QRC technology; not foundry signoff corners

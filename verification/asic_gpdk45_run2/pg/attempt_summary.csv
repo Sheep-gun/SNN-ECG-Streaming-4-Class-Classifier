@@ -1,0 +1,16 @@
+check,status,value,evidence,limitation
+run_status,FAILED,0,logs/innovus_core_pg_fillers.console.log,geometry-only exploratory PG; no IR/EM signoff
+decap_and_metal_fill_inserted,OBSERVED,false,reports/innovus_pg/pg_assumptions.txt,reported script assumption
+ir_em_analyzed,OBSERVED,false,reports/innovus_pg/pg_assumptions.txt,reported script assumption
+ring_offset_um,OBSERVED,2.00,reports/innovus_pg/pg_assumptions.txt,reported script assumption
+ring_spacing_um,OBSERVED,0.50,reports/innovus_pg/pg_assumptions.txt,reported script assumption
+ring_width_um,OBSERVED,1.00,reports/innovus_pg/pg_assumptions.txt,reported script assumption
+scope,OBSERVED,exploratory geometry only,reports/innovus_pg/pg_assumptions.txt,reported script assumption
+stripe_pitch_um,OBSERVED,40.00,reports/innovus_pg/pg_assumptions.txt,reported script assumption
+stripe_spacing_um,OBSERVED,0.40,reports/innovus_pg/pg_assumptions.txt,reported script assumption
+stripe_width_um,OBSERVED,0.80,reports/innovus_pg/pg_assumptions.txt,reported script assumption
+tap_endcap_available,OBSERVED,false,reports/innovus_pg/pg_assumptions.txt,reported script assumption
+top_pg_pads_or_sources,OBSERVED,false,reports/innovus_pg/pg_assumptions.txt,reported script assumption
+pg_connectivity,FAIL,171,reports/innovus_pg/connectivity_pg.rpt,internal special-net connectivity only
+pg_geometry,FAIL,715,reports/innovus_pg/geometry_internal.rpt,obsolete internal verifyGeometry; not foundry DRC
+filler_report_present,OBSERVED,1,reports/innovus_pg/check_filler.rpt,presence only; not foundry signoff
