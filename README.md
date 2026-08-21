@@ -64,6 +64,7 @@
 | Run-3 AXI hold closure | setup +2.435 ns; hold 0.000 ns, TNS 0 / 0 paths | hold는 닫혔지만 data max-transition 264 nets/1,387 terminals와 clock slew 263 pins가 남아 full physical closure 아님 |
 | Run-4 AXI closure 개선 | setup +2.661 ns; hold 0.000 ns, TNS 0 / 0 paths; clock slew 0; internal DRC 0 | 43,956 instances / 123,906.258 µm²; data max-transition은 141 nets/1,149 terminals가 남아 full physical closure 아님; vectorless 3.71285384 mW |
 | Run-5 AXI full closure | setup +2.703 ns; hold 0.000 ns, TNS 0 / 0 paths; data max-transition 0; clock slew 0; internal DRC 0 | 42,881 instances / 126,069.441 µm²; 50% floorplan의 area–closure tradeoff; vectorless 3.58433691 mW; foundry sign-off 아님 |
+| Run-6 AXI hold guardband | setup +2.602 ns; hold +0.010 ns, TNS 0 / 0 paths; data max-transition 0; clock slew 0; internal DRC 0 | 기존 100 ps uncertainty 뒤 10 ps 잔여 slack; 44,602 instances / 131,487.003 µm²; vectorless 3.71636663 mW |
 
 LTspice와 XMODEL의 동일 10초 ECG 비교에서는 MAE 0.6445 LSB, RMS 1.3020 LSB, 상관계수 0.999518, 지연 0표본을 기록했다. 이는 모델 간 정합이며 물리 AFE 또는 ADC 실측이 아니다.
 
@@ -94,6 +95,7 @@ LTspice와 XMODEL의 동일 10초 ECG 비교에서는 MAE 0.6445 LSB, RMS 1.3020
 | GPDK045 run-3 hold closure | [verification/asic_gpdk45_hold_closure/README_KR.md](verification/asic_gpdk45_hold_closure/README_KR.md) |
 | GPDK045 run-4 AXI closure 개선 | [verification/asic_gpdk45_axi_closure_run4/README_KR.md](verification/asic_gpdk45_axi_closure_run4/README_KR.md) |
 | GPDK045 run-5 AXI full closure | [verification/asic_gpdk45_axi_full_closure_run5/README_KR.md](verification/asic_gpdk45_axi_full_closure_run5/README_KR.md) |
+| GPDK045 run-6 AXI hold guardband | [verification/asic_gpdk45_axi_hold_guardband_run6/README_KR.md](verification/asic_gpdk45_axi_hold_guardband_run6/README_KR.md) |
 | 통합 검증 | [docs/INTEGRATION_VERIFICATION_KR.md](docs/INTEGRATION_VERIFICATION_KR.md) |
 | 최종 Figure | [figures/FIGURE_INDEX.md](figures/FIGURE_INDEX.md) |
 | 재현 명령 | [REPRODUCIBILITY_KR.md](REPRODUCIBILITY_KR.md) |
@@ -106,4 +108,4 @@ LTspice와 XMODEL의 동일 10초 ECG 비교에서는 MAE 0.6445 LSB, RMS 1.3020
 
 ## 한계
 
-Run-1 GPDK045 결과는 generic demonstration library의 historical core-only baseline이며 scan-capable cell·clock slew·hold·DRC 한계를 보존한다. Run-2는 scan-free core와 AXI-inclusive block으로 확장했지만 hold와 data-transition residual이 남았다. Run-3 core는 같은 constraint·OCV assumption에서 hold·data-transition·clock-slew·internal-DRC를 모두 0 violation으로 닫았다. Run-5 AXI는 50% floorplan에서 setup +2.703 ns, hold WNS/TNS/path 0, data max-transition 0, clock slew 0, internal DRC 0과 LEC 6,287점 clean을 달성했다. 다만 die area가 230,032.848 µm²로 커진 area–closure tradeoff이며, slow-early 0.95와 fast-late 1.05는 foundry AOCV/POCV/LVF가 아닌 fixed engineering assumption이다. Exploratory PG는 실패했고 선택한 checkpoint는 signal-only이며 VDD/VSS가 unrouted이므로 PG/IR/EM 근거가 아니다. Run-3 core 3.72167787 mW와 run-5 AXI 3.58433691 mW는 workload 또는 실측값이 아니다. 물리 AFE PCB, ADC silicon, physical fill, foundry DRC/LVS, pad/package/fabrication, 실리콘 전력, 임상 검증과 실제 24시간 입력 검증은 수행하지 않았다.
+Run-1 GPDK045 결과는 generic demonstration library의 historical core-only baseline이며 scan-capable cell·clock slew·hold·DRC 한계를 보존한다. Run-2는 scan-free core와 AXI-inclusive block으로 확장했지만 hold와 data-transition residual이 남았다. Run-3 core는 같은 constraint·OCV assumption에서 hold·data-transition·clock-slew·internal-DRC를 모두 0 violation으로 닫았다. Run-6 AXI는 50% floorplan에서 setup +2.602 ns, hold +0.010 ns, data max-transition 0, clock slew 0, internal DRC 0과 LEC 6,287점 clean을 달성했다. 기존 100 ps engineering uncertainty 뒤에 10 ps residual slack을 추가로 남겼지만, die area 230,032.848 µm²와 1,721-instance guardband cost를 지불했다. Slow-early 0.95와 fast-late 1.05는 foundry AOCV/POCV/LVF가 아닌 fixed engineering assumption이다. Exploratory PG는 실패했고 선택한 checkpoint는 signal-only이며 VDD/VSS가 unrouted이므로 PG/IR/EM 근거가 아니다. Run-3 core 3.72167787 mW와 run-6 AXI 3.71636663 mW는 workload 또는 실측값이 아니다. 물리 AFE PCB, ADC silicon, physical fill, foundry DRC/LVS, pad/package/fabrication, 실리콘 전력, 임상 검증과 실제 24시간 입력 검증은 수행하지 않았다.

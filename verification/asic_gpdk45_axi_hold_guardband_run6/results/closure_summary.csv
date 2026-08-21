@@ -1,0 +1,18 @@
+profile,stage,metric,run5_value,run6_value,unit,status,evidence,claim_boundary
+axi,postroute,instance_count,42881,44602,count,OBSERVED,final_checkpoint/area.rpt,1721-instance guardband cost
+axi,postroute,cell_area,126069.441,131487.003,um2,OBSERVED,final_checkpoint/area.rpt,4.30 percent standard-cell area increase
+axi,postroute,die_area,230032.848,230032.848,um2,OBSERVED,final_checkpoint/final.def,same 50 percent floorplan die
+axi,postroute,placement_density,65.274,68.079,percent,OBSERVED,final_checkpoint/time_design_hold.summary,placeable-area denominator
+axi,route,routed_wire_length,812624.320,933258.465,um,OBSERVED,final_checkpoint/final.def,regular NETS Manhattan length
+axi,route,via_count,313004,331718,count,OBSERVED,final_checkpoint/final.def,via-master token count
+axi,timing,setup_wns,2.703,2.602,ns,PASS,final_checkpoint/timing_setup.rpt,100 MHz explicit OCV-view report
+axi,timing,hold_wns,0.000,0.010,ns,PASS,final_checkpoint/timing_hold.rpt,10 ps residual after 100 ps uncertainty
+axi,timing,hold_tns,0.000,0.000,ns,PASS,final_checkpoint/time_design_hold.summary,aggregate all-path hold
+axi,timing,hold_violating_paths,0,0,count,PASS,final_checkpoint/time_design_hold.summary,zero violating hold paths
+axi,timing,max_transition_nets,0,0,count,PASS,final_checkpoint/time_design_setup.tran,zero data transition violations
+axi,timing,max_transition_terminals,0,0,count,PASS,final_checkpoint/time_design_setup.tran,zero violating terminals
+axi,timing,clock_slew_violations,0,0,count,PASS,final_checkpoint/ccopt_clock_trees_60ps.rpt,60 ps engineering target
+axi,timing,clock_slew_worst,0.056,0.057,ns,PASS,final_checkpoint/ccopt_clock_trees_60ps.rpt,below 0.060 ns target
+axi,route,internal_drc,0,0,count,PASS,final_checkpoint/internal_route_drc.rpt,Innovus internal check not foundry DRC
+axi,power,vectorless_total,3.58433691,3.71636663,mW,ESTIMATE,final_checkpoint/power_vectorless.rpt,default activity 0.10 not workload power
+axi,equivalence,compared_points,6287,6287,count,PASS,lec/result_summary.txt,diff abort unknown all zero

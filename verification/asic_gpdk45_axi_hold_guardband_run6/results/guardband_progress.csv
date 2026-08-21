@@ -1,0 +1,9 @@
+stage,hold_target_ns,hold_cells_added,setup_wns_ns,hold_wns_ns,max_transition_nets,max_transition_terminals,density_percent,status
+run5_baseline,0.000,0,2.703,0.000,0,0,65.274,MARGINAL
+guard10_hold,0.010,1059,2.636,0.006,6,15,66.989,DRV_REQUIRED
+guard10_drv,NA,NA,2.636,0.006,0,0,66.992,PARTIAL
+guard12_hold,0.012,216,2.637,0.007,4,22,67.348,DRV_REQUIRED
+guard12_drv,NA,NA,2.637,0.007,0,0,67.350,PARTIAL
+guard15_hold,0.015,439,2.602,0.010,5,91,68.077,DRV_REQUIRED
+guard15_drv_final,NA,NA,2.602,0.010,0,0,68.079,PASS
+independent_final_export,NA,NA,2.602,0.010,0,0,68.079,PASS

@@ -165,3 +165,7 @@ Run-3 core는 setup +2.470 ns, hold WNS/TNS/path 0, data max-transition 0, clock
 - `tools/summarize_asic_gpdk45_run2.py`: zero-violation Innovus `.tran.gz`의 단수형 `there is 0 max_tran violation`도 fail-closed로 파싱한다.
 
 Run-4 transition 위반 141 nets 중 140개가 `qrs_maf` 내부였다. Run-5는 constraint를 완화하지 않고 utilization 0.50으로 배치 공간을 늘려 setup +2.703 ns, hold WNS/TNS/path 0, data max-transition 0, clock slew 0, internal DRC 0과 LEC 6,287점 clean을 기록했다. Standard-cell area와 die area가 증가한 대신 routing·power와 closure가 개선된 결과다. 상세 증거는 `verification/asic_gpdk45_axi_full_closure_run5/`에 있다.
+
+## Run-6 hold guardband
+
+Run-5 checkpoint에 `hold_closure_pass.tcl`의 positive target과 `optimize_postroute_drv.tcl`을 교대 적용했다. Target 10·12·15 ps와 세 번의 DRV recovery 뒤 hold WNS +0.010 ns, data max-transition 0, setup +2.602 ns를 동시에 달성했다. Guardband 비용과 engineering uncertainty 경계는 `verification/asic_gpdk45_axi_hold_guardband_run6/`에 있다.

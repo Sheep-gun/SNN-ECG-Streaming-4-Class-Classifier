@@ -10,6 +10,7 @@
 | `asic_gpdk45_hold_closure/` | Run-3 core hold/DRV closure와 AXI hold-closure tradeoff 증거 |
 | `asic_gpdk45_axi_closure_run4/` | Run-4 AXI hold·clock·DRC closure 개선과 residual data-transition 증거 |
 | `asic_gpdk45_axi_full_closure_run5/` | Run-5 AXI setup·hold·data-transition·clock·DRC full-closure와 area tradeoff 증거 |
+| `asic_gpdk45_axi_hold_guardband_run6/` | Run-6 AXI 추가 hold guardband 10 ps와 면적·배선·전력 비용 증거 |
 | `integration_evidence/` | 통합 전후 상태와 의도적 제외 자료 |
 | `timing_optimization/` | critical path 관측과 pipeline 최적화 이력 |
 

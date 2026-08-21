@@ -53,3 +53,10 @@ asic_gpdk45_run5_axi,hold_WNS_ns,0.000,verification/asic_gpdk45_axi_full_closure
 asic_gpdk45_run5_axi,max_transition_violating_nets,0,verification/asic_gpdk45_axi_full_closure_run5/results/closure_summary.csv,양건,data transition closure
 asic_gpdk45_run5_axi,clock_slew_violations,0,verification/asic_gpdk45_axi_full_closure_run5/results/closure_summary.csv,양건,60 ps target worst 0.056 ns
 asic_gpdk45_run5_axi,vectorless_total_power_mW,3.58433691,verification/asic_gpdk45_axi_full_closure_run5/results/closure_summary.csv,양건,default activity not workload or measured power
+asic_gpdk45_run6_axi,postroute_instances,44602,verification/asic_gpdk45_axi_hold_guardband_run6/results/closure_summary.csv,양건,1721-instance guardband cost over run5
+asic_gpdk45_run6_axi,postroute_cell_area_um2,131487.003,verification/asic_gpdk45_axi_hold_guardband_run6/results/closure_summary.csv,양건,standard-cell area only
+asic_gpdk45_run6_axi,setup_WNS_ns,2.602,verification/asic_gpdk45_axi_hold_guardband_run6/results/closure_summary.csv,양건,100 MHz fixed engineering OCV
+asic_gpdk45_run6_axi,hold_WNS_ns,0.010,verification/asic_gpdk45_axi_hold_guardband_run6/results/closure_summary.csv,양건,10 ps residual after 100 ps engineering uncertainty
+asic_gpdk45_run6_axi,max_transition_violating_nets,0,verification/asic_gpdk45_axi_hold_guardband_run6/results/closure_summary.csv,양건,data transition closure maintained
+asic_gpdk45_run6_axi,clock_slew_violations,0,verification/asic_gpdk45_axi_hold_guardband_run6/results/closure_summary.csv,양건,60 ps target worst 0.057 ns
+asic_gpdk45_run6_axi,vectorless_total_power_mW,3.71636663,verification/asic_gpdk45_axi_hold_guardband_run6/results/closure_summary.csv,양건,default activity not workload or measured power

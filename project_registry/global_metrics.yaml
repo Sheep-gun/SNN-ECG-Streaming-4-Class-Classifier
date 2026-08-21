@@ -308,6 +308,31 @@ metrics:
     vectorless_power_mw: 3.58433691
     lec_points: 6287
     evidence: verification/asic_gpdk45_axi_full_closure_run5/results/closure_summary.csv
+  asic_gpdk45_axi_hold_guardband_run6:
+    constraints_preserved: true
+    clock_mhz: 100
+    floorplan_utilization: 0.50
+    hold_uncertainty_ns: 0.100
+    additional_hold_guardband_ns: 0.010
+    engineering_derates: {slow_early: 0.95, slow_late: 1.00, fast_early: 1.00, fast_late: 1.05}
+    instances: 44602
+    cell_area_um2: 131487.003
+    die_area_um2: 230032.848
+    placement_density_percent: 68.079
+    routed_wire_um: 933258.465
+    vias: 331718
+    setup_wns_ns: 2.602
+    hold_wns_ns: 0.010
+    hold_tns_ns: 0.000
+    hold_violating_paths: 0
+    max_transition_nets: 0
+    max_transition_terminals: 0
+    clock_slew_violations: 0
+    clock_slew_worst_ns: 0.057
+    internal_drc: 0
+    vectorless_power_mw: 3.71636663
+    lec_points: 6287
+    evidence: verification/asic_gpdk45_axi_hold_guardband_run6/results/closure_summary.csv
 claim_boundaries:
   validated_input_duration: 30 minutes
   holter_direction: 24 hours or longer
@@ -319,4 +344,5 @@ claim_boundaries:
   run3_note: core stated timing and internal DRV checks are closed under generic engineering assumptions; AXI hold is closed but data-transition and clock-slew checks fail; neither is foundry signoff.
   run4_note: AXI hold clock-slew and internal-route-DRC checks close under generic engineering assumptions and PPA improves over run3; data-transition still fails; not foundry signoff.
   run5_note: AXI setup hold data-transition clock-slew and internal-route-DRC checks close under generic engineering assumptions with a larger 50 percent-utilization die; not foundry signoff.
+  run6_note: AXI retains 10 ps residual hold slack after a 100 ps engineering uncertainty while other stated checks remain closed; guardband cost is explicit; not a foundry-guaranteed 110 ps margin or signoff.
   dataset_note: strict record-wise splitting prevents source-record leakage but does not remove database-class confounding.

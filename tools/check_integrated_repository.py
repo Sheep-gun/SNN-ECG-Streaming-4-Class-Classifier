@@ -81,6 +81,15 @@ REQUIRED = [
     "verification/asic_gpdk45_axi_full_closure_run5/results/closure_progress.csv",
     "verification/asic_gpdk45_axi_full_closure_run5/results/transition_root_cause.csv",
     "verification/asic_gpdk45_axi_full_closure_run5/figures/axi_util50_full_closed.gif",
+    "tables/asic_gpdk45_axi_hold_guardband_run6.csv",
+    "verification/asic_gpdk45_axi_hold_guardband_run6/README_KR.md",
+    "verification/asic_gpdk45_axi_hold_guardband_run6/run_manifest.json",
+    "verification/asic_gpdk45_axi_hold_guardband_run6/CHECKSUMS.txt",
+    "verification/asic_gpdk45_axi_hold_guardband_run6/results/closure_summary.csv",
+    "verification/asic_gpdk45_axi_hold_guardband_run6/results/physical_checks.csv",
+    "verification/asic_gpdk45_axi_hold_guardband_run6/results/equivalence_summary.csv",
+    "verification/asic_gpdk45_axi_hold_guardband_run6/results/guardband_progress.csv",
+    "verification/asic_gpdk45_axi_hold_guardband_run6/figures/axi_holdguard10_final.gif",
     "figures/FIGURE_INDEX.md",
     "vivado/microblaze/SNN_ECG_MB_FULL_REPLAY.xpr",
     "vivado/pure_rtl/project/SNN_ECG_PURE_RTL_VISUALIZATION.xpr",
@@ -459,6 +468,39 @@ def main() -> int:
         if not run5_manifest.get("private_archive", {}).get("remote_workspace_removed"):
             errors.append("run-5 remote workspace cleanup must be recorded")
 
+    run6_path = ROOT / "verification/asic_gpdk45_axi_hold_guardband_run6/results/closure_summary.csv"
+    if run6_path.exists():
+        rows = load_csv_rows("verification/asic_gpdk45_axi_hold_guardband_run6/results/closure_summary.csv")
+        by_metric = {(row["profile"], row["stage"], row["metric"]): row for row in rows}
+        expected_run6 = {
+            ("axi", "postroute", "instance_count"): ("44602", "OBSERVED"),
+            ("axi", "postroute", "cell_area"): ("131487.003", "OBSERVED"),
+            ("axi", "timing", "setup_wns"): ("2.602", "PASS"),
+            ("axi", "timing", "hold_wns"): ("0.010", "PASS"),
+            ("axi", "timing", "hold_violating_paths"): ("0", "PASS"),
+            ("axi", "timing", "max_transition_nets"): ("0", "PASS"),
+            ("axi", "timing", "clock_slew_violations"): ("0", "PASS"),
+            ("axi", "route", "internal_drc"): ("0", "PASS"),
+            ("axi", "power", "vectorless_total"): ("3.71636663", "ESTIMATE"),
+            ("axi", "equivalence", "compared_points"): ("6287", "PASS"),
+        }
+        for key, expected_pair in expected_run6.items():
+            row = by_metric.get(key)
+            if row is None or (row.get("run6_value"), row.get("status")) != expected_pair:
+                errors.append(f"run-6 AXI guardband metric mismatch for {key}: {row}")
+
+        run6_manifest = load_json("verification/asic_gpdk45_axi_hold_guardband_run6/run_manifest.json")
+        selected = run6_manifest.get("run6_axi_selected", {})
+        if selected.get("hold_wns_ns") != 0.010:
+            errors.append("run-6 AXI hold guardband must be exactly recorded as 0.010 ns")
+        for field in ("hold_violating_paths", "max_transition_nets", "clock_slew_violations", "internal_drc"):
+            if selected.get(field) != 0:
+                errors.append(f"run-6 AXI closure field must be zero: {field}={selected.get(field)}")
+        if selected.get("unrouted_pg_nets") != 2:
+            errors.append("run-6 unrouted PG boundary must remain explicit")
+        if not run6_manifest.get("private_archive", {}).get("remote_workspace_removed"):
+            errors.append("run-6 remote workspace cleanup must be recorded")
+
     claim_registry = ROOT / "project_registry/claim_registry.csv"
     if claim_registry.exists():
         claim_ids = {row["claim_id"] for row in load_csv_rows("project_registry/claim_registry.csv")}
@@ -472,6 +514,8 @@ def main() -> int:
             errors.append("run-4 AXI closure claim CLM-041 missing")
         if "CLM-042" not in claim_ids:
             errors.append("run-5 AXI full-closure claim CLM-042 missing")
+        if "CLM-043" not in claim_ids:
+            errors.append("run-6 AXI hold-guardband claim CLM-043 missing")
 
     figures_index = (ROOT / "figures/FIGURE_INDEX.md").read_text(encoding="utf-8") if (ROOT / "figures/FIGURE_INDEX.md").exists() else ""
     figure_files = list((ROOT / "figures/final_submission").rglob("*.svg"))

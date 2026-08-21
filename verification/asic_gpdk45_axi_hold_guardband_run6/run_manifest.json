@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "source_commit_before_run6": "fde42edc389d2458366b6ebcc555d37163cc29aa",
+  "tool_versions": {
+    "innovus": "23.14-s088_1",
+    "iquantus": "23.1.1-s336",
+    "conformal": "24.10-s500"
+  },
+  "constraints": {
+    "clock_mhz": 100,
+    "hold_uncertainty_ns": 0.100,
+    "slow_early_derate": 0.95,
+    "slow_late_derate": 1.00,
+    "fast_early_derate": 1.00,
+    "fast_late_derate": 1.05,
+    "derate_kind": "fixed engineering assumption",
+    "rc_model": "same gpdk045.tch and scale 1.0 for both views",
+    "floorplan_utilization": 0.50,
+    "hold_slack_threshold_ns": -0.200,
+    "hold_targets_ns": [0.010, 0.012, 0.015]
+  },
+  "selected_sequence": {
+    "base": "run-5 AXI full-closure checkpoint",
+    "hold_cells_by_target_pass": [1059, 216, 439],
+    "hold_cells_total": 1714,
+    "net_instance_increase": 1721,
+    "drv_recovery_passes": 3,
+    "selection_reason": "10 ps residual hold slack after 100 ps uncertainty while setup transition clock internal DRC and LEC remain clean"
+  },
+  "run6_axi_selected": {
+    "instances": 44602,
+    "cell_area_um2": 131487.0030,
+    "die_um": [481.200, 478.040],
+    "die_area_um2": 230032.848,
+    "density_percent": 68.079,
+    "wire_um": 933258.465,
+    "vias": 331718,
+    "setup_wns_ns": 2.602,
+    "hold_wns_ns": 0.010,
+    "hold_tns_ns": 0.000,
+    "hold_violating_paths": 0,
+    "max_transition_nets": 0,
+    "max_transition_terminals": 0,
+    "clock_slew_violations": 0,
+    "clock_slew_worst_ns": 0.057,
+    "internal_drc": 0,
+    "signal_connectivity_problems_excluding_pg": 0,
+    "unrouted_pg_nets": 2,
+    "vectorless_power_mw": 3.71636663,
+    "lec": {"total": 6287, "non_equivalent": 0, "abort": 0, "unknown": 0}
+  },
+  "private_archive": {
+    "sha256": "0a39b2e2d8123c6d0bad78aab259360298a6c8529f92c91bbe5bbfd40277424a",
+    "raw_artifacts_committed": false,
+    "remote_workspace_removed": true
+  },
+  "claim_boundary": [
+    "The 100 ps uncertainty is an engineering assumption and the additional 10 ps is residual slack in the generic hold view; they are not a foundry-guaranteed 110 ps margin.",
+    "The block remains padless signal-route-only with VDD and VSS unrouted.",
+    "Guardband costs are reported explicitly in instances, cell area, routing, density, and vectorless power.",
+    "No foundry signoff, PG, IR/EM, physical fill, DFT, pad, package, fabrication, workload power, or silicon measurement is included."
+  ]
+}

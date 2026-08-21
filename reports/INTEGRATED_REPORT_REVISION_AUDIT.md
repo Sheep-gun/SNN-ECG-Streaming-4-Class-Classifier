@@ -60,6 +60,7 @@
 - Mapped-to-postroute LEC는 core 6,178/AXI 6,287 compare point에서 diff·abort·unknown 0이지만 timing·accuracy·four-state GLS·sign-off와 구분했다.
 - Run-3 core는 stated engineering OCV에서 hold·data-transition·clock-slew·internal-DRC를 닫았고, run-4 AXI는 hold·clock-slew·internal-DRC를 닫으면서 run-3보다 PPA를 개선했지만 data-transition 141 nets/1,149 terminals를 residual로 유지했다.
 - Run-5 AXI는 50% floorplan에서 setup·hold·data-transition·clock-slew·internal-DRC를 모두 닫고 LEC 6,287점 clean을 유지했으며, 더 큰 die를 area–closure tradeoff로 공개했다.
+- Run-6 AXI는 100 ps hold uncertainty 뒤에 추가 10 ps slack을 확보하고 다른 closure·LEC를 유지했으며, guardband의 면적·배선·전력 비용을 공개했다.
 - Exploratory PG attempt는 171 connectivity·715 geometry violation으로 실패했으며 PG/IR/EM 구현 근거가 아님을 남겼다.
 - Unmodified four-state gate output X와 XPR license 부재를 보존하고, forced mapped seeds 11/22/33 및 timing check를 끈 single-seed MAX-SDF 결과를 testbench-conditioned sampled sensitivity로 제한했다.
 - Core seed11-conditioned activity 분석을 accelerated gap2 2.02536072 mW, active-wait idle 1.91083992 mW, literal 1 kSPS 100-sample prefix 1.91084079 mW, matched total delta 0.00000087 mW로 추가했다.

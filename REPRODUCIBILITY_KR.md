@@ -81,6 +81,8 @@ Run-4 AXI는 `hold_closure_pass.tcl`에서 `HOLD_SLACK_THRESHOLD=-0.200`, `HOLD_
 
 Run-5 AXI는 scan-free mapped netlist에서 `run_axi_low_density_closure.tcl`을 실행한다. `FLOORPLAN_UTILIZATION=0.50`, `DRV_PASSES=3`을 사용하며 clock/OCV/hold uncertainty는 run-4와 동일하다. Fresh place·50 ps CTS·route·IQuantus high-effort extraction 후 post-route DRV와 hold를 반복하고 각 pass를 독립 report/checkpoint로 보존한다. `finalize_hold_closed_checkpoint.tcl`과 `run_postroute_lec.do`로 최종 timing·power·SDF/SPEF·LEC를 다시 확인한다. Public authority는 `verification/asic_gpdk45_axi_full_closure_run5/`이며 raw 산출물은 Git 밖 checksum archive에만 보존한다.
 
+Run-6 AXI는 run-5 checkpoint에서 `hold_closure_pass.tcl`과 `optimize_postroute_drv.tcl`을 교대 실행한다. Hold target은 0.010→0.012→0.015 ns로 올리고 각 hold ECO 뒤 `DRV_ROUTE_MODE=none`으로 transition을 복구한다. 최종 독립 export에서 hold WNS +0.010 ns, transition 0, setup +2.602 ns를 확인한다. Public authority는 `verification/asic_gpdk45_axi_hold_guardband_run6/`이며 raw 산출물은 Git 밖 checksum archive에만 보존한다.
+
 ## 7. repository 검사
 
 ```powershell

@@ -28,6 +28,7 @@
 - [x] Run-2 core/AXI clock-tree slew 0 @ 60 ps와 internal DRC 0을 data-net max-transition closure 또는 foundry DRC sign-off로 확대하지 않았다.
 - [x] Run-3 core closure와 run-4 AXI hold·clock·DRC closure 개선을 historical baseline과 분리하고, run-4 residual data-transition 141 nets/1,149 terminals를 full closure와 구분했다.
 - [x] Run-5 AXI의 stated engineering checks 0 violation과 50% floorplan area tradeoff를 함께 제시하고 foundry sign-off와 구분했다.
+- [x] Run-6 AXI의 추가 hold slack 10 ps와 instances·area·wire·power 비용을 함께 제시하고 engineering uncertainty를 foundry guarantee와 구분했다.
 - [x] Run-2 vectorless 3.71626492/3.69335598 mW를 workload activity·판정당 에너지·silicon 실측값으로 확대하지 않았다.
 - [x] Run-2 core activity의 accelerated/idle/literal 세 window와 matched delta를 별도 cadence로 제시하고 AXI vectorless-only 범위를 유지했다.
 - [x] Seed11, mapped 6,045/6,045, `-access +rwc`, zero delay, fully-X/Z preserve와 unannotated default 0을 명시했다.
