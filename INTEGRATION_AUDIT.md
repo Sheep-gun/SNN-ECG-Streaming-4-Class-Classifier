@@ -47,9 +47,10 @@ PhysioNet 원시 waveform, 개인 식별정보, 서명과 제출 원본 PDF/HWP�
 - Run-2 scan-free core는 setup +2.469 ns, hold −0.008 ns이고 AXI block은 setup +2.781 ns, hold −0.016 ns이며, slow-early 0.95·fast-late 1.05의 fixed engineering derate assumption을 사용했다.
 - Run-2 core wrapper canonical RTL 36/36과 actual raw XMODEL 4/4, mapped-to-postroute LEC core 6,178 points·AXI 6,287 points의 diff/abort/unknown 0을 확인했다. AXI profile의 36-case replay를 뜻하지 않는다.
 - Run-3 core는 같은 engineering OCV/hold uncertainty에서 setup +2.470 ns, hold WNS/TNS/path 0, data max-transition 0, clock slew 0, internal DRC 0을 기록했다. AXI는 setup +2.435 ns와 hold WNS/TNS/path 0이지만 data-transition 264 nets/1,387 terminals와 clock slew 263 pins가 남았다.
+- Run-4 AXI는 setup +2.661 ns, hold WNS/TNS/path 0, clock slew 0, internal DRC 0, LEC 6,287점 clean을 기록했다. Run-3보다 area·wire·via·vectorless power를 줄였지만 data-transition 141 nets/1,149 terminals가 남아 full physical closure가 아니다.
 - Exploratory PG는 171 connectivity·715 geometry violation으로 실패했으며, forced two-state gate 결과와 timing check를 끈 single-seed MAX-SDF pilot은 조건부 sampled initialization sensitivity이다.
 - Run-2 core activity power는 seed11-conditioned mapped gate 6,045/6,045, `-access +rwc`, zero delay와 normalized SAIF에서 accelerated gap2 2.02536072 mW, active-wait idle 1.91083992 mW, literal 1 kSPS 100-sample prefix 1.91084079 mW, matched total delta 0.00000087 mW였다. SAIF parse PASS는 numeric annotation coverage PASS가 아니고 prefix는 Snapshot/decision이 아니며 silicon power·energy/decision 근거가 아니다. AXI는 vectorless only다.
-- 물리 AFE PCB, ADC silicon, ASIC physical timing closure, 성공한 PG/IR, physical-only cell·metal fill, foundry DRC/LVS, DFT, pad/package/fabrication과 임상 검증은 수행하지 않았다.
+- 물리 AFE PCB, ADC silicon, AXI data-transition closure, 성공한 PG/IR, physical-only cell·metal fill, foundry DRC/LVS, DFT, pad/package/fabrication과 임상 검증은 수행하지 않았다.
 
 ## 검사
 

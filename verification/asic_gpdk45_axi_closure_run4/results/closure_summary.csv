@@ -1,0 +1,18 @@
+profile,stage,metric,run3_value,run4_value,unit,status,evidence,claim_boundary
+axi,postroute,instance_count,44062,43956,count,OBSERVED,final_checkpoint/area.rpt,55 cells over run2 and 106 fewer than run3
+axi,postroute,cell_area,124717.482,123906.258,um2,OBSERVED,final_checkpoint/area.rpt,811.224 um2 lower than run3
+axi,postroute,placement_density,83.934,83.388,percent,OBSERVED,final_checkpoint/time_design_hold.summary,placeable-area denominator
+axi,route,routed_wire_length,1054817.085,953367.865,um,OBSERVED,final_checkpoint/final.def,regular NETS Manhattan length
+axi,route,via_count,373512,346666,count,OBSERVED,final_checkpoint/final.def,via-master token count
+axi,timing,setup_wns,2.435,2.661,ns,PASS,final_checkpoint/timing_setup.rpt,100 MHz explicit OCV-view report
+axi,timing,hold_wns,0.000,0.000,ns,PASS,final_checkpoint/timing_hold.rpt,zero negative hold slack
+axi,timing,hold_tns,0.000,0.000,ns,PASS,final_checkpoint/time_design_hold.summary,aggregate all-path hold
+axi,timing,hold_violating_paths,0,0,count,PASS,final_checkpoint/time_design_hold.summary,zero violating hold paths
+axi,timing,max_transition_nets,264,141,count,FAIL,final_checkpoint/time_design_setup.tran,improved but residual prevents full closure
+axi,timing,max_transition_terminals,1387,1149,count,FAIL,final_checkpoint/time_design_setup.tran,worst slack minus 0.821 ns
+axi,timing,max_transition_worst_slack,-1.813,-0.821,ns,FAIL,final_checkpoint/time_design_setup.tran,residual data transition
+axi,timing,clock_slew_violations,263,0,count,PASS,final_checkpoint/ccopt_clock_trees_60ps.rpt,60 ps engineering target
+axi,timing,clock_slew_worst,0.064,0.059,ns,PASS,final_checkpoint/ccopt_clock_trees_60ps.rpt,below 0.060 ns target
+axi,route,internal_drc,0,0,count,PASS,final_checkpoint/internal_route_drc.rpt,Innovus internal check not foundry DRC
+axi,power,vectorless_total,3.79286409,3.71285384,mW,ESTIMATE,final_checkpoint/power_vectorless.rpt,default activity 0.10 not workload power
+axi,equivalence,compared_points,6287,6287,count,PASS,lec/result_summary.txt,diff abort unknown all zero

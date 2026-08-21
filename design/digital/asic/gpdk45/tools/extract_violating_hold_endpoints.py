@@ -80,6 +80,7 @@ def main() -> int:
     parser.add_argument("report", type=Path)
     parser.add_argument("output", type=Path)
     parser.add_argument("--expected-count", type=int)
+    parser.add_argument("--limit", type=int)
     args = parser.parse_args()
 
     endpoints = extract_endpoints(read_text(args.report))
@@ -88,11 +89,18 @@ def main() -> int:
             f"endpoint count mismatch: expected {args.expected_count}, got {len(endpoints)}"
         )
 
+    total_count = len(endpoints)
+    if args.limit is not None:
+        if args.limit < 1:
+            raise SystemExit("--limit must be positive")
+        endpoints = endpoints[: args.limit]
+
     payload = ("\n".join(endpoints) + "\n").encode("utf-8")
     atomic_write(args.output, payload)
     print(
         "HOLD_ENDPOINTS: PASS "
-        f"count={len(endpoints)} sha256={hashlib.sha256(payload).hexdigest()}"
+        f"count={len(endpoints)} total={total_count} "
+        f"sha256={hashlib.sha256(payload).hexdigest()}"
     )
     return 0
 

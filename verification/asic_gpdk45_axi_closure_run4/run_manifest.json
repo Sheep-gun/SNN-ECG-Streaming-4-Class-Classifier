@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "source_commit_before_run4": "05a02daa1b10b353c29ec6d5eb6ec774e9f68534",
+  "tool_versions": {
+    "innovus": "23.14-s088_1",
+    "iquantus": "23.1.1-s336",
+    "conformal": "24.10-s500"
+  },
+  "constraints": {
+    "clock_mhz": 100,
+    "hold_uncertainty_ns": 0.100,
+    "slow_early_derate": 0.95,
+    "slow_late_derate": 1.00,
+    "fast_early_derate": 1.00,
+    "fast_late_derate": 1.05,
+    "derate_kind": "fixed engineering assumption",
+    "rc_model": "same gpdk045.tch and scale 1.0 for both views",
+    "hold_slack_threshold_ns": -0.200,
+    "hold_target_slack_ns": 0.000
+  },
+  "selected_sequence": {
+    "base": "run-2 AXI cts50_drv2 checkpoint",
+    "automatic_delay_cells_by_pass": [47, 5, 2, 0],
+    "final_manual_delay_cell": "DLY1X1",
+    "total_instance_increase_over_run2": 55,
+    "route_mode": "optDesign incremental EcoRoute; no broad wireOpt between hold passes",
+    "selection_reason": "zero hold paths with lower area wire vias power transition residual and clock slew than run-3 AXI"
+  },
+  "run3_axi_reference": {
+    "instances": 44062,
+    "cell_area_um2": 124717.482,
+    "density_percent": 83.934,
+    "wire_um": 1054817.085,
+    "vias": 373512,
+    "setup_wns_ns": 2.435,
+    "hold_wns_ns": 0.000,
+    "hold_tns_ns": 0.000,
+    "hold_violating_paths": 0,
+    "max_transition_nets": 264,
+    "max_transition_terminals": 1387,
+    "clock_slew_violations": 263,
+    "internal_drc": 0,
+    "vectorless_power_mw": 3.79286409
+  },
+  "run4_axi_selected": {
+    "instances": 43956,
+    "cell_area_um2": 123906.258,
+    "die_um": [426.200, 425.030],
+    "density_percent": 83.388,
+    "wire_um": 953367.865,
+    "vias": 346666,
+    "setup_wns_ns": 2.661,
+    "hold_wns_ns": 0.000,
+    "hold_tns_ns": 0.000,
+    "hold_violating_paths": 0,
+    "max_transition_nets": 141,
+    "max_transition_terminals": 1149,
+    "max_transition_worst_slack_ns": -0.821,
+    "clock_slew_violations": 0,
+    "clock_slew_worst_ns": 0.059,
+    "internal_drc": 0,
+    "signal_connectivity_problems_excluding_pg": 0,
+    "unrouted_pg_nets": 2,
+    "vectorless_power_mw": 3.71285384,
+    "lec": {"total": 6287, "non_equivalent": 0, "abort": 0, "unknown": 0}
+  },
+  "executed_script_sha256": {
+    "design/digital/asic/gpdk45/scripts/hold_closure_pass.tcl": "8358b879316b3da144e4d479c7006449d785fb9effb381da77bc52d42f56a6a3",
+    "design/digital/asic/gpdk45/scripts/manual_hold_endpoint_eco.tcl": "cdf5d553306971e42ac6134a689692985b5f127d5bd13475d909c69a05738ce9",
+    "design/digital/asic/gpdk45/scripts/optimize_postroute_drv.tcl": "64f8081044c7552a3cbc39432c40be6d5b99bd7fcd9b20f92591d5b32b318bdb",
+    "design/digital/asic/gpdk45/scripts/finalize_hold_closed_checkpoint.tcl": "04ac4ac8715ecfab0019964490ae8ec621ec9c0b5ab43bfef1cc92de80344af1",
+    "design/digital/asic/gpdk45/scripts/run_postroute_lec.do": "65586fb122f79c7ca336682fef07bd4fc1354e040f84dbd92a8d8807eae9f2aa",
+    "design/digital/asic/gpdk45/scripts/export_layout.tcl": "3e4b446f74a7b2269e20935b23306cc5b16636f574c516827064da9ba560595f"
+  },
+  "private_archive": {
+    "sha256": "479c4c3528935934ac73290656b2b0196220d66c38493e8a41fa87ba1685e117",
+    "raw_artifacts_committed": false,
+    "remote_workspace_removed": true
+  },
+  "claim_boundary": [
+    "AXI setup, hold, clock-slew and internal-route-DRC checks close only under the stated generic engineering assumptions.",
+    "Data max-transition still fails on 141 nets and 1149 terminals, so AXI full physical closure is not claimed.",
+    "The block remains padless signal-route-only with VDD and VSS unrouted.",
+    "No foundry signoff, PG, IR/EM, physical fill, DFT, pad, package, fabrication, workload power, or silicon measurement is included."
+  ]
+}

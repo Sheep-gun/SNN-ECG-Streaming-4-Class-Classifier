@@ -62,6 +62,15 @@ REQUIRED = [
     "verification/asic_gpdk45_hold_closure/results/equivalence_summary.csv",
     "verification/asic_gpdk45_hold_closure/figures/core_holdclosed.gif",
     "verification/asic_gpdk45_hold_closure/figures/axi_holdclosed.gif",
+    "tables/asic_gpdk45_axi_closure_run4.csv",
+    "verification/asic_gpdk45_axi_closure_run4/README_KR.md",
+    "verification/asic_gpdk45_axi_closure_run4/run_manifest.json",
+    "verification/asic_gpdk45_axi_closure_run4/CHECKSUMS.txt",
+    "verification/asic_gpdk45_axi_closure_run4/results/closure_summary.csv",
+    "verification/asic_gpdk45_axi_closure_run4/results/physical_checks.csv",
+    "verification/asic_gpdk45_axi_closure_run4/results/equivalence_summary.csv",
+    "verification/asic_gpdk45_axi_closure_run4/results/experiment_summary.csv",
+    "verification/asic_gpdk45_axi_closure_run4/figures/axi_run4_final.gif",
     "figures/FIGURE_INDEX.md",
     "vivado/microblaze/SNN_ECG_MB_FULL_REPLAY.xpr",
     "vivado/pure_rtl/project/SNN_ECG_PURE_RTL_VISUALIZATION.xpr",
@@ -376,6 +385,38 @@ def main() -> int:
         if run3_manifest.get("axi_final", {}).get("max_transition_nets") != 264:
             errors.append("run-3 AXI DRV limitation must remain explicit")
 
+    run4_path = ROOT / "verification/asic_gpdk45_axi_closure_run4/results/closure_summary.csv"
+    if run4_path.exists():
+        rows = load_csv_rows("verification/asic_gpdk45_axi_closure_run4/results/closure_summary.csv")
+        by_metric = {(row["profile"], row["stage"], row["metric"]): row for row in rows}
+        expected_run4 = {
+            ("axi", "postroute", "instance_count"): ("43956", "OBSERVED"),
+            ("axi", "postroute", "cell_area"): ("123906.258", "OBSERVED"),
+            ("axi", "timing", "setup_wns"): ("2.661", "PASS"),
+            ("axi", "timing", "hold_wns"): ("0.000", "PASS"),
+            ("axi", "timing", "hold_violating_paths"): ("0", "PASS"),
+            ("axi", "timing", "max_transition_nets"): ("141", "FAIL"),
+            ("axi", "timing", "clock_slew_violations"): ("0", "PASS"),
+            ("axi", "route", "internal_drc"): ("0", "PASS"),
+            ("axi", "power", "vectorless_total"): ("3.71285384", "ESTIMATE"),
+            ("axi", "equivalence", "compared_points"): ("6287", "PASS"),
+        }
+        for key, expected_pair in expected_run4.items():
+            row = by_metric.get(key)
+            if row is None or (row.get("run4_value"), row.get("status")) != expected_pair:
+                errors.append(f"run-4 AXI closure metric mismatch for {key}: {row}")
+
+        run4_manifest = load_json("verification/asic_gpdk45_axi_closure_run4/run_manifest.json")
+        selected = run4_manifest.get("run4_axi_selected", {})
+        if selected.get("hold_violating_paths") != 0:
+            errors.append("run-4 AXI hold closure must have zero violating paths")
+        if selected.get("clock_slew_violations") != 0:
+            errors.append("run-4 AXI clock slew closure must remain explicit")
+        if selected.get("max_transition_nets") != 141:
+            errors.append("run-4 AXI residual data-transition limitation must remain explicit")
+        if not run4_manifest.get("private_archive", {}).get("remote_workspace_removed"):
+            errors.append("run-4 remote workspace cleanup must be recorded")
+
     claim_registry = ROOT / "project_registry/claim_registry.csv"
     if claim_registry.exists():
         claim_ids = {row["claim_id"] for row in load_csv_rows("project_registry/claim_registry.csv")}
@@ -385,6 +426,8 @@ def main() -> int:
         required_run3_claims = {"CLM-039", "CLM-040"}
         if not required_run3_claims.issubset(claim_ids):
             errors.append(f"run-3 claim registry entries missing: {sorted(required_run3_claims - claim_ids)}")
+        if "CLM-041" not in claim_ids:
+            errors.append("run-4 AXI closure claim CLM-041 missing")
 
     figures_index = (ROOT / "figures/FIGURE_INDEX.md").read_text(encoding="utf-8") if (ROOT / "figures/FIGURE_INDEX.md").exists() else ""
     figure_files = list((ROOT / "figures/final_submission").rglob("*.svg"))

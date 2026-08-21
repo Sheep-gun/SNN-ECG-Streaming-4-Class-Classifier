@@ -21,7 +21,16 @@ set output_dir [file join $run_root outputs drv_closure $tag]
 file mkdir $report_dir
 file mkdir $output_dir
 
+set route_mode wireOpt
+if {[info exists ::env(DRV_ROUTE_MODE)]} {
+    set route_mode [string trim $::env(DRV_ROUTE_MODE)]
+}
+if {$route_mode ni {wireOpt none}} {
+    error "DRV_ROUTE_MODE must be wireOpt or none"
+}
+
 setMultiCpuUsage -localCpu 8
+set restore_db_file_check 0
 restoreDesign [file normalize $::env(INPUT_CHECKPOINT)] $top
 setAnalysisMode -analysisType onChipVariation -cppr both
 setDelayCalMode -SIAware true
@@ -33,7 +42,11 @@ setOptMode -detailDrvFailureReasonMaxNumNets 100
 setExtractRCMode -engine postRoute -effortLevel high -coupled true
 extractRC
 optDesign -postRoute -drv
-routeDesign -wireOpt
+# optDesign performs incremental routing.  Keep the broader global wire-opt
+# pass selectable because it can perturb already-closed short hold paths.
+if {$route_mode eq "wireOpt"} {
+    routeDesign -wireOpt
+}
 extractRC
 
 timeDesign -postRoute -outDir [file join $report_dir time_design_setup]
@@ -63,4 +76,12 @@ write_sdf -max_view setup_slow -min_view hold_fast -recompute_delay_calc \
     -version 3.0 [file join $output_dir ${top}_${tag}.sdf]
 rcOut -rc_corner max_rc -spef [file join $output_dir ${top}_${tag}_max_rc.spef]
 rcOut -rc_corner min_rc -spef [file join $output_dir ${top}_${tag}_min_rc.spef]
+
+set config [open [file join $report_dir run_config.txt] w]
+puts $config "profile=$profile"
+puts $config "top=$top"
+puts $config "input_checkpoint=[file normalize $::env(INPUT_CHECKPOINT)]"
+puts $config "drv_route_mode=$route_mode"
+puts $config "analysis=MMMC_OCV_CPPR_SI_IQuantus_high"
+close $config
 exit

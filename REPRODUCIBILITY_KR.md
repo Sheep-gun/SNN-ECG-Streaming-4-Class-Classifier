@@ -77,6 +77,8 @@ Core activity power는 `verification/asic_gpdk45_run2/power/activity_power_summa
 
 Run-3 hold closure는 `extract_violating_hold_endpoints.py`, `manual_hold_endpoint_eco.tcl`, `hold_resize_only.tcl`, `export_hold_closed_candidate.tcl`과 `run_postroute_lec.do`로 재현한다. Run-2 checkpoint와 PDK를 새 private work root에 복원하고 OCV·hold uncertainty를 유지한 채 endpoint ECO와 재추출을 수행한다. Core는 hold·data-transition·clock-slew·internal-DRC closure, AXI는 hold closure만 달성했다. Public 결과는 `verification/asic_gpdk45_hold_closure/`, raw DB/netlist/DEF/SDF/SPEF는 Git 밖의 checksum archive에 보존한다.
 
+Run-4 AXI는 `hold_closure_pass.tcl`에서 `HOLD_SLACK_THRESHOLD=-0.200`, `HOLD_TARGET_SLACK=0.000`, `HOLD_ROUTE_MODE=none`을 사용해 47·5·2·0-cell pass를 순서대로 적용하고, 마지막 endpoint에 `manual_hold_endpoint_eco.tcl`의 DLY1X1 한 개를 targeted `ecoRoute`한다. `finalize_hold_closed_checkpoint.tcl`로 high-effort RC·timing·power·SDF/SPEF를 재생성하고 `run_postroute_lec.do`로 mapped→postroute LEC를 확인한다. Public authority는 `verification/asic_gpdk45_axi_closure_run4/`이며 raw 산출물은 Git 밖 checksum archive에만 보존한다.
+
 ## 7. repository 검사
 
 ```powershell

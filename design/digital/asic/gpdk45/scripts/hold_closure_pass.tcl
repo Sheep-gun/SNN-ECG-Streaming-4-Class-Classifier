@@ -20,6 +20,11 @@ if {[info exists ::env(HOLD_TARGET_SLACK)]} {
     set target_slack $::env(HOLD_TARGET_SLACK)
 }
 
+set hold_slack_threshold -0.200
+if {[info exists ::env(HOLD_SLACK_THRESHOLD)]} {
+    set hold_slack_threshold $::env(HOLD_SLACK_THRESHOLD)
+}
+
 set hold_cells {DLY1X1 DLY2X1 DLY3X1 DLY4X1}
 if {[info exists ::env(HOLD_CELL_SET)]} {
     set hold_cells [split [string trim $::env(HOLD_CELL_SET)]]
@@ -34,6 +39,14 @@ if {[info exists ::env(HOLD_ECO_PASSES)]} {
 }
 if {![string is integer -strict $eco_passes] || $eco_passes < 1 || $eco_passes > 3} {
     error "HOLD_ECO_PASSES must be an integer from 1 to 3"
+}
+
+set route_mode wireOpt
+if {[info exists ::env(HOLD_ROUTE_MODE)]} {
+    set route_mode [string trim $::env(HOLD_ROUTE_MODE)]
+}
+if {$route_mode ni {wireOpt none}} {
+    error "HOLD_ROUTE_MODE must be wireOpt or none"
 }
 
 set report_dir [file join $run_root reports hold_closure $profile $tag]
@@ -74,7 +87,9 @@ setOptMode -opt_hold_allow_resize true
 setOptMode -opt_hold_allow_setup_tns_degradation true
 setOptMode -opt_add_repeater_report_failure_reason true
 setOptMode -opt_hold_cells $hold_cells
-setOptMode -opt_hold_slack_threshold 0.000
+# Lower fixing bound: paths worse than this threshold are excluded.  A zero
+# value would exclude every negative-slack path instead of selecting it.
+setOptMode -opt_hold_slack_threshold $hold_slack_threshold
 setOptMode -opt_hold_target_slack $target_slack
 setOptMode -opt_max_density 0.90
 setOptMode -opt_verbose true
@@ -84,7 +99,12 @@ setNanoRouteMode -routeWithSiDriven true
 
 for {set pass 1} {$pass <= $eco_passes} {incr pass} {
     optDesign -postRoute -hold
-    routeDesign -wireOpt
+    # optDesign performs its own incremental EcoRoute.  A subsequent global
+    # wire-opt pass can be enabled for a broad closure run, but it is optional
+    # because it may perturb thousands of already-routed nets for a small ECO.
+    if {$route_mode eq "wireOpt"} {
+        routeDesign -wireOpt
+    }
     extractRC
 
     set pass_dir [file join $report_dir pass_$pass]
@@ -120,7 +140,9 @@ puts $config "profile=$profile"
 puts $config "top=$top"
 puts $config "input_checkpoint=$checkpoint"
 puts $config "hold_target_slack_ns=$target_slack"
+puts $config "hold_slack_threshold_ns=$hold_slack_threshold"
 puts $config "hold_eco_passes=$eco_passes"
+puts $config "hold_route_mode=$route_mode"
 puts $config "hold_cells=[join $hold_cells { }]"
 puts $config "hold_allow_setup_tns_degradation=true"
 puts $config "generated_rc_model_cache=excluded_then_high_effort_reextracted"

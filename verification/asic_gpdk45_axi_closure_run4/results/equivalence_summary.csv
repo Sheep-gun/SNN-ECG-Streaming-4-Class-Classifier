@@ -1,0 +1,2 @@
+profile,total_points,non_equivalent,abort,unknown,status,evidence,claim_boundary
+axi,6287,0,0,0,PASS,lec/result_summary.txt,logical equivalence not timing or signoff

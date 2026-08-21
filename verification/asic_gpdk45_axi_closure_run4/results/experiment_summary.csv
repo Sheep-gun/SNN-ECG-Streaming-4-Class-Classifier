@@ -1,0 +1,8 @@
+experiment,result,hold_wns_ns,hold_tns_ns,hold_paths,max_transition_nets,max_transition_terminals,other,selection
+run2_restored_baseline,reanalyzed,-0.016,-0.526,119,73,469,high-effort current-session baseline,REJECT
+batch12_dly4_eco,hold_improved_drv_worse,-0.022,-0.255,74,327,2239,12 endpoint targeted ECO,REJECT
+driver_swap77,hold_and_drc_worse,-0.039,-1.119,114,73,469,454 internal DRC markers,REJECT
+prects119_dly4,large_cell_overhead_hold_drv_worse,-0.051,-4.098,174,247,2012,more than 5300 optimizer delay cells,REJECT
+positive_target_20ps,over_optimization,NA,NA,NA,57,425,2127 cells added density 88.099 percent then interrupted,REJECT
+iterative_target0_plus_single_dly1,hold_closed,0.000,0.000,0,141,1149,55 cells over run2 clock slew0 DRC0,SELECT
+selected_then_drv_recovery,hold_reopened_drv_worse,-0.001,-0.003,3,165,944,DRV attempt not adopted,REJECT

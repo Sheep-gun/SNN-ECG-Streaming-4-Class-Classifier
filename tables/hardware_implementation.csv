@@ -36,3 +36,12 @@ asic_gpdk45_run2_core_activity,accelerated_gap2_total_mW,2.02536072,verification
 asic_gpdk45_run2_core_activity,active_wait_idle_total_mW,1.91083992,verification/asic_gpdk45_run2/power/activity_power_summary.csv,양건,matched 0.1 s active-wait window including leakage clock and idle-state activity
 asic_gpdk45_run2_core_activity,literal_1ksps_prefix_total_mW,1.91084079,verification/asic_gpdk45_run2/power/activity_power_summary.csv,양건,100-sample 0.1 s prefix only; no Snapshot or decision
 asic_gpdk45_run2_core_activity,literal_minus_idle_total_delta_mW,0.00000087,verification/asic_gpdk45_run2/power/activity_power_summary.csv,양건,derived matched-window delta not energy per decision
+asic_gpdk45_run3_core,hold_WNS_ns,0.000,verification/asic_gpdk45_hold_closure/results/closure_summary.csv,양건,hold TNS0 paths0 with data transition and clock slew0
+asic_gpdk45_run3_core,vectorless_total_power_mW,3.72167787,verification/asic_gpdk45_hold_closure/results/closure_summary.csv,양건,default activity not workload or measured power
+asic_gpdk45_run4_axi,postroute_instances,43956,verification/asic_gpdk45_axi_closure_run4/results/closure_summary.csv,양건,padless AXI-inclusive accelerator block
+asic_gpdk45_run4_axi,postroute_cell_area_um2,123906.258,verification/asic_gpdk45_axi_closure_run4/results/closure_summary.csv,양건,standard-cell area only
+asic_gpdk45_run4_axi,setup_WNS_ns,2.661,verification/asic_gpdk45_axi_closure_run4/results/closure_summary.csv,양건,100 MHz fixed engineering OCV
+asic_gpdk45_run4_axi,hold_WNS_ns,0.000,verification/asic_gpdk45_axi_closure_run4/results/closure_summary.csv,양건,hold TNS0 paths0
+asic_gpdk45_run4_axi,max_transition_violating_nets,141,verification/asic_gpdk45_axi_closure_run4/results/closure_summary.csv,양건,residual prevents full physical closure
+asic_gpdk45_run4_axi,clock_slew_violations,0,verification/asic_gpdk45_axi_closure_run4/results/closure_summary.csv,양건,60 ps target worst 0.059 ns
+asic_gpdk45_run4_axi,vectorless_total_power_mW,3.71285384,verification/asic_gpdk45_axi_closure_run4/results/closure_summary.csv,양건,default activity not workload or measured power

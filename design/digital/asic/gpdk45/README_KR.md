@@ -147,3 +147,14 @@ GSCLIB045 문서는 이 공정을 generic representative 45 nm CMOS이자 tool d
 - `scripts/run_postroute_lec.do`: mapped netlist와 최종 postroute netlist를 비교한다.
 
 Run-3 core는 setup +2.470 ns, hold WNS/TNS/path 0, data max-transition 0, clock slew 0와 internal DRC 0을 기록했다. AXI는 setup +2.435 ns와 hold WNS/TNS/path 0이지만 data max-transition 264 nets/1,387 terminals와 clock slew 263 pins가 남았다. 상세 수치와 claim boundary는 `verification/asic_gpdk45_hold_closure/`에 있다.
+
+## Run-4 AXI closure 개선 자산
+
+- `scripts/hold_closure_pass.tcl`: `HOLD_SLACK_THRESHOLD` lower fixing bound와 `HOLD_ROUTE_MODE`을 명시해 작은 post-route hold ECO를 반복한다. `0` threshold는 음수 경로를 모두 제외하므로 기본값은 `−0.200 ns`다.
+- `scripts/inspect_hold_endpoint_drivers.tcl`과 `tools/build_hold_driver_swap_plan.py`: violated endpoint의 driver를 조사하고 function-preserving downsize plan을 만든다. 77-cell 실험은 hold와 DRC를 악화시켜 기각했다.
+- `scripts/manual_hold_driver_swap.tcl`: deterministic driver-swap 비교 실험을 재현한다.
+- `scripts/rerun_cts_with_prects_hold_cells.tcl`: 119 endpoints를 pre-CTS에서 재구축한 비교 실험이다. 큰 delay-cell overhead와 hold/DRV 악화로 기각했다.
+- `scripts/optimize_postroute_drv.tcl`: `DRV_ROUTE_MODE`으로 broad wire-opt를 선택할 수 있다. 선택 checkpoint의 후속 DRV 시도는 hold를 다시 열고 max-transition을 악화시켜 채택하지 않았다.
+- `scripts/finalize_hold_closed_checkpoint.tcl`: 선택 checkpoint를 독립 복원해 high-effort RC, setup/hold, power, DRC, netlist/DEF/SDF/SPEF를 export한다.
+
+선택한 run-4 AXI는 run-2 checkpoint에 55 cells만 추가해 setup +2.661 ns, hold WNS/TNS/path 0, clock slew 0, internal DRC 0과 LEC 6,287점 clean을 기록했다. Run-3 AXI보다 instances, area, wire, vias와 vectorless power를 줄였지만 data max-transition 141 nets/1,149 terminals가 남으므로 full physical closure가 아니다. 상세 증거는 `verification/asic_gpdk45_axi_closure_run4/`에 있다.

@@ -1,0 +1,16 @@
+profile,metric,run3_value,run4_value,unit,status,interpretation
+axi,instances,44062,43956,count,OBSERVED,106 fewer than run3
+axi,cell_area,124717.482,123906.258,um2,OBSERVED,811.224 um2 lower
+axi,placement_density,83.934,83.388,percent,OBSERVED,same placeable-area basis
+axi,routed_wire_length,1054817.085,953367.865,um,OBSERVED,regular signal NETS only
+axi,via_count,373512,346666,count,OBSERVED,via-master tokens
+axi,setup_wns,2.435,2.661,ns,PASS,100 MHz stated engineering OCV
+axi,hold_wns,0.000,0.000,ns,PASS,zero negative slack
+axi,hold_tns,0.000,0.000,ns,PASS,zero aggregate violation
+axi,hold_paths,0,0,count,PASS,zero violating paths
+axi,max_transition_nets,264,141,count,FAIL,improved residual prevents full closure
+axi,max_transition_terminals,1387,1149,count,FAIL,worst minus 0.821 ns
+axi,clock_slew_violations,263,0,count,PASS,60 ps target worst 0.059 ns
+axi,internal_route_drc,0,0,count,PASS,Innovus internal check only
+axi,vectorless_power,3.79286409,3.71285384,mW,ESTIMATE,default activity 0.10
+axi,mapped_to_postroute_lec,6287,6287,count,PASS,diff abort unknown all zero
