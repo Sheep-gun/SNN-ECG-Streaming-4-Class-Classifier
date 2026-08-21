@@ -45,3 +45,11 @@ asic_gpdk45_run4_axi,hold_WNS_ns,0.000,verification/asic_gpdk45_axi_closure_run4
 asic_gpdk45_run4_axi,max_transition_violating_nets,141,verification/asic_gpdk45_axi_closure_run4/results/closure_summary.csv,양건,residual prevents full physical closure
 asic_gpdk45_run4_axi,clock_slew_violations,0,verification/asic_gpdk45_axi_closure_run4/results/closure_summary.csv,양건,60 ps target worst 0.059 ns
 asic_gpdk45_run4_axi,vectorless_total_power_mW,3.71285384,verification/asic_gpdk45_axi_closure_run4/results/closure_summary.csv,양건,default activity not workload or measured power
+asic_gpdk45_run5_axi,postroute_instances,42881,verification/asic_gpdk45_axi_full_closure_run5/results/closure_summary.csv,양건,padless AXI-inclusive accelerator block
+asic_gpdk45_run5_axi,postroute_cell_area_um2,126069.441,verification/asic_gpdk45_axi_full_closure_run5/results/closure_summary.csv,양건,standard-cell area only
+asic_gpdk45_run5_axi,die_area_um2,230032.848,verification/asic_gpdk45_axi_full_closure_run5/results/closure_summary.csv,양건,50 percent floorplan area-closure tradeoff
+asic_gpdk45_run5_axi,setup_WNS_ns,2.703,verification/asic_gpdk45_axi_full_closure_run5/results/closure_summary.csv,양건,100 MHz fixed engineering OCV
+asic_gpdk45_run5_axi,hold_WNS_ns,0.000,verification/asic_gpdk45_axi_full_closure_run5/results/closure_summary.csv,양건,hold TNS0 paths0
+asic_gpdk45_run5_axi,max_transition_violating_nets,0,verification/asic_gpdk45_axi_full_closure_run5/results/closure_summary.csv,양건,data transition closure
+asic_gpdk45_run5_axi,clock_slew_violations,0,verification/asic_gpdk45_axi_full_closure_run5/results/closure_summary.csv,양건,60 ps target worst 0.056 ns
+asic_gpdk45_run5_axi,vectorless_total_power_mW,3.58433691,verification/asic_gpdk45_axi_full_closure_run5/results/closure_summary.csv,양건,default activity not workload or measured power

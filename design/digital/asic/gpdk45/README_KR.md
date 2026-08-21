@@ -158,3 +158,10 @@ Run-3 core는 setup +2.470 ns, hold WNS/TNS/path 0, data max-transition 0, clock
 - `scripts/finalize_hold_closed_checkpoint.tcl`: 선택 checkpoint를 독립 복원해 high-effort RC, setup/hold, power, DRC, netlist/DEF/SDF/SPEF를 export한다.
 
 선택한 run-4 AXI는 run-2 checkpoint에 55 cells만 추가해 setup +2.661 ns, hold WNS/TNS/path 0, clock slew 0, internal DRC 0과 LEC 6,287점 clean을 기록했다. Run-3 AXI보다 instances, area, wire, vias와 vectorless power를 줄였지만 data max-transition 141 nets/1,149 terminals가 남으므로 full physical closure가 아니다. 상세 증거는 `verification/asic_gpdk45_axi_closure_run4/`에 있다.
+
+## Run-5 AXI full-closure 자산
+
+- `scripts/run_axi_low_density_closure.tcl`: mapped netlist에서 floorplan utilization을 명시하고 fresh place·CTS·route를 수행한 뒤 post-route DRV/hold를 반복한다. 각 pass의 high-effort extracted timing과 RC checkpoint를 별도 보존한다.
+- `tools/summarize_asic_gpdk45_run2.py`: zero-violation Innovus `.tran.gz`의 단수형 `there is 0 max_tran violation`도 fail-closed로 파싱한다.
+
+Run-4 transition 위반 141 nets 중 140개가 `qrs_maf` 내부였다. Run-5는 constraint를 완화하지 않고 utilization 0.50으로 배치 공간을 늘려 setup +2.703 ns, hold WNS/TNS/path 0, data max-transition 0, clock slew 0, internal DRC 0과 LEC 6,287점 clean을 기록했다. Standard-cell area와 die area가 증가한 대신 routing·power와 closure가 개선된 결과다. 상세 증거는 `verification/asic_gpdk45_axi_full_closure_run5/`에 있다.

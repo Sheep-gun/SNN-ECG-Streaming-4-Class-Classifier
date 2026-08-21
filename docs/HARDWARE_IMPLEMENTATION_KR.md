@@ -97,6 +97,25 @@ Run-2 AXI checkpoint에서 hold threshold를 lower fixing bound `−0.200 ns`로
 
 Run-4는 hold·clock slew·internal DRC를 닫고 run-3 대비 area·wire·via·vectorless power를 줄였다. 그러나 data max-transition 141 nets / 1,149 terminals가 남으므로 AXI full physical closure가 아니다. +20 ps hold target, pre-CTS 119-endpoint rebuild, driver downsize와 후속 DRV recovery는 area·hold·DRV 또는 DRC를 악화시켜 기각했다.
 
+## GPDK045 run-5 AXI full closure
+
+Run-4의 transition 위반 141 nets 중 140개가 `qrs_maf` 내부에 집중된 것을 확인했다. Constraint를 완화하지 않고 initial floorplan utilization을 0.65에서 0.50으로 낮춘 뒤 place·CTS·route를 새로 수행하고 post-route DRV와 hold를 세 차례 교대 보정했다.
+
+| 항목 | Run-4 AXI | Run-5 AXI selected |
+|---|---:|---:|
+| Instances / cell area | 43,956 / 123,906.258 µm² | 42,881 / 126,069.441 µm² |
+| Die / density | 426.2 × 425.03 µm / 83.388% | 481.2 × 478.04 µm / 65.274% |
+| Routed wire / vias | 953,367.865 µm / 346,666 | 812,624.320 µm / 313,004 |
+| Setup WNS | +2.661 ns | +2.703 ns |
+| Hold WNS / TNS / paths | 0.000 / 0.000 ns / 0 | 0.000 / 0.000 ns / 0 |
+| Data max-transition | 141 nets / 1,149 terminals | 0 |
+| Clock slew @ 60 ps | 0 pins, worst 0.059 ns | 0 pins, worst 0.056 ns |
+| Internal route DRC | 0 | 0 |
+| Vectorless total power | 3.71285384 mW | 3.58433691 mW |
+| Mapped→postroute LEC | 6,287 points clean | 6,287 points clean |
+
+Run-5는 stated engineering checks에서 setup·hold·data-transition·clock-slew·internal-DRC를 모두 닫았다. Standard-cell area는 약 1.75%, die area는 약 26.99% 증가했지만 wire·via·vectorless power는 감소했다. 이는 더 큰 die를 사용해 routing과 driver placement 여유를 확보한 area–closure tradeoff다. Generic library, signal-only route와 fixed engineering OCV 범위이므로 foundry sign-off나 tape-out-ready 결과로 확대하지 않는다.
+
 ## MicroBlaze 통합 시스템
 
 - 12,494 LUT, 8,494 FF, 16 BRAM, 3 DSP
@@ -139,7 +158,7 @@ FPGA 활성시간은 3,601,290 cycles이며 36개 board case와 XSim에서 동�
 
 GPDK045 post-route vectorless power는 setup-slow 1.08 V view에서 internal 2.42385086 mW, switching 0.92844734 mW, leakage 0.00324419 mW, total 3.35554239 mW이다. PI/sequential default activity 0.10을 사용했고 모든 instance에 activity가 할당되었지만, 실제 ECG workload VCD/SAIF를 사용한 전력은 아니다. PG 배선·IR drop·power-gating이 제외되었으므로 실리콘 전력, 판정당 에너지 또는 wearable 평균전력으로 전환하지 않는다.
 
-Run-2 core 3.71626492 mW와 AXI 3.69335598 mW, run-3 core 3.72167787 mW와 AXI 3.79286409 mW, run-4 AXI 3.71285384 mW는 PI/sequential default activity 0.10의 vectorless 추정치다. AXI에는 activity-based power 결과가 없다.
+Run-2 core 3.71626492 mW와 AXI 3.69335598 mW, run-3 core 3.72167787 mW와 AXI 3.79286409 mW, run-4 AXI 3.71285384 mW와 run-5 AXI 3.58433691 mW는 PI/sequential default activity 0.10의 vectorless 추정치다. AXI에는 activity-based power 결과가 없다.
 
 Run-2 core의 seed11-conditioned activity 분석은 다음과 같다.
 
@@ -153,4 +172,4 @@ Literal prefix와 active-wait idle의 matched total delta는 0.00000087 mW다. �
 
 ## 구현하지 않은 범위
 
-GPDK045 run-3 core는 hold·data-transition·clock-slew·internal-DRC를 0 violation으로 닫았다. Run-4 AXI는 hold·clock-slew·internal-DRC를 닫았지만 data-transition 141 nets / 1,149 terminals가 남았다. 성공한 VDD/VSS PG/IR/EM, physical-only cell·metal fill, complete antenna data, foundry DRC/LVS, DFT, pad, package와 fabricated silicon은 완료하지 않았다. physical AFE PCB, ADC silicon과 clinical validation도 미수행이다.
+GPDK045 run-3 core와 run-5 AXI는 stated engineering checks에서 setup·hold·data-transition·clock-slew·internal-DRC를 닫았다. 성공한 VDD/VSS PG/IR/EM, physical-only cell·metal fill, complete antenna data, foundry DRC/LVS, DFT, pad, package와 fabricated silicon은 완료하지 않았다. physical AFE PCB, ADC silicon과 clinical validation도 미수행이다.

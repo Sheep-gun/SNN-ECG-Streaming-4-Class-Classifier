@@ -1,0 +1,7 @@
+stage,setup_wns_ns,hold_wns_ns,hold_tns_ns,hold_paths,max_transition_nets,max_transition_terminals,density_percent,status
+run4_selected,2.661,0.000,0.000,0,141,1149,83.388,HISTORICAL
+run5_routed_baseline,2.718,-0.013,-0.211,93,19,97,65.081,PARTIAL
+run5_closure_pass1,2.704,-0.004,-0.004,1,0,0,65.250,PARTIAL
+run5_closure_pass2,2.703,0.000,0.000,0,0,0,65.274,PASS
+run5_closure_pass3,2.702,0.000,0.000,0,0,0,65.274,PASS
+run5_independent_final_export,2.703,0.000,0.000,0,0,0,65.274,PASS

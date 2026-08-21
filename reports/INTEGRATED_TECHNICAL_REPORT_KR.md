@@ -12,7 +12,7 @@ ECG는 심장의 전기적 활동을 시간에 따라 기록한 전압 파형이
 
 데이터 구성과 분할을 마친 뒤, 아날로그부는 MATLAB에서 0.5–150 Hz ECG 대역의 필터, 이득 및 ADC 동적 범위를 설계하고, 이를 ±1.65 V LTspice AFE–S/H–ADC 회로로 구현하여 주파수 응답과 비이상적 조건을 검증하였다. 이때 공개 ECG는 이미 ADC를 거친 디지털 기록이므로, 표본값을 시간축과 전압축에 맞춘 PWL 전압 자극으로 재구성하여 AFE–ADC 검증 입력으로 사용하였다. 이어 동일한 회로 동작을 SystemVerilog XMODEL로 구현하여 1 kSPS signed 12-bit ECG 스트림을 생성하고 디지털 RTL에 전달하였다. 동일한 10초 ECG에 대한 LTspice와 XMODEL의 ADC 출력은 평균 절대 오차 0.6445 LSB와 상관계수 0.999518을 보여 두 모델 간 정합성을 확인하였다.
 
-디지털부는 Python으로 RTL과 동일한 정수 연산을 수행하는 기준 모델을 구축하고, 박동 간격, 리듬 변동, 파형 형태와 질환 관련 사건을 분류 증거로 변환하는 규칙을 설계하였다. 분류 구조의 가중치와 임계값은 학습 및 검증 데이터로 결정하고 RTL로 구현한 뒤 최종 시험 전에 고정하였다. RTL은 표본별 변화량과 강한 사건을 검출하고, 각 60초 구간의 리듬과 파형 증거를 Snapshot 뉴런층에 요약한 뒤 30개의 Snapshot을 Final Membrane에 누적하도록 구현하였다. 설계 고정 후 처음 한 번만 수행한 최종 시험에서는 36개 구간 중 29개를 정확히 분류하여 정확도 80.56%를 기록하였다. Pure RTL 분류 가속기는 9,719 LUT와 5,038 FF를 사용하고 BRAM과 DSP 없이 구현되었으며, 배치 및 배선 후 WNS 8.184 ns를 확보하였다. 1 kSPS 연속 처리 할당전력은 142.0 mW로 추정되었으며, 30분 기록을 36.0129 ms 동안 burst 처리한 뒤 완전히 power-gating하는 이상적 조건에서는 평균 전력이 2.991 µW로 계산되었다. Generic GPDK045 run-1 historical core baseline은 hold·clock-slew·scan-QoR 한계를 보존한다. Run-2 scan-free core와 AXI block은 hold residual이 남았고, run-3 core는 setup +2.470 ns에서 hold·data-transition·clock-slew·internal-DRC를 닫았다. Run-4 AXI는 setup +2.661 ns, hold WNS/TNS/path 0, clock slew 0, internal DRC 0과 LEC 6,287점 clean을 유지하면서 run-3보다 area·wire·via·vectorless power를 줄였다. 다만 data-transition 141 nets/1,149 terminals가 남아 full physical closure는 아니다. Run-3 core 3.72167787 mW와 run-4 AXI 3.71285384 mW는 workload 실측값이 아니다. Core seed11-conditioned activity 분석은 기존 run-2 조건부 결과로 유지하며 AXI activity power는 없다.
+디지털부는 Python으로 RTL과 동일한 정수 연산을 수행하는 기준 모델을 구축하고, 박동 간격, 리듬 변동, 파형 형태와 질환 관련 사건을 분류 증거로 변환하는 규칙을 설계하였다. 분류 구조의 가중치와 임계값은 학습 및 검증 데이터로 결정하고 RTL로 구현한 뒤 최종 시험 전에 고정하였다. RTL은 표본별 변화량과 강한 사건을 검출하고, 각 60초 구간의 리듬과 파형 증거를 Snapshot 뉴런층에 요약한 뒤 30개의 Snapshot을 Final Membrane에 누적하도록 구현하였다. 설계 고정 후 처음 한 번만 수행한 최종 시험에서는 36개 구간 중 29개를 정확히 분류하여 정확도 80.56%를 기록하였다. Pure RTL 분류 가속기는 9,719 LUT와 5,038 FF를 사용하고 BRAM과 DSP 없이 구현되었으며, 배치 및 배선 후 WNS 8.184 ns를 확보하였다. 1 kSPS 연속 처리 할당전력은 142.0 mW로 추정되었으며, 30분 기록을 36.0129 ms 동안 burst 처리한 뒤 완전히 power-gating하는 이상적 조건에서는 평균 전력이 2.991 µW로 계산되었다. Generic GPDK045 run-1 historical core baseline은 hold·clock-slew·scan-QoR 한계를 보존한다. Run-2 scan-free core와 AXI block은 hold residual이 남았고, run-3 core는 setup +2.470 ns에서 hold·data-transition·clock-slew·internal-DRC를 닫았다. Run-5 AXI는 50% floorplan에서 setup +2.703 ns, hold WNS/TNS/path 0, data max-transition 0, clock slew 0, internal DRC 0과 LEC 6,287점 clean을 달성했다. Die area가 230,032.848 µm²로 증가한 area–closure tradeoff이며 vectorless 3.58433691 mW는 workload 실측값이 아니다. Core seed11-conditioned activity 분석은 기존 run-2 조건부 결과로 유지하며 AXI activity power는 없다.
 
 과거 고정 XMODEL 통합 환경의 compact acceptance에서는 AFE 생성 36개 chunk의 입력과 최종 출력이 독립 RTL/XSim 기준과 일치하였다. 현재 저장소에 보존된 실제 full-30분 raw XMODEL accepted dump는 4/36개이며, 보유 4개만 독립 재실행에서 bit-exact하다. 또한 RTL을 AXI 기반 IP로 패키징해 MicroBlaze 시스템에 통합하고 동일한 입력을 FPGA에서 재생한 결과도 XSim 기준과 일치하였다. 결과적으로 본 작품은 ECG 전체를 저장하지 않고 질환 증거를 순차적으로 누적하여 NSR, CHF, ARR, AF를 판정하는 다중 시간 척도 저전력 스트리밍 분류 가속기 IP를 구현하였다.
 
@@ -44,7 +44,7 @@ ECG 분류에는 개별 박동의 형태뿐 아니라 장시간에 걸친 박동
 
 2026년 6월부터 7월까지 아날로그·디지털 각 파트의 정합성을 확인하였다. 당시 고정 통합 환경에서 생성한 compact acceptance에는 AFE 생성 36개 chunk와 디지털 replay 입력의 SHA-256 및 최종 출력 36/36 정합이 기록되어 있다. 다만 현재 저장소에 보존된 실제 full-30분 raw XMODEL accepted dump는 4/36개이며, 이 4개만 독립 재실행에서 입력 SHA, 최종 클래스와 네 Final Membrane이 bit-exact했다. 나머지 32개 raw dump가 없어 저장소 단독의 36-case raw XMODEL 재실행 기준은 FAIL이다. 이후 RTL을 AXI IP로 패키징해 MicroBlaze에 통합하고, FPGA 재생 결과가 XSim과 일치함을 확인하였다.
 
-2026년 8월 현재 데이터 분석, 알고리즘 개발, MATLAB, LTspice, XMODEL, Python, Exact C++, RTL 구현과 AXI IP 패키징, MicroBlaze 통합, End-to-End 및 FPGA 검증을 완료하였다. 이어 generic GPDK045에서 run-2 scan-free core와 AXI-inclusive accelerator block을 mapping·CTS·signal route·RC extraction하고 mapped-to-postroute LEC를 수행했다. Run-3 post-route ECO에서는 같은 slow-early 0.95·fast-late 1.05 engineering derate와 100 ps hold uncertainty를 유지하면서 core hold·data-transition·clock-slew·internal-DRC를 0 violation으로 닫았다. Run-4 AXI는 hold·clock-slew·internal-DRC를 닫고 run-3 대비 PPA와 routing을 개선했지만 data-transition residual이 남았다. Exploratory PG는 실패했고 unmodified four-state gate run은 X를 남겨 AXI full physical closure, PG/sign-off와 ASIC 제작은 후속 과제이다.
+2026년 8월 현재 데이터 분석, 알고리즘 개발, MATLAB, LTspice, XMODEL, Python, Exact C++, RTL 구현과 AXI IP 패키징, MicroBlaze 통합, End-to-End 및 FPGA 검증을 완료하였다. 이어 generic GPDK045에서 run-2 scan-free core와 AXI-inclusive accelerator block을 mapping·CTS·signal route·RC extraction하고 mapped-to-postroute LEC를 수행했다. Run-3 post-route ECO에서는 같은 slow-early 0.95·fast-late 1.05 engineering derate와 100 ps hold uncertainty를 유지하면서 core hold·data-transition·clock-slew·internal-DRC를 0 violation으로 닫았다. Run-5 AXI는 floorplan utilization을 0.50으로 낮춰 setup·hold·data-transition·clock-slew·internal-DRC를 모두 닫고 LEC를 유지했다. Exploratory PG는 실패했고 unmodified four-state gate run은 X를 남겨 PG/sign-off와 ASIC 제작은 후속 과제이다.
 
 ## 2. 설계기술 설명서
 
@@ -213,7 +213,7 @@ Pure RTL 분류기를 AXI IP로 패키징하여 MicroBlaze, Sample Feeder, Local
 
 그림 14는 표준셀 코어의 배치, CTS와 일반 신호 배선 결과다. VDD/VSS power grid, pad ring과 package는 포함하지 않으며, Innovus 내부 Metal1 spacing 위반 1건이 남아 있다.
 
-**표 6. GPDK045 digital block 구현과 PPA: run-1 / run-2 / run-3 / run-4 AXI 개선**
+**표 6. GPDK045 digital block 구현과 PPA: run-1 / run-2 / run-3 / run-4 / run-5 full closure**
 
 | 항목 | 결과 | 해석 범위 |
 |---|---:|---|
@@ -247,10 +247,12 @@ Pure RTL 분류기를 AXI IP로 패키징하여 MicroBlaze, Sample Feeder, Local
 | Run-3 LEC | core 6,178, AXI 6,287 points clean | diff·abort·unknown 0; 논리 등가성 근거 |
 | Run-4 AXI selected | 43,956 instances, 123,906.258 µm²; setup +2.661 ns; hold 0.000 ns, TNS 0, paths 0 | max-transition 141 nets/1,149 terminals; clock slew 0, internal DRC 0; vectorless 3.71285384 mW |
 | Run-4 AXI route / LEC | wire 953,367.865 µm, vias 346,666; LEC 6,287 points clean | run-3보다 wire·via 감소; diff·abort·unknown 0; data-transition residual로 full closure 아님 |
+| Run-5 AXI full closure | 42,881 instances, 126,069.441 µm²; die 481.2 × 478.04 µm, density 65.274%; setup +2.703 ns; hold 0.000 ns, TNS 0, paths 0 | data max-transition 0, clock slew 0, internal DRC 0; vectorless 3.58433691 mW |
+| Run-5 AXI route / LEC | wire 812,624.320 µm, vias 313,004; LEC 6,287 points clean | diff·abort·unknown 0; 50% floorplan의 area–closure tradeoff; foundry sign-off 아님 |
 | Run-2 gate/SDF boundary | unmodified four-state output X; forced mapped seeds 11/22/33 at 6,045/6,045, MAX-SDF seed11 at 6,044/6,044 exact | testbench-conditioned sampled sensitivity; SDF timing checks disabled, `SDFNCAP` 88 warnings |
 | Exploratory PG | 171 connectivity, 715 geometry violations | failed attempt; selected checkpoints signal-only with VDD/VSS unrouted; no PG/IR/EM implementation claim |
 
-표 6은 run-1 historical baseline, run-2 scan-free core·AXI block, run-3 ECO와 run-4 AXI 개선을 구분한다. Run-3 core는 stated engineering OCV 아래 timing/DRV closure를 달성했다. Run-4 AXI는 hold·clock-slew·internal-DRC를 닫고 run-3보다 PPA와 route를 개선했지만 data-transition residual이 남았다. 두 결과 모두 generic library, signal-only route와 unrouted PG 조건이므로 foundry sign-off가 아니다. Run-4 AXI도 AXI 36-case replay를 뜻하지 않는다. Forced gate/SDF와 activity 결과의 기존 조건부 경계도 유지한다. Run-1은 [historical evidence](../verification/asic_gpdk45_core/README_KR.md), run-2는 [static evidence](../verification/asic_gpdk45_run2/README_KR.md), run-3는 [hold-closure evidence](../verification/asic_gpdk45_hold_closure/README_KR.md), run-4는 [AXI closure evidence](../verification/asic_gpdk45_axi_closure_run4/README_KR.md)에 보존한다.
+표 6은 run-1 historical baseline, run-2 scan-free core·AXI block, run-3 core closure, run-4 AXI 개선과 run-5 full closure를 구분한다. Run-3 core와 run-5 AXI는 stated engineering OCV 아래 setup·hold·data-transition·clock-slew·internal-DRC를 닫았다. Run-5는 die area를 늘린 area–closure tradeoff이며, 두 결과 모두 generic library, signal-only route와 unrouted PG 조건이므로 foundry sign-off가 아니다. Run-5 AXI도 AXI 36-case replay를 뜻하지 않는다. Forced gate/SDF와 activity 결과의 기존 조건부 경계도 유지한다. Run-1은 [historical evidence](../verification/asic_gpdk45_core/README_KR.md), run-2는 [static evidence](../verification/asic_gpdk45_run2/README_KR.md), run-3는 [hold-closure evidence](../verification/asic_gpdk45_hold_closure/README_KR.md), run-4는 [AXI closure evidence](../verification/asic_gpdk45_axi_closure_run4/README_KR.md), run-5는 [AXI full-closure evidence](../verification/asic_gpdk45_axi_full_closure_run5/README_KR.md)에 보존한다.
 
 #### RTL timing 병목 분석과 파이프라인 최적화
 
@@ -304,15 +306,15 @@ Pure RTL 분류기를 AXI IP로 패키징하여 MicroBlaze, Sample Feeder, Local
 | Pure RTL 메모리, 연산자원 | BRAM 0, DSP 0 | 9,719 LUT, 5,038 FF, BRAM 0, DSP 0 | 달성 |
 | Pure RTL FPGA timing | 양의 slack | WNS 8.184 ns | 달성 |
 | FPGA 기능 정합 | 클래스, 막전위 전 사례 일치 | 최종 클래스 36/36, 막전위 144/144 bit-exact | 달성 |
-| ASIC exploratory implementation | scan-free core/AXI mapping, LEC, place/CTS/route, extracted timing | Run-3 core closure와 run-4 AXI hold·clock·DRC closure 개선 | 부분 달성. Core stated checks 0 violation, AXI data-transition과 PG/sign-off 미해소 |
+| ASIC exploratory implementation | scan-free core/AXI mapping, LEC, place/CTS/route, extracted timing | Run-3 core와 run-5 AXI stated engineering checks 0 violation | 부분 달성. Generic block closure 달성, PG·fill·foundry sign-off 미해소 |
 | 장시간 ECG 처리 | 24시간 이상 확장 지향 | 30분 검증 | 조건부 달성. 공개 데이터 길이의 제약 극복 필요 |
 | 웨어러블 저전력 가능성 | 저전력 분류 IP | FPGA 연속 142.0 mW 추정, 이상적 2.991 µW, run-2 core/AXI vectorless 3.71626492/3.69335598 mW, core conditioned activity windows 2.02536072/1.91083992/1.91084079 mW | 조건부 달성. core activity는 zero-delay forced-seed window이며 Snapshot/decision·numeric coverage·PG·sign-off·silicon 실측 미포함; AXI vectorless only |
 
-본 설계 범위의 모듈 구현과 통합 및 검증을 완료하였으며, 표 9와 같이 분류 성능, 스트리밍 입력, FPGA 하드웨어 자원, timing 및 기능 정합 목표를 달성하였다. GPDK045 run-3 core는 hold·data-transition·clock-slew·internal-DRC를 닫았고, run-4 AXI는 hold·clock-slew·internal-DRC를 닫았지만 data-transition, PG·fill·sign-off가 남아 전체 ASIC 목표는 부분 달성으로 평가했다. 장시간 처리와 저전력 목표도 30분 입력과 조건부 추정에 근거하므로 유지한다.
+본 설계 범위의 모듈 구현과 통합 및 검증을 완료하였으며, 표 9와 같이 분류 성능, 스트리밍 입력, FPGA 하드웨어 자원, timing 및 기능 정합 목표를 달성하였다. GPDK045 run-3 core와 run-5 AXI는 stated engineering checks에서 setup·hold·data-transition·clock-slew·internal-DRC를 닫았다. 다만 PG·fill·foundry sign-off가 남아 전체 ASIC 목표는 부분 달성으로 평가했다. 장시간 처리와 저전력 목표도 30분 입력과 조건부 추정에 근거하므로 유지한다.
 
-본 작품은 웨어러블 기기에 적용 가능한 저전력 반도체 IP를 지향한다. 관련 ECG 전용 ASIC을 조사한 결과, Abubakar 등의 65 nm TNN 기반 프로세서는 13종 비정상 리듬 검출에서 746 nW의 실측 전력을 달성했으며 [7], Zhang 등의 55 nm ANN 기반 프로세서는 개별 심박의 5-클래스 분류에서 12.88 µW를 보고하였다 [8]. 본 작품의 2.991 µW는 완전 power-gating 가정의 산출값이고 GPDK045 run-1 3.35554239 mW, run-2 core/AXI 3.71626492/3.69335598 mW, run-3 core/AXI 3.72167787/3.79286409 mW와 run-4 AXI 3.71285384 mW는 default activity의 vectorless 추정치다. Core activity 수치도 seed-conditioned zero-delay window 추정이므로 서로 다른 workload·공정·계측 범위의 실리콘 실측 수치와 직접 우열을 비교하지 않는다.
+본 작품은 웨어러블 기기에 적용 가능한 저전력 반도체 IP를 지향한다. 관련 ECG 전용 ASIC을 조사한 결과, Abubakar 등의 65 nm TNN 기반 프로세서는 13종 비정상 리듬 검출에서 746 nW의 실측 전력을 달성했으며 [7], Zhang 등의 55 nm ANN 기반 프로세서는 개별 심박의 5-클래스 분류에서 12.88 µW를 보고하였다 [8]. 본 작품의 2.991 µW는 완전 power-gating 가정의 산출값이고 GPDK045 run-1 3.35554239 mW, run-2 core/AXI 3.71626492/3.69335598 mW, run-3 core/AXI 3.72167787/3.79286409 mW, run-4 AXI 3.71285384 mW와 run-5 AXI 3.58433691 mW는 default activity의 vectorless 추정치다. Core activity 수치도 seed-conditioned zero-delay window 추정이므로 서로 다른 workload·공정·계측 범위의 실리콘 실측 수치와 직접 우열을 비교하지 않는다.
 
-다만 이러한 저전력 가능성과 장시간 분류 구조의 실효성을 최종적으로 입증하려면, AXI data-transition 해소, 성공한 power grid·IR·power gating과 physical fill, complete antenna data와 foundry DRC/LVS sign-off, unmodified four-state reset/power-up robustness, quantified annotation coverage를 갖춘 Snapshot/decision workload activity와 실리콘 전력 실측이 필요하다. 현재 실제 검증 입력은 30분이며, 24시간 정확도, 처리시간과 전력은 검증하지 않았다. 물리 AFE PCB, ADC silicon, pad/DFT/package, fabricated silicon과 임상 검증도 수행하지 않았다. 또한 공개 데이터베이스별 클래스 결합에 따른 database–class confounding이 남아 있으므로, 동일한 측정 환경에서 수집한 장시간 다중 클래스 ECG로 분류 성능과 실제 24시간 동작을 추가 검증해야 한다. 모든 FPGA/ASIC 전력 수치는 조건부 산출 또는 추정이지 실측 소비전력이 아니다.
+다만 이러한 저전력 가능성과 장시간 분류 구조의 실효성을 최종적으로 입증하려면, 성공한 power grid·IR·power gating과 physical fill, complete antenna data와 foundry DRC/LVS sign-off, unmodified four-state reset/power-up robustness, quantified annotation coverage를 갖춘 Snapshot/decision workload activity와 실리콘 전력 실측이 필요하다. 현재 실제 검증 입력은 30분이며, 24시간 정확도, 처리시간과 전력은 검증하지 않았다. 물리 AFE PCB, ADC silicon, pad/DFT/package, fabricated silicon과 임상 검증도 수행하지 않았다. 또한 공개 데이터베이스별 클래스 결합에 따른 database–class confounding이 남아 있으므로, 동일한 측정 환경에서 수집한 장시간 다중 클래스 ECG로 분류 성능과 실제 24시간 동작을 추가 검증해야 한다. 모든 FPGA/ASIC 전력 수치는 조건부 산출 또는 추정이지 실측 소비전력이 아니다.
 
 ### 2.7 국내외 수상 실적
 
@@ -326,7 +328,7 @@ Pure RTL 분류기를 AXI IP로 패키징하여 MicroBlaze, Sample Feeder, Local
 
 ## 기술성
 
-AFE–ADC는 LTspice 회로와 XMODEL로, SNN 분류 가속기는 Pure RTL과 AXI 기반 FPGA IP로 구현하였다. 아날로그부는 목표 ECG 대역과 60 Hz 간섭 억제 특성을 재현해 1 kSPS signed 12-bit 출력을 RTL에 전달하였다. 디지털부는 원시 파형을 저장하지 않고 사건·리듬·파형 증거를 60초와 30분의 두 시간 척도로 누적한다. 설계 고정 후 정확도 80.56%, Macro-F1 80.44%를 기록했으며 Pure RTL FPGA timing closure와 기능 정합을 달성했다. Generic GPDK045 run-2 이후 run-3 core는 setup +2.470 ns, hold·data-transition·clock-slew·internal-DRC 0 violation과 LEC 6,178점 clean을 기록했다. Run-4 AXI는 setup +2.661 ns, hold 0 path, clock slew 0, internal DRC 0과 LEC 6,287점 clean을 기록했지만 transition 141 nets/1,149 terminals가 남았다. Run-3 core 3.72167787 mW와 run-4 AXI 3.71285384 mW는 default activity 추정이며 실측값이 아니다.
+AFE–ADC는 LTspice 회로와 XMODEL로, SNN 분류 가속기는 Pure RTL과 AXI 기반 FPGA IP로 구현하였다. 아날로그부는 목표 ECG 대역과 60 Hz 간섭 억제 특성을 재현해 1 kSPS signed 12-bit 출력을 RTL에 전달하였다. 디지털부는 원시 파형을 저장하지 않고 사건·리듬·파형 증거를 60초와 30분의 두 시간 척도로 누적한다. 설계 고정 후 정확도 80.56%, Macro-F1 80.44%를 기록했으며 Pure RTL FPGA timing closure와 기능 정합을 달성했다. Generic GPDK045 run-2 이후 run-3 core는 setup +2.470 ns, hold·data-transition·clock-slew·internal-DRC 0 violation과 LEC 6,178점 clean을 기록했다. Run-5 AXI는 setup +2.703 ns, hold 0 path, data max-transition 0, clock slew 0, internal DRC 0과 LEC 6,287점 clean을 기록했다. Run-3 core 3.72167787 mW와 run-5 AXI 3.58433691 mW는 default activity 추정이며 실측값이 아니다.
 
 ## 사업성
 
@@ -334,7 +336,7 @@ AFE–ADC는 LTspice 회로와 XMODEL로, SNN 분류 가속기는 Pure RTL과 AX
 
 ## 완성도
 
-MATLAB 설계부터 LTspice, XMODEL, 기준 모델, RTL/XSim, Vivado와 FPGA까지 단계별 검증하였다. GPDK045에서는 run-1 historical baseline과 run-2 scan-free core·AXI를 보존하면서 run-3 core timing/DRV closure와 run-4 AXI hold·clock·DRC closure 개선까지 확장했다. Core/AXI mapped-to-postroute LEC는 각각 6,178/6,287점에서 diff·abort·unknown 0이다. 다만 AXI data-transition, 실패한 PG, unmodified four-state GLS, physical fill, foundry DRC/LVS, DFT·pad/package와 fabrication은 남아 있다. 따라서 generic block-level closure와 full-chip foundry sign-off를 구분한다.
+MATLAB 설계부터 LTspice, XMODEL, 기준 모델, RTL/XSim, Vivado와 FPGA까지 단계별 검증하였다. GPDK045에서는 run-1 historical baseline과 run-2 scan-free core·AXI를 보존하면서 run-3 core와 run-5 AXI의 stated engineering closure까지 확장했다. Core/AXI mapped-to-postroute LEC는 각각 6,178/6,287점에서 diff·abort·unknown 0이다. 다만 실패한 PG, unmodified four-state GLS, physical fill, foundry DRC/LVS, DFT·pad/package와 fabrication은 남아 있다. 따라서 generic block-level closure와 full-chip foundry sign-off를 구분한다.
 
 # 참고문헌
 

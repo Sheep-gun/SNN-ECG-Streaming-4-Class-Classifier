@@ -1,0 +1,10 @@
+profile,check,status,value,evidence,claim_boundary
+axi,setup_timing,PASS,2.703 ns,final_checkpoint/timing_setup.rpt,engineering OCV view
+axi,hold_timing,PASS,0.000 ns TNS0 paths0,final_checkpoint/time_design_hold.summary,hold closure achieved
+axi,data_max_transition,PASS,0 nets 0 terminals,final_checkpoint/time_design_setup.tran,data transition closure achieved
+axi,clock_slew,PASS,0 pins worst 0.056 ns,final_checkpoint/ccopt_clock_trees_60ps.rpt,0.060 ns target
+axi,internal_route_drc,PASS,0,final_checkpoint/internal_route_drc.rpt,not foundry DRC
+axi,signal_connectivity_excluding_pg,PASS,0,final_checkpoint/connectivity_signal.rpt,VDD and VSS separately excluded
+axi,unrouted_pg_nets,NOT_COMPLETED,2,final_checkpoint/connectivity_signal.rpt,no PG claim
+axi,mapped_to_postroute_lec,PASS,6287 points,lec/result_summary.txt,diff abort unknown all zero
+common,foundry_signoff,NOT_RUN,none,run_manifest.json,no DRC LVS antenna IR EM fabrication claim

@@ -79,6 +79,8 @@ Run-3 hold closure는 `extract_violating_hold_endpoints.py`, `manual_hold_endpoi
 
 Run-4 AXI는 `hold_closure_pass.tcl`에서 `HOLD_SLACK_THRESHOLD=-0.200`, `HOLD_TARGET_SLACK=0.000`, `HOLD_ROUTE_MODE=none`을 사용해 47·5·2·0-cell pass를 순서대로 적용하고, 마지막 endpoint에 `manual_hold_endpoint_eco.tcl`의 DLY1X1 한 개를 targeted `ecoRoute`한다. `finalize_hold_closed_checkpoint.tcl`로 high-effort RC·timing·power·SDF/SPEF를 재생성하고 `run_postroute_lec.do`로 mapped→postroute LEC를 확인한다. Public authority는 `verification/asic_gpdk45_axi_closure_run4/`이며 raw 산출물은 Git 밖 checksum archive에만 보존한다.
 
+Run-5 AXI는 scan-free mapped netlist에서 `run_axi_low_density_closure.tcl`을 실행한다. `FLOORPLAN_UTILIZATION=0.50`, `DRV_PASSES=3`을 사용하며 clock/OCV/hold uncertainty는 run-4와 동일하다. Fresh place·50 ps CTS·route·IQuantus high-effort extraction 후 post-route DRV와 hold를 반복하고 각 pass를 독립 report/checkpoint로 보존한다. `finalize_hold_closed_checkpoint.tcl`과 `run_postroute_lec.do`로 최종 timing·power·SDF/SPEF·LEC를 다시 확인한다. Public authority는 `verification/asic_gpdk45_axi_full_closure_run5/`이며 raw 산출물은 Git 밖 checksum archive에만 보존한다.
+
 ## 7. repository 검사
 
 ```powershell

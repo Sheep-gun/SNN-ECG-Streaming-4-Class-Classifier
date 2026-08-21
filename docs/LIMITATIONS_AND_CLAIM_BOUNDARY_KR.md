@@ -17,6 +17,7 @@
 - Run-3 core setup +2.470 ns, hold WNS/TNS/path 0, data max-transition 0, clock slew 0, internal DRC 0; mapped-to-postroute LEC 6,178 points clean
 - Run-3 AXI setup +2.435 ns와 hold WNS/TNS/path 0; mapped-to-postroute LEC 6,287 points clean
 - Run-4 AXI setup +2.661 ns, hold WNS/TNS/path 0, clock slew 0, internal DRC 0; mapped-to-postroute LEC 6,287 points clean
+- Run-5 AXI setup +2.703 ns, hold WNS/TNS/path 0, data max-transition 0, clock slew 0, internal DRC 0; mapped-to-postroute LEC 6,287 points clean
 - Run-2 core seed11-conditioned activity windows: accelerated gap2 2.02536072 mW, active-wait idle 1.91083992 mW, literal 1 kSPS 100-sample prefix 1.91084079 mW, matched total delta 0.00000087 mW
 
 ## 조건부 또는 미완료
@@ -33,6 +34,7 @@
 - Run-2 core hold −0.008 ns/TNS −0.094 ns/37 paths과 AXI hold −0.016 ns/TNS −0.518 ns/107 paths: historical baseline이며 run-3에서 0으로 보정
 - Run-3 AXI data max-transition 264 nets/1,387 terminals와 clock slew 263 pins: historical 결과
 - Run-4 AXI data max-transition 141 nets/1,149 terminals, worst −0.821 ns: 개선됐지만 미해소; AXI full physical closure 아님
+- Run-5는 50% floorplan과 230,032.848 µm² die area를 사용한 area–closure tradeoff; block-level engineering closure이지 foundry sign-off 아님
 - Slow-early 0.95·fast-late 1.05 derate: fixed engineering assumption이며 foundry AOCV/POCV/LVF 아님
 - Exploratory PG: 171 connectivity/715 geometry violation으로 실패; selected core/AXI checkpoint는 signal-only·VDD/VSS unrouted이며 PG/IR/EM 구현 아님
 - Unmodified four-state gate run: X; forced two-state seed와 timing check를 끈 single-seed MAX-SDF pilot은 conditional sampled sensitivity로만 해석
@@ -56,6 +58,7 @@
 - “Run-3 core는 stated engineering OCV에서 hold·data-transition·clock-slew·internal-DRC를 0 violation으로 닫았다.”
 - “Run-3 AXI block은 hold를 닫았지만 data-transition과 clock-slew가 남아 full physical closure는 아니다.”
 - “Run-4 AXI block은 hold·clock-slew·internal-DRC를 닫았지만 data-transition 141 nets/1,149 terminals가 남아 full physical closure는 아니다.”
+- “Run-5 AXI block은 stated engineering checks에서 setup·hold·data-transition·clock-slew·internal-DRC를 닫았지만 PG·fill·foundry sign-off는 포함하지 않는다.”
 - “Canonical digital 36/36과 actual raw XMODEL 4/4를 별도 cohort로 재현했다.”
 - “Forced two-state gate 결과와 timing check를 끈 single-seed MAX-SDF pilot은 조건부 초기화 민감도 실험이다.”
 - “Run-2 core의 seed11-conditioned activity 분석에서 accelerated gap2 total은 2.02536072 mW였다.”

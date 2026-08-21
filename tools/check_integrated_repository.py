@@ -71,6 +71,16 @@ REQUIRED = [
     "verification/asic_gpdk45_axi_closure_run4/results/equivalence_summary.csv",
     "verification/asic_gpdk45_axi_closure_run4/results/experiment_summary.csv",
     "verification/asic_gpdk45_axi_closure_run4/figures/axi_run4_final.gif",
+    "tables/asic_gpdk45_axi_full_closure_run5.csv",
+    "verification/asic_gpdk45_axi_full_closure_run5/README_KR.md",
+    "verification/asic_gpdk45_axi_full_closure_run5/run_manifest.json",
+    "verification/asic_gpdk45_axi_full_closure_run5/CHECKSUMS.txt",
+    "verification/asic_gpdk45_axi_full_closure_run5/results/closure_summary.csv",
+    "verification/asic_gpdk45_axi_full_closure_run5/results/physical_checks.csv",
+    "verification/asic_gpdk45_axi_full_closure_run5/results/equivalence_summary.csv",
+    "verification/asic_gpdk45_axi_full_closure_run5/results/closure_progress.csv",
+    "verification/asic_gpdk45_axi_full_closure_run5/results/transition_root_cause.csv",
+    "verification/asic_gpdk45_axi_full_closure_run5/figures/axi_util50_full_closed.gif",
     "figures/FIGURE_INDEX.md",
     "vivado/microblaze/SNN_ECG_MB_FULL_REPLAY.xpr",
     "vivado/pure_rtl/project/SNN_ECG_PURE_RTL_VISUALIZATION.xpr",
@@ -417,6 +427,38 @@ def main() -> int:
         if not run4_manifest.get("private_archive", {}).get("remote_workspace_removed"):
             errors.append("run-4 remote workspace cleanup must be recorded")
 
+    run5_path = ROOT / "verification/asic_gpdk45_axi_full_closure_run5/results/closure_summary.csv"
+    if run5_path.exists():
+        rows = load_csv_rows("verification/asic_gpdk45_axi_full_closure_run5/results/closure_summary.csv")
+        by_metric = {(row["profile"], row["stage"], row["metric"]): row for row in rows}
+        expected_run5 = {
+            ("axi", "postroute", "instance_count"): ("42881", "OBSERVED"),
+            ("axi", "postroute", "cell_area"): ("126069.441", "OBSERVED"),
+            ("axi", "postroute", "die_area"): ("230032.848", "OBSERVED"),
+            ("axi", "timing", "setup_wns"): ("2.703", "PASS"),
+            ("axi", "timing", "hold_wns"): ("0.000", "PASS"),
+            ("axi", "timing", "hold_violating_paths"): ("0", "PASS"),
+            ("axi", "timing", "max_transition_nets"): ("0", "PASS"),
+            ("axi", "timing", "clock_slew_violations"): ("0", "PASS"),
+            ("axi", "route", "internal_drc"): ("0", "PASS"),
+            ("axi", "power", "vectorless_total"): ("3.58433691", "ESTIMATE"),
+            ("axi", "equivalence", "compared_points"): ("6287", "PASS"),
+        }
+        for key, expected_pair in expected_run5.items():
+            row = by_metric.get(key)
+            if row is None or (row.get("run5_value"), row.get("status")) != expected_pair:
+                errors.append(f"run-5 AXI full-closure metric mismatch for {key}: {row}")
+
+        run5_manifest = load_json("verification/asic_gpdk45_axi_full_closure_run5/run_manifest.json")
+        selected = run5_manifest.get("run5_axi_selected", {})
+        for field in ("hold_violating_paths", "max_transition_nets", "clock_slew_violations", "internal_drc"):
+            if selected.get(field) != 0:
+                errors.append(f"run-5 AXI closure field must be zero: {field}={selected.get(field)}")
+        if selected.get("unrouted_pg_nets") != 2:
+            errors.append("run-5 unrouted PG boundary must remain explicit")
+        if not run5_manifest.get("private_archive", {}).get("remote_workspace_removed"):
+            errors.append("run-5 remote workspace cleanup must be recorded")
+
     claim_registry = ROOT / "project_registry/claim_registry.csv"
     if claim_registry.exists():
         claim_ids = {row["claim_id"] for row in load_csv_rows("project_registry/claim_registry.csv")}
@@ -428,6 +470,8 @@ def main() -> int:
             errors.append(f"run-3 claim registry entries missing: {sorted(required_run3_claims - claim_ids)}")
         if "CLM-041" not in claim_ids:
             errors.append("run-4 AXI closure claim CLM-041 missing")
+        if "CLM-042" not in claim_ids:
+            errors.append("run-5 AXI full-closure claim CLM-042 missing")
 
     figures_index = (ROOT / "figures/FIGURE_INDEX.md").read_text(encoding="utf-8") if (ROOT / "figures/FIGURE_INDEX.md").exists() else ""
     figure_files = list((ROOT / "figures/final_submission").rglob("*.svg"))

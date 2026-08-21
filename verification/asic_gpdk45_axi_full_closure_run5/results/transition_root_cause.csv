@@ -1,0 +1,11 @@
+kind,item,count,interpretation
+hierarchy,u_axi_accelerator/u_core/u_snapshot/u_qrs_maf,140,run4 violating nets concentrated in qrs_maf
+hierarchy,u_axi_accelerator_non_qrs_maf,1,one remaining AXI wrapper net
+edge,falling_slew_dominant,104,dominant transition direction
+edge,rising_slew_dominant,37,secondary transition direction
+driver,NOR2X1,21,frequent weak driver in run4 violation set
+driver,NAND4X1,20,frequent weak driver and worst transition source
+driver,NAND2X1,16,frequent weak driver in run4 violation set
+driver,NAND4XL,10,minimum-drive cell in run4 violation set
+driver,INVX1,9,small inverter in run4 violation set
+action,floorplan_utilization_0.50,1,created placement room without relaxing timing constraints

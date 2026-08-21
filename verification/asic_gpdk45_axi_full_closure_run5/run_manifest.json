@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "source_commit_before_run5": "e47418dd986106a06730504221ff2011453315cf",
+  "tool_versions": {
+    "innovus": "23.14-s088_1",
+    "iquantus": "23.1.1-s336",
+    "conformal": "24.10-s500"
+  },
+  "constraints": {
+    "clock_mhz": 100,
+    "hold_uncertainty_ns": 0.100,
+    "slow_early_derate": 0.95,
+    "slow_late_derate": 1.00,
+    "fast_early_derate": 1.00,
+    "fast_late_derate": 1.05,
+    "derate_kind": "fixed engineering assumption",
+    "rc_model": "same gpdk045.tch and scale 1.0 for both views",
+    "floorplan_utilization": 0.50,
+    "hold_slack_threshold_ns": -0.200,
+    "hold_target_slack_ns": 0.000,
+    "drv_passes": 3
+  },
+  "root_cause": {
+    "run4_transition_nets": 141,
+    "qrs_maf_internal_nets": 140,
+    "other_axi_nets": 1,
+    "falling_slew_dominant_nets": 104,
+    "resolution": "lower-density re-place and repeated post-route DRV/hold closure without constraint relaxation"
+  },
+  "selected_sequence": {
+    "base": "run-2 scan-free AXI mapped netlist",
+    "postcts_hold_cells_added": 5411,
+    "postroute_hold_cells_by_pass": [94, 12, 0],
+    "selection_reason": "setup hold data-transition clock-slew and internal-route-DRC all closed with clean LEC"
+  },
+  "run5_axi_selected": {
+    "instances": 42881,
+    "cell_area_um2": 126069.4408,
+    "die_um": [481.200, 478.040],
+    "die_area_um2": 230032.848,
+    "density_percent": 65.274,
+    "wire_um": 812624.320,
+    "vias": 313004,
+    "setup_wns_ns": 2.703,
+    "hold_wns_ns": 0.000,
+    "hold_tns_ns": 0.000,
+    "hold_violating_paths": 0,
+    "max_transition_nets": 0,
+    "max_transition_terminals": 0,
+    "clock_slew_violations": 0,
+    "clock_slew_worst_ns": 0.056,
+    "internal_drc": 0,
+    "signal_connectivity_problems_excluding_pg": 0,
+    "unrouted_pg_nets": 2,
+    "vectorless_power_mw": 3.58433691,
+    "lec": {"total": 6287, "non_equivalent": 0, "abort": 0, "unknown": 0}
+  },
+  "executed_script_sha256": {
+    "design/digital/asic/gpdk45/scripts/run_axi_low_density_closure.tcl": "bdca1800075fa769c9a8de3f2e31d49e263cd9a0bd28254dd0b379ce033249ef",
+    "design/digital/asic/gpdk45/scripts/mmmc.tcl": "7b0b269bfdfeacf47e904c90fcf93ee76f9271ddea107b4629376c7066bae129",
+    "design/digital/asic/gpdk45/scripts/finalize_hold_closed_checkpoint.tcl": "04ac4ac8715ecfab0019964490ae8ec621ec9c0b5ab43bfef1cc92de80344af1",
+    "design/digital/asic/gpdk45/scripts/run_postroute_lec.do": "65586fb122f79c7ca336682fef07bd4fc1354e040f84dbd92a8d8807eae9f2aa",
+    "design/digital/asic/gpdk45/scripts/export_layout.tcl": "3e4b446f74a7b2269e20935b23306cc5b16636f574c516827064da9ba560595f"
+  },
+  "private_archive": {
+    "sha256": "8f43165b9fa79c38e8b389587cd360af9f2583ccb6d96424fcf466e365db3ee4",
+    "raw_artifacts_committed": false,
+    "remote_workspace_removed": true
+  },
+  "claim_boundary": [
+    "Full closure means zero setup, hold, data-transition, clock-slew, and internal-route-DRC violations only under the stated generic engineering assumptions.",
+    "The block remains padless signal-route-only with VDD and VSS unrouted.",
+    "The larger die is an explicit area-for-closure tradeoff, not a technology-scaling comparison.",
+    "No foundry signoff, PG, IR/EM, physical fill, DFT, pad, package, fabrication, workload power, or silicon measurement is included."
+  ]
+}

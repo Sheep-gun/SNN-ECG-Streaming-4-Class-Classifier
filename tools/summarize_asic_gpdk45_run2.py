@@ -801,6 +801,17 @@ def parse_max_transition_report(text: str, label: str) -> dict[str, int | float 
             violating_nets.add(current_net)
             worst_slack = terminal_worst if worst_slack is None else min(worst_slack, terminal_worst)
 
+    if re.search(r"there is\s+0\s+max_tran violation in the design", text):
+        if violating_nets or violating_terminals or worst_slack is not None:
+            raise Run2SummaryError(
+                f"{label} reports zero max-transition violations but contains negative rows"
+            )
+        return {
+            "violating_nets": 0,
+            "violating_terminals": 0,
+            "worst_slack_ns": "",
+        }
+
     reported = int(
         unique_capture(
             text,
