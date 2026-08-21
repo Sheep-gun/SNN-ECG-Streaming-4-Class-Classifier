@@ -228,12 +228,44 @@ metrics:
       axi_activity_power_available: false
       evidence: verification/asic_gpdk45_run2/power/activity_power_summary.csv
       annotation_boundary: verification/asic_gpdk45_run2/power/activity_annotation_summary.txt
+  asic_gpdk45_hold_closure_run3:
+    constraints_preserved: true
+    clock_mhz: 100
+    hold_uncertainty_ns: 0.100
+    engineering_derates: {slow_early: 0.95, slow_late: 1.00, fast_early: 1.00, fast_late: 1.05}
+    core:
+      instances: 43016
+      cell_area_um2: 120532.428
+      setup_wns_ns: 2.470
+      hold_wns_ns: 0.000
+      hold_tns_ns: 0.000
+      hold_violating_paths: 0
+      max_transition_nets: 0
+      clock_slew_violations: 0
+      internal_drc: 0
+      vectorless_power_mw: 3.72167787
+      lec_points: 6178
+    axi:
+      instances: 44062
+      cell_area_um2: 124717.482
+      setup_wns_ns: 2.435
+      hold_wns_ns: 0.000
+      hold_tns_ns: 0.000
+      hold_violating_paths: 0
+      max_transition_nets: 264
+      max_transition_terminals: 1387
+      clock_slew_violations: 263
+      internal_drc: 0
+      vectorless_power_mw: 3.79286409
+      lec_points: 6287
+    evidence: verification/asic_gpdk45_hold_closure/results/closure_summary.csv
 claim_boundaries:
   validated_input_duration: 30 minutes
   holter_direction: 24 hours or longer
-  unvalidated: [24-hour accuracy, 24-hour latency, physical AFE PCB, ADC silicon, ASIC hold and data-net transition closure, power grid and IR, physical-only cell and metal fill insertion, complete antenna checking, foundry DRC and LVS, DFT and pads, package, fabricated silicon, clinical validation, measured FPGA-board power, measured ASIC power]
+  unvalidated: [24-hour accuracy, 24-hour latency, physical AFE PCB, ADC silicon, AXI data-net transition and clock-slew closure, power grid and IR, physical-only cell and metal fill insertion, complete antenna checking, foundry DRC and LVS, DFT and pads, package, fabricated silicon, clinical validation, measured FPGA-board power, measured ASIC power]
   power_note: 2.991 uW is a conditional derived estimate under complete power-gating, not measured FPGA power.
   asic_power_note: 3.35554239 mW is a setup-slow vectorless estimate using default activity 0.10, not workload or measured silicon power.
   run2_power_note: core 3.71626492 mW and AXI 3.69335598 mW are vectorless estimates. Core-only seed11-conditioned zero-delay activity windows are accelerated gap2 2.02536072 mW, active-wait idle 1.91083992 mW, and literal 1 kSPS 100-sample prefix 1.91084079 mW with matched total delta 0.00000087 mW; they are not silicon power or energy per decision, and AXI has no activity-based result.
   run2_gate_note: forced two-state mapped and timing-check-disabled single-seed MAX-SDF results are sampled testbench-conditioned initialization sensitivity only.
+  run3_note: core stated timing and internal DRV checks are closed under generic engineering assumptions; AXI hold is closed but data-transition and clock-slew checks fail; neither is foundry signoff.
   dataset_note: strict record-wise splitting prevents source-record leakage but does not remove database-class confounding.

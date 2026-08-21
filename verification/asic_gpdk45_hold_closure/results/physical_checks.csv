@@ -1,0 +1,16 @@
+profile,check,status,value,evidence,claim_boundary
+core,setup_timing,PASS,2.470 ns,hold_closed_final/core/timing_setup.rpt,engineering OCV view
+core,hold_timing,PASS,0.000 ns TNS0 paths0,hold_closed_final/core/time_design_hold.summary,hold closure achieved
+core,data_max_transition,PASS,0,hold_closed_final/core/time_design_setup.tran,zero nets and terminals
+core,clock_slew,PASS,0,hold_closed_final/core/ccopt_clock_trees_60ps.rpt,60 ps target
+core,internal_route_drc,PASS,0,hold_closed_final/core/internal_route_drc.rpt,not foundry DRC
+core,signal_connectivity_excluding_pg,PASS,0,hold_closed_final/core/connectivity_signal.rpt,VDD and VSS separately excluded
+core,unrouted_pg_nets,NOT_COMPLETED,2,hold_closed_final/core/connectivity_signal.rpt,no PG claim
+axi,setup_timing,PASS,2.435 ns,hold_closed_final/axi/timing_setup.rpt,engineering OCV view
+axi,hold_timing,PASS,0.000 ns TNS0 paths0,hold_closed_final/axi/time_design_hold.summary,hold closure achieved
+axi,data_max_transition,FAIL,264 nets 1387 terminals,hold_closed_final/axi/time_design_setup.tran,worst slack minus 1.813 ns
+axi,clock_slew,FAIL,263 pins,hold_closed_final/axi/ccopt_clock_trees_60ps.rpt,worst 0.064 ns at 0.060 ns target
+axi,internal_route_drc,PASS,0,hold_closed_final/axi/internal_route_drc.rpt,not foundry DRC
+axi,signal_connectivity_excluding_pg,PASS,0,hold_closed_final/axi/connectivity_signal.rpt,VDD and VSS separately excluded
+axi,unrouted_pg_nets,NOT_COMPLETED,2,hold_closed_final/axi/connectivity_signal.rpt,no PG claim
+common,foundry_signoff,NOT_RUN,none,run_manifest.json,no DRC LVS antenna IR EM fabrication claim

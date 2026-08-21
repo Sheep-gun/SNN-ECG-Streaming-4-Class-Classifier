@@ -1,0 +1,29 @@
+profile,stage,metric,run2_value,run3_value,unit,status,evidence,claim_boundary
+core,postroute,instance_count,42958,43016,count,OBSERVED,hold_closed_final/core/area.rpt,58-cell ECO increase
+core,postroute,cell_area,120287.898,120532.428,um2,OBSERVED,hold_closed_final/core/area.rpt,0.203 percent area increase
+core,postroute,placement_density,82.775,82.944,percent,OBSERVED,hold_closed_final/core/time_design_hold.summary,placeable-area denominator
+core,route,routed_wire_length,836058.340,839224.620,um,OBSERVED,hold_closed_final/core/final.def,regular NETS Manhattan length
+core,route,via_count,315926,317476,count,OBSERVED,hold_closed_final/core/final.def,via-master token count
+core,timing,setup_wns,2.469,2.470,ns,PASS,hold_closed_final/core/timing_setup.rpt,100 MHz explicit OCV-view report
+core,timing,hold_wns,-0.008,0.000,ns,PASS,hold_closed_final/core/timing_hold.rpt,negative WNS removed
+core,timing,hold_tns,-0.094,0.000,ns,PASS,hold_closed_final/core/time_design_hold.summary,aggregate all-path hold
+core,timing,hold_violating_paths,37,0,count,PASS,hold_closed_final/core/time_design_hold.summary,zero violating hold paths
+core,timing,max_transition_nets,3,0,count,PASS,hold_closed_final/core/time_design_setup.tran,zero data-net transition violations
+core,timing,max_transition_terminals,6,0,count,PASS,hold_closed_final/core/time_design_setup.tran,zero violating terminals
+core,timing,clock_slew_violations,0,0,count,PASS,hold_closed_final/core/ccopt_clock_trees_60ps.rpt,60 ps engineering target
+core,route,internal_drc,0,0,count,PASS,hold_closed_final/core/internal_route_drc.rpt,Innovus internal check not foundry signoff
+core,power,vectorless_total,3.71626492,3.72167787,mW,ESTIMATE,hold_closed_final/core/power_vectorless.rpt,default activity 0.10 not workload power
+axi,postroute,instance_count,43901,44062,count,OBSERVED,hold_closed_final/axi/area.rpt,161-cell ECO increase
+axi,postroute,cell_area,123650.100,124717.482,um2,OBSERVED,hold_closed_final/axi/area.rpt,0.863 percent area increase
+axi,postroute,placement_density,83.215,83.934,percent,OBSERVED,hold_closed_final/axi/time_design_hold.summary,placeable-area denominator
+axi,route,routed_wire_length,935700.505,1054817.085,um,OBSERVED,hold_closed_final/axi/final.def,regular NETS Manhattan length
+axi,route,via_count,337893,373512,count,OBSERVED,hold_closed_final/axi/final.def,via-master token count
+axi,timing,setup_wns,2.781,2.435,ns,PASS,hold_closed_final/axi/timing_setup.rpt,100 MHz explicit OCV-view report
+axi,timing,hold_wns,-0.016,0.000,ns,PASS,hold_closed_final/axi/timing_hold.rpt,negative WNS removed
+axi,timing,hold_tns,-0.518,0.000,ns,PASS,hold_closed_final/axi/time_design_hold.summary,aggregate all-path hold
+axi,timing,hold_violating_paths,107,0,count,PASS,hold_closed_final/axi/time_design_hold.summary,zero violating hold paths
+axi,timing,max_transition_nets,73,264,count,FAIL,hold_closed_final/axi/time_design_setup.tran,DRV regression prevents full closure
+axi,timing,max_transition_terminals,469,1387,count,FAIL,hold_closed_final/axi/time_design_setup.tran,worst slack minus 1.813 ns
+axi,timing,clock_slew_violations,0,263,count,FAIL,hold_closed_final/axi/ccopt_clock_trees_60ps.rpt,worst slew 0.064 ns at 0.060 ns target
+axi,route,internal_drc,0,0,count,PASS,hold_closed_final/axi/internal_route_drc.rpt,Innovus internal check not foundry signoff
+axi,power,vectorless_total,3.69335598,3.79286409,mW,ESTIMATE,hold_closed_final/axi/power_vectorless.rpt,default activity 0.10 not workload power

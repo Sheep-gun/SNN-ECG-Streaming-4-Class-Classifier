@@ -1,0 +1,19 @@
+profile,metric,run2,run3,unit,result,claim_boundary
+core,setup_WNS,2.469,2.470,ns,PASS,engineering OCV
+core,hold_WNS,-0.008,0.000,ns,PASS,zero violating paths
+core,hold_TNS,-0.094,0.000,ns,PASS,zero violating paths
+core,hold_paths,37,0,count,PASS,all-path summary
+core,max_transition_nets,3,0,count,PASS,data nets
+core,clock_slew_pins,0,0,count,PASS,60 ps target
+core,instances,42958,43016,count,OBSERVED,plus 58 instances
+core,cell_area,120287.898,120532.428,um2,OBSERVED,plus 0.203 percent
+core,vectorless_power,3.71626492,3.72167787,mW,ESTIMATE,default activity 0.10
+axi,setup_WNS,2.781,2.435,ns,PASS,engineering OCV
+axi,hold_WNS,-0.016,0.000,ns,PASS,zero violating paths
+axi,hold_TNS,-0.518,0.000,ns,PASS,zero violating paths
+axi,hold_paths,107,0,count,PASS,all-path summary
+axi,max_transition_nets,73,264,count,FAIL,DRV regression
+axi,clock_slew_pins,0,263,count,FAIL,60 ps target
+axi,instances,43901,44062,count,OBSERVED,plus 161 instances
+axi,cell_area,123650.100,124717.482,um2,OBSERVED,plus 0.863 percent
+axi,vectorless_power,3.69335598,3.79286409,mW,ESTIMATE,default activity 0.10

@@ -75,6 +75,8 @@ Run-2 functional authority는 `manifests/canonical_digital_36.manifest`의 regen
 
 Core activity power는 `verification/asic_gpdk45_run2/power/activity_power_summary.csv`와 `activity_annotation_summary.txt`를 authority로 사용한다. 모든 window는 seed11-conditioned mapped gate 6,045/6,045, `-access +rwc`, zero delay이며, normalized SAIF parse에서 fully-X/Z entry를 보존하고 unannotated default 0을 사용했다. Parse/annotation status PASS는 numeric annotation coverage PASS가 아니다. Accelerated gap2 full-record, active-wait idle와 100-sample literal 1 kSPS prefix는 서로 다른 cadence이므로 혼합하지 않으며, prefix는 Snapshot/decision에 도달하지 않는다. Matched delta는 energy/decision이 아니고 AXI에는 activity-based result가 없다.
 
+Run-3 hold closure는 `extract_violating_hold_endpoints.py`, `manual_hold_endpoint_eco.tcl`, `hold_resize_only.tcl`, `export_hold_closed_candidate.tcl`과 `run_postroute_lec.do`로 재현한다. Run-2 checkpoint와 PDK를 새 private work root에 복원하고 OCV·hold uncertainty를 유지한 채 endpoint ECO와 재추출을 수행한다. Core는 hold·data-transition·clock-slew·internal-DRC closure, AXI는 hold closure만 달성했다. Public 결과는 `verification/asic_gpdk45_hold_closure/`, raw DB/netlist/DEF/SDF/SPEF는 Git 밖의 checksum archive에 보존한다.
+
 ## 7. repository 검사
 
 ```powershell

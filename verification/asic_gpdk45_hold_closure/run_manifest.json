@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "source_commit_before_run3": "b7418ef8b1f14af73e8823ed497a250ffd7033b9",
+  "tool_versions": {
+    "innovus": "23.14-s088_1",
+    "iquantus": "23.1.1-s336",
+    "conformal": "24.10-s500"
+  },
+  "constraints": {
+    "clock_mhz": 100,
+    "hold_uncertainty_ns": 0.100,
+    "slow_early_derate": 0.95,
+    "slow_late_derate": 1.00,
+    "fast_early_derate": 1.00,
+    "fast_late_derate": 1.05,
+    "derate_kind": "fixed engineering assumption",
+    "rc_model": "same gpdk045.tch and scale 1.0 for both views"
+  },
+  "core_final": {
+    "instances": 43016,
+    "cell_area_um2": 120532.428,
+    "die_um": [422.800, 419.900],
+    "density_percent": 82.944,
+    "wire_um": 839224.620,
+    "vias": 317476,
+    "setup_wns_ns": 2.470,
+    "hold_wns_ns": 0.000,
+    "hold_tns_ns": 0.000,
+    "hold_violating_paths": 0,
+    "max_transition_nets": 0,
+    "max_transition_terminals": 0,
+    "clock_slew_violations": 0,
+    "internal_drc": 0,
+    "vectorless_power_mw": 3.72167787,
+    "lec": {"total": 6178, "non_equivalent": 0, "abort": 0, "unknown": 0}
+  },
+  "axi_final": {
+    "instances": 44062,
+    "cell_area_um2": 124717.482,
+    "die_um": [426.200, 425.030],
+    "density_percent": 83.934,
+    "wire_um": 1054817.085,
+    "vias": 373512,
+    "setup_wns_ns": 2.435,
+    "hold_wns_ns": 0.000,
+    "hold_tns_ns": 0.000,
+    "hold_violating_paths": 0,
+    "max_transition_nets": 264,
+    "max_transition_terminals": 1387,
+    "max_transition_worst_slack_ns": -1.813,
+    "clock_slew_violations": 263,
+    "clock_slew_worst_ns": 0.064,
+    "internal_drc": 0,
+    "vectorless_power_mw": 3.79286409,
+    "lec": {"total": 6287, "non_equivalent": 0, "abort": 0, "unknown": 0}
+  },
+  "private_archive": {
+    "sha256": "d04bf1d702bc8a7770d07ec2cbb509fbe7169ba118a02a133600899c010695b5",
+    "raw_artifacts_committed": false,
+    "remote_workspace_removed": true
+  },
+  "claim_boundary": [
+    "Core timing and internal DRV checks are closed only under the stated generic engineering assumptions.",
+    "AXI hold is closed but data-transition and clock-slew checks fail, so AXI full physical closure is not claimed.",
+    "Both blocks remain signal-route-only with VDD and VSS unrouted.",
+    "No foundry signoff, PG, IR/EM, physical fill, DFT, pad, package, fabrication, or silicon measurement is included."
+  ]
+}

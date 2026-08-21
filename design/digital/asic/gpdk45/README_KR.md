@@ -126,7 +126,7 @@ PDK 원본과 원격 접속 정보는 저장소에 포함하지 않는다. 실�
 
 - 공식 foundry 45 nm PDK 또는 tape-out/sign-off 완료
 - full-chip, pad ring, package, PG/IR-drop 완료
-- post-route optimization 또는 hold closure 완료
+- AXI full physical closure 또는 foundry sign-off hold closure 완료
 - DFT, scan insertion 또는 ATPG 완료
 - foundry DRC/LVS 완료
 - signoff STA 또는 signoff RC extraction 완료
@@ -137,3 +137,13 @@ PDK 원본과 원격 접속 정보는 저장소에 포함하지 않는다. 실�
 실제 2026-08-20 실행 SDC에는 clock source transition이 명시되지 않아 CCOpt root slew가 약 0.004 ns의 tool-default/derived 값이었다. 현재 SDC의 0.100 ns 가정과 scan-cell avoid는 후속 재현을 위한 post-run hardening이며, 기존 PPA를 이 개선 제약으로 재실행한 것으로 주장하지 않는다. Checkpoint는 RCDB를 보존하지 않으므로 restore 뒤 high-effort extraction을 다시 수행해야 한다.
 
 GSCLIB045 문서는 이 공정을 generic representative 45 nm CMOS이자 tool demonstration용으로 규정한다. Timing constraint table도 silicon 정확도에 권장되는 7×7이 아니라 demonstration용 2×2 특성화다. 결과는 구현 가능성 연구 자료이며 실제 silicon 성능 보증이 아니다.
+
+## Run-3 hold-closure 재현 자산
+
+- `tools/extract_violating_hold_endpoints.py`: Innovus hold report에서 unique violated endpoint를 fail-closed로 추출한다.
+- `scripts/manual_hold_endpoint_eco.tcl`: endpoint별 DLY ECO와 global 또는 targeted `ecoRoute`, 재추출·timing·DRC·checkpoint 생성을 수행한다.
+- `scripts/hold_resize_only.tcl`: 새 인스턴스 없이 cell resizing만 시도한 비교 실험이다. AXI hold를 닫지 못해 최종 후보로 채택하지 않았다.
+- `scripts/export_hold_closed_candidate.tcl`: 선택 checkpoint를 독립 복원해 IQuantus high-effort RC, setup/hold, vectorless power, DRC, SDF/SPEF와 netlist를 최종 export한다.
+- `scripts/run_postroute_lec.do`: mapped netlist와 최종 postroute netlist를 비교한다.
+
+Run-3 core는 setup +2.470 ns, hold WNS/TNS/path 0, data max-transition 0, clock slew 0와 internal DRC 0을 기록했다. AXI는 setup +2.435 ns와 hold WNS/TNS/path 0이지만 data max-transition 264 nets/1,387 terminals와 clock slew 263 pins가 남았다. 상세 수치와 claim boundary는 `verification/asic_gpdk45_hold_closure/`에 있다.

@@ -24,6 +24,7 @@
 | GPDK045 core-only flow | `design/digital/asic/gpdk45/` |
 | GPDK045 PPA 결과와 한계 | `verification/asic_gpdk45_core/`, `tables/asic_gpdk45_ppa.csv` |
 | GPDK045 run-2 core·AXI·regression·LEC·conditioned activity | `verification/asic_gpdk45_run2/`, `tables/asic_gpdk45_run2_ppa.csv`, `tables/asic_gpdk45_run2_verification.csv` |
+| GPDK045 run-3 hold closure | `verification/asic_gpdk45_hold_closure/`, `tables/asic_gpdk45_hold_closure.csv` |
 | timing pipeline 이력 | `verification/timing_optimization/` |
 | compact 36-case 통합 acceptance | `verification/xmodel_rtl_acceptance_36case/` |
 | raw XMODEL replay audit | `verification/xmodel_rtl_e2e/` |

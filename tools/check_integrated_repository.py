@@ -53,6 +53,15 @@ REQUIRED = [
     "verification/asic_gpdk45_run2/sdf/sdf_pilot_summary.csv",
     "verification/asic_gpdk45_run2/power/activity_power_summary.csv",
     "verification/asic_gpdk45_run2/power/activity_annotation_summary.txt",
+    "tables/asic_gpdk45_hold_closure.csv",
+    "verification/asic_gpdk45_hold_closure/README_KR.md",
+    "verification/asic_gpdk45_hold_closure/run_manifest.json",
+    "verification/asic_gpdk45_hold_closure/CHECKSUMS.txt",
+    "verification/asic_gpdk45_hold_closure/results/closure_summary.csv",
+    "verification/asic_gpdk45_hold_closure/results/physical_checks.csv",
+    "verification/asic_gpdk45_hold_closure/results/equivalence_summary.csv",
+    "verification/asic_gpdk45_hold_closure/figures/core_holdclosed.gif",
+    "verification/asic_gpdk45_hold_closure/figures/axi_holdclosed.gif",
     "figures/FIGURE_INDEX.md",
     "vivado/microblaze/SNN_ECG_MB_FULL_REPLAY.xpr",
     "vivado/pure_rtl/project/SNN_ECG_PURE_RTL_VISUALIZATION.xpr",
@@ -334,12 +343,48 @@ def main() -> int:
         if sdf_row is None or "timing checks disabled" not in sdf_row.get("claim_boundary", ""):
             errors.append(f"run-2 SDF timing-check boundary missing: {sdf_row}")
 
+    run3_path = ROOT / "verification/asic_gpdk45_hold_closure/results/closure_summary.csv"
+    if run3_path.exists():
+        rows = load_csv_rows("verification/asic_gpdk45_hold_closure/results/closure_summary.csv")
+        by_metric = {(row["profile"], row["stage"], row["metric"]): row for row in rows}
+        expected_run3 = {
+            ("core", "timing", "setup_wns"): ("2.470", "PASS"),
+            ("core", "timing", "hold_wns"): ("0.000", "PASS"),
+            ("core", "timing", "hold_violating_paths"): ("0", "PASS"),
+            ("core", "timing", "max_transition_nets"): ("0", "PASS"),
+            ("core", "timing", "clock_slew_violations"): ("0", "PASS"),
+            ("core", "route", "internal_drc"): ("0", "PASS"),
+            ("core", "power", "vectorless_total"): ("3.72167787", "ESTIMATE"),
+            ("axi", "timing", "setup_wns"): ("2.435", "PASS"),
+            ("axi", "timing", "hold_wns"): ("0.000", "PASS"),
+            ("axi", "timing", "hold_violating_paths"): ("0", "PASS"),
+            ("axi", "timing", "max_transition_nets"): ("264", "FAIL"),
+            ("axi", "timing", "clock_slew_violations"): ("263", "FAIL"),
+            ("axi", "route", "internal_drc"): ("0", "PASS"),
+            ("axi", "power", "vectorless_total"): ("3.79286409", "ESTIMATE"),
+        }
+        for key, expected_pair in expected_run3.items():
+            row = by_metric.get(key)
+            if row is None or (row.get("run3_value"), row.get("status")) != expected_pair:
+                errors.append(f"run-3 hold-closure metric mismatch for {key}: {row}")
+
+        run3_manifest = load_json("verification/asic_gpdk45_hold_closure/run_manifest.json")
+        if run3_manifest.get("core_final", {}).get("hold_violating_paths") != 0:
+            errors.append("run-3 core hold closure must have zero violating paths")
+        if run3_manifest.get("axi_final", {}).get("hold_violating_paths") != 0:
+            errors.append("run-3 AXI hold closure must have zero violating paths")
+        if run3_manifest.get("axi_final", {}).get("max_transition_nets") != 264:
+            errors.append("run-3 AXI DRV limitation must remain explicit")
+
     claim_registry = ROOT / "project_registry/claim_registry.csv"
     if claim_registry.exists():
         claim_ids = {row["claim_id"] for row in load_csv_rows("project_registry/claim_registry.csv")}
         required_run2_claims = {f"CLM-{number:03d}" for number in range(29, 39)}
         if not required_run2_claims.issubset(claim_ids):
             errors.append(f"run-2 claim registry entries missing: {sorted(required_run2_claims - claim_ids)}")
+        required_run3_claims = {"CLM-039", "CLM-040"}
+        if not required_run3_claims.issubset(claim_ids):
+            errors.append(f"run-3 claim registry entries missing: {sorted(required_run3_claims - claim_ids)}")
 
     figures_index = (ROOT / "figures/FIGURE_INDEX.md").read_text(encoding="utf-8") if (ROOT / "figures/FIGURE_INDEX.md").exists() else ""
     figure_files = list((ROOT / "figures/final_submission").rglob("*.svg"))
