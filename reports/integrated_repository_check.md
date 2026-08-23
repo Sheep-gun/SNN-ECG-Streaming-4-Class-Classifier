@@ -3,7 +3,7 @@
 ## 결과: PASS
 
 - 기존 run-1·run-2 필수 설계·검증 artifact, run-3 core closure, run-4 AXI improvement, run-5 AXI full-closure와 run-6 hold-guardband public evidence package를 확인하고 repository artifact manifest와 package checksum을 재검증
-- 최종 제출용 SVG 13개와 GPDK045 routed-core GIF를 Figure index에 연결
+- 최종 제출용 SVG 13개와 GPDK045 native GIF 5개를 Figure index와 기술보고서에 연결
 - 분류 성능, FPGA 자원·timing, XMODEL–RTL·FPGA 정합과 GPDK045 mapping·LEC·PPA 근거 확인
 - 30분 검증, 24시간 지향점, model-based analog와 조건부 전력 claim 경계 확인
 - 실제 XMODEL ADC dump 4/36과 compact 36-case acceptance evidence를 명확히 구분

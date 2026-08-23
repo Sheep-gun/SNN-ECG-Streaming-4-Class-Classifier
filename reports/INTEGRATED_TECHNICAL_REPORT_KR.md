@@ -213,6 +213,30 @@ Pure RTL 분류기를 AXI IP로 패키징하여 MicroBlaze, Sample Feeder, Local
 
 그림 14는 표준셀 코어의 배치, CTS와 일반 신호 배선 결과다. VDD/VSS power grid, pad ring과 package는 포함하지 않으며, Innovus 내부 Metal1 spacing 위반 1건이 남아 있다.
 
+![그림 15. GPDK045 run-6 AXI standard-cell placement](../figures/final_submission/설계회로%20구현결과/GPDK045%20AXI%20표준셀%20배치%20결과.gif)
+
+**그림 15. GPDK045 run-6 AXI standard-cell placement**
+
+그림 15는 최종 run-6 checkpoint에서 signal net을 숨기고 standard-cell instance만 표시한 Innovus native 화면이다. 481.2 × 478.04 µm die 안에 44,602 instances가 배치됐고 placement density는 68.079%다. 셀 분포와 확보된 whitespace를 보여주지만 filler·tap·endcap·metal fill 또는 power grid 완성을 뜻하지 않는다.
+
+![그림 16. GPDK045 run-6 AXI 최종 placement 및 signal routing](../figures/final_submission/설계회로%20구현결과/GPDK045%20AXI%20최종%20배치배선%20결과.gif)
+
+**그림 16. GPDK045 run-6 AXI 최종 placement 및 signal routing**
+
+그림 16은 같은 checkpoint의 placement와 Metal1–Metal11 일반 신호 배선을 함께 표시한 Innovus native 화면이다. 이 상태에서 setup WNS +2.602 ns, hold WNS +0.010 ns, data max-transition 0, clock slew 0, internal route DRC 0을 기록했다. VDD/VSS는 unrouted이고 pad·package가 없어 full-chip 또는 foundry-signoff layout은 아니다.
+
+![그림 17. GPDK045 run-6 AXI CTS clock nets 선택 화면](../figures/final_submission/설계회로%20구현결과/GPDK045%20AXI%20Clock%20Net%20선택%20결과.gif)
+
+**그림 17. GPDK045 run-6 AXI CTS clock nets 선택 화면**
+
+그림 17은 Innovus가 clock net으로 식별한 114개 net을 실제 routed layout 위에서 선택한 native 화면이다. 선택 overlay는 CTS 분포를 보여주며 slow setup view의 clock slew worst는 0.057 ns로 0.060 ns engineering target 이내였다. 이는 clock 배선의 시각화이지 jitter·IR·EM 또는 silicon clock 품질 실측이 아니다.
+
+![그림 18. GPDK045 run-6 qrs_maf leaf placement 선택 화면](../figures/final_submission/설계회로%20구현결과/GPDK045%20AXI%20QRS-MAF%20배치%20선택%20결과.gif)
+
+**그림 18. GPDK045 run-6 `qrs_maf` leaf placement 선택 화면**
+
+그림 18의 cyan overlay는 `qrs_maf` hierarchy에 속한 9,261 leaf instances를 선택한 Innovus native 결과다. Run-4 data-transition 위반 141 nets 중 140개가 이 hierarchy에 집중돼 있었고, run-5/6의 50% floorplan 재배치와 DRV 보정 후 transition violation을 0으로 닫았다. 화면은 selected leaf placement이며 물리적 hard macro boundary를 뜻하지 않는다.
+
 **표 6. GPDK045 digital block 구현과 PPA: run-1 / run-2 / run-3 / run-4 / run-5 / run-6 guardband**
 
 | 항목 | 결과 | 해석 범위 |

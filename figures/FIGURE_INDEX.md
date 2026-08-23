@@ -19,8 +19,12 @@
 | 12 | XMODEL AFE–ADC stage waveform | `설계회로 구현결과/Xmodel 구현 결과.svg` |
 | 13 | FPGA implementation/placement | `설계회로 구현결과/FPGA 구현ㆍ배치 결과.svg` |
 | 14 | GPDK045 core-only signal placement/routing | `설계회로 구현결과/GPDK045 코어 배치배선 결과.gif` |
+| 15 | GPDK045 run-6 AXI standard-cell placement | `설계회로 구현결과/GPDK045 AXI 표준셀 배치 결과.gif` |
+| 16 | GPDK045 run-6 AXI placement/signal routing | `설계회로 구현결과/GPDK045 AXI 최종 배치배선 결과.gif` |
+| 17 | GPDK045 run-6 AXI CTS clock-net selection | `설계회로 구현결과/GPDK045 AXI Clock Net 선택 결과.gif` |
+| 18 | GPDK045 run-6 qrs_maf leaf-placement selection | `설계회로 구현결과/GPDK045 AXI QRS-MAF 배치 선택 결과.gif` |
 
-Figure 13은 ASIC layout이 아니라 Vivado post-route FPGA placement를 바탕으로 정리한 publication figure다. Figure 14는 generic GPDK045 digital core의 일반 신호 배선 화면이며 PG·pad·signoff layout이 아니다. Figure 5는 원본 RTL hierarchy에 근거한 reader-facing vector 정리이며 synthesized leaf-cell netlist가 아니다.
+Figure 13은 ASIC layout이 아니라 Vivado post-route FPGA placement를 바탕으로 정리한 publication figure다. Figure 14는 generic GPDK045 historical core의 일반 신호 배선 화면이다. Figure 15–18은 최종 run-6 AXI checkpoint에서 Innovus가 직접 출력한 placement·routing·clock-net·qrs_maf selection 화면이다. 모든 GPDK045 Figure는 signal-only block이며 PG·pad·foundry-signoff layout이 아니다. Figure 5는 원본 RTL hierarchy에 근거한 reader-facing vector 정리이며 synthesized leaf-cell netlist가 아니다.
 
 ## 보조 Cadence native view
 
