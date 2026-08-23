@@ -90,6 +90,20 @@ REQUIRED = [
     "verification/asic_gpdk45_axi_hold_guardband_run6/results/equivalence_summary.csv",
     "verification/asic_gpdk45_axi_hold_guardband_run6/results/guardband_progress.csv",
     "verification/asic_gpdk45_axi_hold_guardband_run6/figures/axi_holdguard10_final.gif",
+    "verification/cadence_native_visuals/README_KR.md",
+    "verification/cadence_native_visuals/CHECKSUMS.txt",
+    "verification/cadence_native_visuals/provenance/native_visual_export_status.txt",
+    "verification/cadence_native_visuals/provenance/metal_visual_export_status.txt",
+    "verification/cadence_native_visuals/figures/run6/01_full_placement_routing.gif",
+    "verification/cadence_native_visuals/figures/run6/02_placement_only.gif",
+    "verification/cadence_native_visuals/figures/run6/03_routing_only.gif",
+    "verification/cadence_native_visuals/figures/run6/04_full_with_pins.gif",
+    "verification/cadence_native_visuals/figures/run6/05_clock_nets_selected.gif",
+    "verification/cadence_native_visuals/figures/run6/06_qrs_maf_placement_selected.gif",
+    "verification/cadence_native_visuals/figures/run6/07_metal1_only.gif",
+    "verification/cadence_native_visuals/figures/run6/08_metal2_3.gif",
+    "verification/cadence_native_visuals/figures/run6/09_metal4_6.gif",
+    "verification/cadence_native_visuals/figures/run6/10_metal7_11.gif",
     "figures/FIGURE_INDEX.md",
     "vivado/microblaze/SNN_ECG_MB_FULL_REPLAY.xpr",
     "vivado/pure_rtl/project/SNN_ECG_PURE_RTL_VISUALIZATION.xpr",
@@ -516,6 +530,29 @@ def main() -> int:
             errors.append("run-5 AXI full-closure claim CLM-042 missing")
         if "CLM-043" not in claim_ids:
             errors.append("run-6 AXI hold-guardband claim CLM-043 missing")
+
+    native_status_path = ROOT / "verification/cadence_native_visuals/provenance/native_visual_export_status.txt"
+    metal_status_path = ROOT / "verification/cadence_native_visuals/provenance/metal_visual_export_status.txt"
+    if native_status_path.exists() and metal_status_path.exists():
+        native_status = native_status_path.read_text(encoding="utf-8")
+        metal_status = metal_status_path.read_text(encoding="utf-8")
+        if "clock_net_count=114" not in native_status:
+            errors.append("Cadence native visual clock-net selection count mismatch")
+        if "qrs_maf_leaf_instance_count=9261" not in native_status:
+            errors.append("Cadence native visual qrs_maf selection count mismatch")
+        failed_native = [
+            line for line in native_status.splitlines()
+            if "status=1" in line and not line.startswith("fit_qrs_selected|status=1|")
+        ]
+        if failed_native:
+            errors.append(f"unexpected Cadence native visual export failures: {failed_native}")
+        if any("status=1" in line for line in metal_status.splitlines()):
+            errors.append("Cadence metal-layer native visual export reported a failure")
+
+        routing_hash = file_sha256(ROOT / "verification/cadence_native_visuals/figures/run6/03_routing_only.gif")
+        pins_hash = file_sha256(ROOT / "verification/cadence_native_visuals/figures/run6/04_full_with_pins.gif")
+        if routing_hash != pins_hash:
+            errors.append("documented routing/full-with-pins pixel identity changed unexpectedly")
 
     figures_index = (ROOT / "figures/FIGURE_INDEX.md").read_text(encoding="utf-8") if (ROOT / "figures/FIGURE_INDEX.md").exists() else ""
     figure_files = list((ROOT / "figures/final_submission").rglob("*.svg"))

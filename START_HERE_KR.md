@@ -28,6 +28,7 @@
 | GPDK045 run-4 AXI closure 개선 | `verification/asic_gpdk45_axi_closure_run4/`, `tables/asic_gpdk45_axi_closure_run4.csv` |
 | GPDK045 run-5 AXI full closure | `verification/asic_gpdk45_axi_full_closure_run5/`, `tables/asic_gpdk45_axi_full_closure_run5.csv` |
 | GPDK045 run-6 AXI hold guardband | `verification/asic_gpdk45_axi_hold_guardband_run6/`, `tables/asic_gpdk45_axi_hold_guardband_run6.csv` |
+| Cadence native placement/routing/layer views | `verification/cadence_native_visuals/` |
 | timing pipeline 이력 | `verification/timing_optimization/` |
 | compact 36-case 통합 acceptance | `verification/xmodel_rtl_acceptance_36case/` |
 | raw XMODEL replay audit | `verification/xmodel_rtl_e2e/` |

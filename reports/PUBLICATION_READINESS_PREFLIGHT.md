@@ -7,6 +7,7 @@
 - Pure RTL 및 MicroBlaze canonical Vivado project 각 1개
 - 재현 script, compact acceptance, raw-dump audit와 final figures
 - GPDK045 run-1 historical baseline, run-2 scan-free core·AXI, run-3 core closure, run-4 AXI 개선, run-5 AXI full-closure와 run-6 hold-guardband의 sanitize된 mapping/LEC/post-route/PPA·regression·실패/조건부 실험 근거
+- Innovus checkpoint가 직접 출력한 placement·routing·clock·qrs_maf·Metal1–Metal11 native GIF와 command-status provenance
 - claim, evidence, upstream commit와 unresolved registry
 
 ## 제외

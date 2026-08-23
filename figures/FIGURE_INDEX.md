@@ -21,3 +21,7 @@
 | 14 | GPDK045 core-only signal placement/routing | `설계회로 구현결과/GPDK045 코어 배치배선 결과.gif` |
 
 Figure 13은 ASIC layout이 아니라 Vivado post-route FPGA placement를 바탕으로 정리한 publication figure다. Figure 14는 generic GPDK045 digital core의 일반 신호 배선 화면이며 PG·pad·signoff layout이 아니다. Figure 5는 원본 RTL hierarchy에 근거한 reader-facing vector 정리이며 synthesized leaf-cell netlist가 아니다.
+
+## 보조 Cadence native view
+
+보고서 Figure 번호와 별개로 최종 run-6 AXI checkpoint의 placement-only, routing-only, clock-net selection, `qrs_maf` selection과 Metal1–Metal11 layer-group 화면을 `verification/cadence_native_visuals/`에 보존한다. 이 GIF는 모두 Innovus `dumpToGIF` 직접 출력이며 재도식화·AI 생성·이미지 후처리를 하지 않았다.

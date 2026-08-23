@@ -83,6 +83,8 @@ Run-5 AXI는 scan-free mapped netlist에서 `run_axi_low_density_closure.tcl`을
 
 Run-6 AXI는 run-5 checkpoint에서 `hold_closure_pass.tcl`과 `optimize_postroute_drv.tcl`을 교대 실행한다. Hold target은 0.010→0.012→0.015 ns로 올리고 각 hold ECO 뒤 `DRV_ROUTE_MODE=none`으로 transition을 복구한다. 최종 독립 export에서 hold WNS +0.010 ns, transition 0, setup +2.602 ns를 확인한다. Public authority는 `verification/asic_gpdk45_axi_hold_guardband_run6/`이며 raw 산출물은 Git 밖 checksum archive에만 보존한다.
 
+Cadence native 화면은 `export_innovus_native_visual_suite.tcl`과 `export_innovus_metal_visual_suite.tcl`을 Xvfb Innovus 세션에서 실행해 재현한다. 최종 run-6 checkpoint를 restore한 뒤 visibility·selection만 변경하고 `dumpToGIF`를 호출한다. 공개 authority와 command status는 `verification/cadence_native_visuals/`에 있고, Genus/Innovus raw text report는 실행경로 노출 때문에 local delivery 폴더에만 둔다.
+
 ## 7. repository 검사
 
 ```powershell

@@ -13,6 +13,7 @@
 - Run-4 AXI hold·clock·DRC closure와 PPA 개선을 확인하고 residual data-transition을 full closure와 구분
 - Run-5 AXI setup·hold·data-transition·clock·DRC 0 violation을 확인하고 generic block closure를 foundry sign-off와 구분
 - Run-6 AXI 추가 hold slack 10 ps와 area·wire·power guardband 비용을 확인하고 engineering uncertainty를 foundry margin과 구분
+- Innovus native GIF 10개와 visibility·selection command status를 확인하고 AI 생성·후처리 그림과 구분
 - Run-2 canonical digital 36/36과 actual raw XMODEL 4/4, core/AXI post-route LEC를 별도 범위로 기록
 - Failed PG attempt과 testbench-conditioned gate/SDF sensitivity를 구현 완료나 일반 GLS로 확대하지 않음
 - Core conditioned activity 세 window와 matched delta를 검증하고 Snapshot/decision·numeric coverage·silicon·energy/decision 경계를 유지; AXI vectorless only

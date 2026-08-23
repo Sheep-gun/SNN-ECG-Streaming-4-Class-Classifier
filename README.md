@@ -96,6 +96,7 @@ LTspice와 XMODEL의 동일 10초 ECG 비교에서는 MAE 0.6445 LSB, RMS 1.3020
 | GPDK045 run-4 AXI closure 개선 | [verification/asic_gpdk45_axi_closure_run4/README_KR.md](verification/asic_gpdk45_axi_closure_run4/README_KR.md) |
 | GPDK045 run-5 AXI full closure | [verification/asic_gpdk45_axi_full_closure_run5/README_KR.md](verification/asic_gpdk45_axi_full_closure_run5/README_KR.md) |
 | GPDK045 run-6 AXI hold guardband | [verification/asic_gpdk45_axi_hold_guardband_run6/README_KR.md](verification/asic_gpdk45_axi_hold_guardband_run6/README_KR.md) |
+| Cadence 원본 배치·배선 시각 자료 | [verification/cadence_native_visuals/README_KR.md](verification/cadence_native_visuals/README_KR.md) |
 | 통합 검증 | [docs/INTEGRATION_VERIFICATION_KR.md](docs/INTEGRATION_VERIFICATION_KR.md) |
 | 최종 Figure | [figures/FIGURE_INDEX.md](figures/FIGURE_INDEX.md) |
 | 재현 명령 | [REPRODUCIBILITY_KR.md](REPRODUCIBILITY_KR.md) |

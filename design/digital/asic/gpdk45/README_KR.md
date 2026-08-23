@@ -169,3 +169,10 @@ Run-4 transition 위반 141 nets 중 140개가 `qrs_maf` 내부였다. Run-5는 
 ## Run-6 hold guardband
 
 Run-5 checkpoint에 `hold_closure_pass.tcl`의 positive target과 `optimize_postroute_drv.tcl`을 교대 적용했다. Target 10·12·15 ps와 세 번의 DRV recovery 뒤 hold WNS +0.010 ns, data max-transition 0, setup +2.602 ns를 동시에 달성했다. Guardband 비용과 engineering uncertainty 경계는 `verification/asic_gpdk45_axi_hold_guardband_run6/`에 있다.
+
+## Native visual export
+
+- `scripts/export_innovus_native_visual_suite.tcl`: 최종 checkpoint의 full, placement-only, routing-only, pin, clock-net selection과 `qrs_maf` selection 화면을 `dumpToGIF`로 직접 출력한다.
+- `scripts/export_innovus_metal_visual_suite.tcl`: Metal1, Metal2–3, Metal4–6, Metal7–11 layer visibility를 나눠 직접 출력한다.
+
+두 script는 placement·routing DB를 수정하지 않고 GUI visibility와 selection만 변경한다. 출력과 command status는 `verification/cadence_native_visuals/`에 있다.
