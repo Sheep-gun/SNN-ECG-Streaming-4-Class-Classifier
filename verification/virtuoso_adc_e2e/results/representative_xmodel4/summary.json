@@ -1,0 +1,19 @@
+{
+  "case_count": 4,
+  "checks": [
+    "input normalization and exact sample count",
+    "CSV 1 kSPS cadence when CSV is supplied",
+    "AXI accepted and consumed sample counts",
+    "AXI versus direct-core final class",
+    "AXI versus direct-core four final membranes",
+    "both paths versus manifest expected outputs"
+  ],
+  "git_commit_before_harness_changes": "ea32e9a22d7a753a2932636081aff031d88394ab",
+  "manifest_name": "representative_xmodel4.csv",
+  "passed_case_count": 4,
+  "sample_gap_cycles": 2,
+  "samples_per_case": 1800000,
+  "schema_version": 1,
+  "simulator": "xsim",
+  "status": "PASS"
+}

@@ -1,0 +1,21 @@
+
+****** xsim v2020.2 (64-bit)
+  **** SW Build 3064766 on Wed Nov 18 09:12:45 MST 2020
+  **** IP Build 3064653 on Wed Nov 18 14:17:31 MST 2020
+    ** Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_virtuoso_adc_e2e_runner/xsim_script.tcl
+# xsim {tb_virtuoso_adc_e2e_runner} -autoloadwcfg -tclbatch {run.tcl}
+Vivado Simulator 2020.2
+Time resolution is 1 ps
+source run.tcl
+## run all
+VIRTUOSO_AXI_E2E_CASE_PASS case=9 name=AFF_afdb_06995_chunk01 samples=1800000 pred=3 mem=0/0/0/30 cycles=5401265
+VIRTUOSO_AXI_E2E_CASE_PASS case=35 name=ARR_mitdb_102_chunk00 samples=1800000 pred=2 mem=0/3/27/0 cycles=5401265
+VIRTUOSO_AXI_E2E_CASE_PASS case=83 name=CHF_chfdb_chf06_chunk06 samples=1800000 pred=1 mem=0/33/0/7 cycles=5401265
+VIRTUOSO_AXI_E2E_CASE_PASS case=104 name=NSR_nsrdb_16272_chunk03 samples=1800000 pred=0 mem=17/0/6/7 cycles=5401265
+VIRTUOSO_AXI_E2E_PASS cases=4 samples_per_case=1800000
+$finish called at time : 216052645 ns : File "<REPOSITORY_ROOT>/design/digital/asic/gpdk45/axi_profile/sim/tb_snn_ecg_axi_virtuoso_e2e.v" Line 455
+run: Time (s): cpu = 00:00:01 ; elapsed = 00:12:06 . Memory (MB): peak = 927.242 ; gain = 0.000
+## quit
+INFO: [Common 17-206] Exiting xsim at Wed Aug 26 17:18:14 2026...

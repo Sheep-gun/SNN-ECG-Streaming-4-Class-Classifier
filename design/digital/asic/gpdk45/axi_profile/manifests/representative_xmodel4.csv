@@ -1,0 +1,5 @@
+case_id,case_name,expected_class,sample_count,expected_mem_nsr,expected_mem_chf,expected_mem_arr,expected_mem_aff,input_path,input_format,input_encoding
+9,AFF_afdb_06995_chunk01,3,1800000,0,0,0,30,datasets/xmodel_afe_adc_outputs/representative_4case/accepted_AFF_afdb_06995_chunk01.mem,mem,twos_complement
+35,ARR_mitdb_102_chunk00,2,1800000,0,3,27,0,datasets/xmodel_afe_adc_outputs/representative_4case/accepted_ARR_mitdb_102_chunk00.mem,mem,twos_complement
+83,CHF_chfdb_chf06_chunk06,1,1800000,0,33,0,7,datasets/xmodel_afe_adc_outputs/representative_4case/accepted_CHF_chfdb_chf06_chunk06.mem,mem,twos_complement
+104,NSR_nsrdb_16272_chunk03,0,1800000,17,0,6,7,datasets/xmodel_afe_adc_outputs/representative_4case/accepted_NSR_nsrdb_16272_chunk03.mem,mem,twos_complement

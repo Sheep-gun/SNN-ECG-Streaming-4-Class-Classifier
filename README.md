@@ -65,6 +65,7 @@
 | Run-4 AXI closure 개선 | setup +2.661 ns; hold 0.000 ns, TNS 0 / 0 paths; clock slew 0; internal DRC 0 | 43,956 instances / 123,906.258 µm²; data max-transition은 141 nets/1,149 terminals가 남아 full physical closure 아님; vectorless 3.71285384 mW |
 | Run-5 AXI full closure | setup +2.703 ns; hold 0.000 ns, TNS 0 / 0 paths; data max-transition 0; clock slew 0; internal DRC 0 | 42,881 instances / 126,069.441 µm²; 50% floorplan의 area–closure tradeoff; vectorless 3.58433691 mW; foundry sign-off 아님 |
 | Run-6 AXI hold guardband | setup +2.602 ns; hold +0.010 ns, TNS 0 / 0 paths; data max-transition 0; clock slew 0; internal DRC 0 | 기존 100 ps uncertainty 뒤 10 ps 잔여 slack; 44,602 instances / 131,487.003 µm²; vectorless 3.71636663 mW |
+| ADC→AXI E2E 하네스 | actual raw XMODEL 4/4, 7,200,000/7,200,000 samples accepted·consumed | XSim에서 AXI/direct-core class·4 membrane bit-exact; 실제 Virtuoso CSV는 아직 미수령 |
 
 LTspice와 XMODEL의 동일 10초 ECG 비교에서는 MAE 0.6445 LSB, RMS 1.3020 LSB, 상관계수 0.999518, 지연 0표본을 기록했다. 이는 모델 간 정합이며 물리 AFE 또는 ADC 실측이 아니다.
 
@@ -97,6 +98,7 @@ LTspice와 XMODEL의 동일 10초 ECG 비교에서는 MAE 0.6445 LSB, RMS 1.3020
 | GPDK045 run-5 AXI full closure | [verification/asic_gpdk45_axi_full_closure_run5/README_KR.md](verification/asic_gpdk45_axi_full_closure_run5/README_KR.md) |
 | GPDK045 run-6 AXI hold guardband | [verification/asic_gpdk45_axi_hold_guardband_run6/README_KR.md](verification/asic_gpdk45_axi_hold_guardband_run6/README_KR.md) |
 | Cadence 원본 배치·배선 시각 자료 | [verification/cadence_native_visuals/README_KR.md](verification/cadence_native_visuals/README_KR.md) |
+| Virtuoso ADC→Digital E2E 하네스 | [verification/virtuoso_adc_e2e/README_KR.md](verification/virtuoso_adc_e2e/README_KR.md) |
 | 통합 검증 | [docs/INTEGRATION_VERIFICATION_KR.md](docs/INTEGRATION_VERIFICATION_KR.md) |
 | 최종 Figure | [figures/FIGURE_INDEX.md](figures/FIGURE_INDEX.md) |
 | 재현 명령 | [REPRODUCIBILITY_KR.md](REPRODUCIBILITY_KR.md) |

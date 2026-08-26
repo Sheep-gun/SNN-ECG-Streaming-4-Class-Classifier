@@ -82,3 +82,7 @@ Cadence Xcelium 실행 예시는 repository root 기준이다.
 xrun -64bit -sv -f design/digital/asic/gpdk45/axi_profile/scripts/xcelium_axi_smoke.f \
   -top tb_snn_ecg_axi_asic_smoke
 ```
+
+## Virtuoso ADC handoff E2E
+
+`VIRTUOSO_E2E_HARNESS_KR.md`는 팀원의 Virtuoso/Spectre ADC CSV를 signed 12-bit stream으로 검증·변환하고, canonical 30분 입력을 direct core와 AXI 경로에 동시에 replay하는 절차를 정의한다. `sim/tb_snn_ecg_axi_virtuoso_e2e.v`는 class, 네 membrane, accepted/consumed sample 수를 fail-closed로 비교한다. 기존 XMODEL 대표 4-case 검증과 실제 Virtuoso handoff의 증거 범위는 구분한다.

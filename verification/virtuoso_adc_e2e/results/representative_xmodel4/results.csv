@@ -1,0 +1,5 @@
+case_id,case_name,sample_count,expected_class,axi_class,reference_class,expected_mem_nsr,expected_mem_chf,expected_mem_arr,expected_mem_aff,axi_mem_nsr,axi_mem_chf,axi_mem_arr,axi_mem_aff,reference_mem_nsr,reference_mem_chf,reference_mem_arr,reference_mem_aff,axi_accepted,axi_consumed,case_pass
+9,AFF_afdb_06995_chunk01,1800000,3,3,3,0,0,0,30,0,0,0,30,0,0,0,30,1800000,1800000,1
+35,ARR_mitdb_102_chunk00,1800000,2,2,2,0,3,27,0,0,3,27,0,0,3,27,0,1800000,1800000,1
+83,CHF_chfdb_chf06_chunk06,1800000,1,1,1,0,33,0,7,0,33,0,7,0,33,0,7,1800000,1800000,1
+104,NSR_nsrdb_16272_chunk03,1800000,0,0,0,17,0,6,7,17,0,6,7,17,0,6,7,1800000,1800000,1
