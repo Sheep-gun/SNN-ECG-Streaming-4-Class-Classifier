@@ -1,0 +1,9 @@
+TOOL: xrun(64) 23.09-s013
+SOURCE_COMMIT: 0972651d6a04a754a325512b60175ca528492a13
+COMMAND_PROFILE: xrun -64bit -sv -f xcelium_virtuoso_e2e_rtl.f -top tb_snn_ecg_axi_virtuoso_e2e +MANIFEST=representative_xmodel_case9.sim_manifest +RESULT=<TEMPORARY_RESULT>
+VIRTUOSO_AXI_E2E_CASE_PASS case=9 name=AFF_afdb_06995_chunk01 samples=1800000 pred=3 mem=0/0/0/30 cycles=5401265
+VIRTUOSO_AXI_E2E_PASS cases=1 samples_per_case=1800000
+Simulation complete via $finish(1) at time 54013165 NS + 0
+TOOL_EXIT_STATUS: 0
+TOOL_TOTAL_TIME: 00:00:15
+REMOTE_CLEANUP_PASS

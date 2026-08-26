@@ -91,12 +91,14 @@ Xcelium 설치·file-list 호환성만 빠르게 교차 확인할 때는 `--case
 
 ```csh
 cd <temporary-repository-copy>
-/home/tools/cadence/XCELIUMMAIN2309/tools/bin/64bit/xrun -64bit \
+/home/tools/cadence/XCELIUMMAIN2309/tools/bin/64bit/xrun -64bit -sv \
   -f design/digital/asic/gpdk45/axi_profile/scripts/xcelium_virtuoso_e2e_rtl.f \
   -top tb_snn_ecg_axi_virtuoso_e2e \
   +MANIFEST=design/digital/asic/gpdk45/axi_profile/manifests/representative_xmodel_case9.sim_manifest \
   +RESULT=<temporary-result.csv>
 ```
+
+`-sv`는 testbench의 fail-closed `$fatal` 처리를 위해 필수다. 이 옵션이 없으면 Xcelium이 `.v`를 IEEE 1364-2001로 해석해 elaboration에서 중단한다.
 
 결과 폴더만 로컬로 회수한 뒤 서버의 temporary repository, analog dump와 Xcelium work database를 지운다. 접속 host/account/password와 원격 절대경로는 manifest, script, report 또는 Git에 넣지 않는다.
 

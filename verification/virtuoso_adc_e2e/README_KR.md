@@ -29,6 +29,8 @@
 - `results/representative_xmodel4/summary.json`
 - `results/representative_xmodel4/simulation.log`
 
+Cadence Xcelium 23.09에서도 `results/xcelium23_case9_crosscheck/`의 AFF case 9를 교차 실행해 1/1 PASS했다. 이는 Xcelium file-list·testbench 호환성 확인이며, 전체 기능 기준은 위 XSim 4-case 결과다.
+
 네 입력은 canonical signed `.mem`이라 sample 수·encoding·SHA-256은 검증했지만 timestamp cadence는 검사할 수 없다. 실제 Virtuoso CSV 실행에서는 변환기가 `time_sec`의 1 ms 간격까지 확인한다.
 
 Elaboration에는 기존 locked core의 abandoned feature stub 경계에 있는 8-bit→4-bit port-width warning 4개와 사용하지 않는 `strong_event` port warning 1개가 남는다. 새 하네스·AXI 경계의 compile/elaboration error, runtime FAIL, timeout 또는 sample mismatch는 없다.

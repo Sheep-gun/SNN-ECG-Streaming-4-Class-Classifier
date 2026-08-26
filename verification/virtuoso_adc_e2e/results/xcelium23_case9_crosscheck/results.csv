@@ -1,0 +1,2 @@
+case_id,case_name,sample_count,expected_class,axi_class,reference_class,expected_mem_nsr,expected_mem_chf,expected_mem_arr,expected_mem_aff,axi_mem_nsr,axi_mem_chf,axi_mem_arr,axi_mem_aff,reference_mem_nsr,reference_mem_chf,reference_mem_arr,reference_mem_aff,axi_accepted,axi_consumed,case_pass
+9,AFF_afdb_06995_chunk01,1800000,3,3,3,0,0,0,30,0,0,0,30,0,0,0,30,1800000,1800000,1

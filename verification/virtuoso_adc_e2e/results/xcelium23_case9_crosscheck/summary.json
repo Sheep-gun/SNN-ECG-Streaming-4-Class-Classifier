@@ -1,0 +1,10 @@
+{
+  "case_count": 1,
+  "passed_case_count": 1,
+  "remote_artifacts_removed_after_local_retrieval": true,
+  "result_csv_raw_sha256": "fba42f3aeaf715b0edb75317b04b5adecdbdd22b1f1885c8ee3e449b85aee263",
+  "schema_version": 1,
+  "simulator": "Xcelium 23.09-s013",
+  "source_commit": "0972651d6a04a754a325512b60175ca528492a13",
+  "status": "PASS"
+}

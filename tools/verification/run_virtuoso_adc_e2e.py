@@ -335,6 +335,7 @@ def run_xrun(
         [
             str(executable),
             "-64bit",
+            "-sv",
             "-f",
             slash(file_list),
             "-top",
