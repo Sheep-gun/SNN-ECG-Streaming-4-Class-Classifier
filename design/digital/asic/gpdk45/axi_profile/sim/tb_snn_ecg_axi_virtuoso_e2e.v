@@ -92,6 +92,8 @@ module tb_snn_ecg_axi_virtuoso_e2e #(
     integer expected_mem_aff_i;
     reg [8*256-1:0] case_name_i;
     reg [8*512-1:0] mem_path_i;
+    reg [8*512-1:0] manifest_path_runtime;
+    reg [8*512-1:0] result_path_runtime;
 
     integer sample_index;
     integer gap_count;
@@ -410,18 +412,26 @@ module tb_snn_ecg_axi_virtuoso_e2e #(
     endtask
 
     initial begin
-        if ((MANIFEST_FILE == "") || (RESULT_CSV == "")) begin
+        manifest_path_runtime = MANIFEST_FILE;
+        result_path_runtime = RESULT_CSV;
+        // Plusargs provide a Python-free entry point for restricted Cadence
+        // servers.  Static parameters remain convenient for XSim wrappers.
+        if ($value$plusargs("MANIFEST=%s", manifest_path_runtime))
+            $display("VIRTUOSO_AXI_E2E_MANIFEST file=%0s", manifest_path_runtime);
+        if ($value$plusargs("RESULT=%s", result_path_runtime))
+            $display("VIRTUOSO_AXI_E2E_RESULT_FILE file=%0s", result_path_runtime);
+        if ((manifest_path_runtime == 0) || (result_path_runtime == 0)) begin
             $display("VIRTUOSO_AXI_E2E_FAIL manifest/result parameters are required");
             $fatal(1);
         end
-        manifest_fd = $fopen(MANIFEST_FILE, "r");
+        manifest_fd = $fopen(manifest_path_runtime, "r");
         if (manifest_fd == 0) begin
-            $display("VIRTUOSO_AXI_E2E_FAIL cannot open manifest=%0s", MANIFEST_FILE);
+            $display("VIRTUOSO_AXI_E2E_FAIL cannot open manifest=%0s", manifest_path_runtime);
             $fatal(1);
         end
-        result_fd = $fopen(RESULT_CSV, "w");
+        result_fd = $fopen(result_path_runtime, "w");
         if (result_fd == 0) begin
-            $display("VIRTUOSO_AXI_E2E_FAIL cannot open result=%0s", RESULT_CSV);
+            $display("VIRTUOSO_AXI_E2E_FAIL cannot open result=%0s", result_path_runtime);
             $fatal(1);
         end
         $fdisplay(result_fd,

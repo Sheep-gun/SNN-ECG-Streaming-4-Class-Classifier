@@ -87,6 +87,17 @@ python3 -B tools/verification/run_virtuoso_adc_e2e.py \
 
 Xcelium 설치·file-list 호환성만 빠르게 교차 확인할 때는 `--case-id 9`처럼 manifest의 한 case를 선택할 수 있다. 최종 analog acceptance에는 옵션을 빼고 전달받은 모든 case를 실행한다.
 
+서버에 Python 3이 없으면 testbench의 `+MANIFEST`, `+RESULT` plusarg 진입점을 직접 사용한다. 다음 예시는 대표 1개만 교차 확인하는 명령이며, 최종 acceptance에는 4-case 또는 실제 Virtuoso manifest를 지정한다.
+
+```csh
+cd <temporary-repository-copy>
+/home/tools/cadence/XCELIUMMAIN2309/tools/bin/64bit/xrun -64bit \
+  -f design/digital/asic/gpdk45/axi_profile/scripts/xcelium_virtuoso_e2e_rtl.f \
+  -top tb_snn_ecg_axi_virtuoso_e2e \
+  +MANIFEST=design/digital/asic/gpdk45/axi_profile/manifests/representative_xmodel_case9.sim_manifest \
+  +RESULT=<temporary-result.csv>
+```
+
 결과 폴더만 로컬로 회수한 뒤 서버의 temporary repository, analog dump와 Xcelium work database를 지운다. 접속 host/account/password와 원격 절대경로는 manifest, script, report 또는 Git에 넣지 않는다.
 
 ## 5. post-route GLS 재사용 경계
