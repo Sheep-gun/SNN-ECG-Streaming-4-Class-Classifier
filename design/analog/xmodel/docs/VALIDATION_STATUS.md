@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../../../../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # AFE / Mixed-signal 검증 상태 (VALIDATION_STATUS)
 
 > 제27회 반도체설계대전 · 한양대 · AFE(이수환) 담당 검증 요약 · 갱신 2026-07-09

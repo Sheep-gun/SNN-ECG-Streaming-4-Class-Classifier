@@ -1,44 +1,5 @@
-# 통합 기술보고서 검토 checklist
+# 보고서 기준 문서 안내
 
-- [x] 제출 기술내용과 근거 기반 보충 설명을 관련 본문 절에 통합했다.
-- [x] 불필요한 편집 안내와 분리된 추가 기술기록 절을 제거했다.
-- [x] 공개 표기는 NSR, CHF, ARR, AF다.
-- [x] SNN 기반 event, LIF와 membrane state를 실제 RTL에 연결했다.
-- [x] 60초 Snapshot과 30분 Final Membrane을 연구 자체의 본질이 아니라 현재 구현과 검증 조건으로 설명했다.
-- [x] 24시간 이상 Holter는 지향점이고 실제 정확도, 처리시간과 전력은 미검증으로 표시했다.
-- [x] source-record-wise split과 fully held-out locked final test를 설명했다.
-- [x] annotation 기반 사전 분석과 final inference input을 구분했다.
-- [x] 30분 구간의 annotation 기반 라벨 대표성 점검을 데이터 구성 절차로 명시했다.
-- [x] accuracy 80.56%, Macro-F1 80.44%와 database–class confounding을 함께 제시했다.
-- [x] Pure RTL과 MicroBlaze system 자원 및 timing을 구분했다.
-- [x] FPGA 36/36 equivalence를 100% classification accuracy로 표현하지 않았다.
-- [x] timing bottleneck 관측, pipeline 분할, timing 재검증과 기능 정합을 순서대로 기록했다.
-- [x] 49.36배를 active kernel time 비교로 제한했다.
-- [x] 142.0 mW를 allocated estimate, 2.991 µW를 ideal power-gating derived value로 제한했다.
-- [x] compact 36-case acceptance와 raw-dump rerun 4/36을 구분했다.
-- [x] GPDK045 core-only mapping·LEC·signal post-route·extraction과 full timing closure/sign-off/fabrication을 구분했다.
-- [x] setup +2.980 ns와 hold −0.050 ns를 함께 제시해 full timing closure로 과장하지 않았다.
-- [x] clock slew 위반 86개와 `SDFFQX1` 995개·undefined scan 10.70% flops의 QoR 한계를 제시했다.
-- [x] incomplete antenna data와 physical-only cell·metal fill 미삽입을 signoff 한계로 제시했다.
-- [x] 3.35554239 mW를 default activity 0.10의 vectorless estimate로 제한했다.
-- [x] VDD/VSS 미배선, internal route DRC 1, PG/IR·foundry DRC/LVS·DFT·pad/package/fabrication 부재를 유지했다.
-- [x] Run-1 GPDK045 historical baseline과 run-2 scan-free core·AXI-inclusive accelerator block을 별도 결과로 유지했다.
-- [x] Run-2 core/AXI mapped·post-route cell/area와 setup·hold·max-transition residual을 함께 제시했다.
-- [x] Run-2 slow-early 0.95·fast-late 1.05를 fixed global engineering derate로 제한하고 foundry AOCV/POCV/LVF로 표현하지 않았다.
-- [x] Run-2 core/AXI clock-tree slew 0 @ 60 ps와 internal DRC 0을 data-net max-transition closure 또는 foundry DRC sign-off로 확대하지 않았다.
-- [x] Run-3 core closure와 run-4 AXI hold·clock·DRC closure 개선을 historical baseline과 분리하고, run-4 residual data-transition 141 nets/1,149 terminals를 full closure와 구분했다.
-- [x] Run-5 AXI의 stated engineering checks 0 violation과 50% floorplan area tradeoff를 함께 제시하고 foundry sign-off와 구분했다.
-- [x] Run-6 AXI의 추가 hold slack 10 ps와 instances·area·wire·power 비용을 함께 제시하고 engineering uncertainty를 foundry guarantee와 구분했다.
-- [x] Run-2 vectorless 3.71626492/3.69335598 mW를 workload activity·판정당 에너지·silicon 실측값으로 확대하지 않았다.
-- [x] Run-2 core activity의 accelerated/idle/literal 세 window와 matched delta를 별도 cadence로 제시하고 AXI vectorless-only 범위를 유지했다.
-- [x] Seed11, mapped 6,045/6,045, `-access +rwc`, zero delay, fully-X/Z preserve와 unannotated default 0을 명시했다.
-- [x] Normalized SAIF parse/annotation PASS를 numeric annotation coverage PASS로 확대하지 않았다.
-- [x] 100-sample prefix를 Snapshot/decision 또는 energy/decision 근거로 확대하지 않고 silicon 실측과 구분했다.
-- [x] Canonical digital RTL 36/36과 actual raw XMODEL 4/4를 분리하고, raw archive 범위를 4/36으로 유지했다.
-- [x] Core/AXI post-route LEC 6,178/6,287 compare point PASS를 timing·accuracy·four-state GLS·sign-off로 확대하지 않았다.
-- [x] Exploratory PG attempt의 171 connectivity·715 geometry violation을 실패로 기록하고 PG/IR/EM 완료를 주장하지 않았다.
-- [x] Unmodified four-state gate output X와 XPR license 부재를 남기고, forced seed와 timing check를 끈 single-seed MAX-SDF 결과를 testbench-conditioned sampled sensitivity로 제한했다.
-- [x] physical AFE, ADC silicon과 clinical validation 부재를 유지했다.
-- [x] 대표 선행연구의 DOI 또는 공식 출판 경로를 등록했다.
-- [x] 본문 선행연구와 참고문헌 `[1]`~`[8]`을 번호로 연결했다.
-- [x] 세계 최초 또는 동일 연구 부재를 단정하지 않았다.
+[원문 출처와 전재 범위](../docs/REPORT_SOURCE_KR.md) · [설계보고서 전문](INTEGRATED_TECHNICAL_REPORT_KR.md) · [과거 자료](../docs/LEGACY_KR.md)
+
+현재 공개 문서는 2026 한국 대학생 반도체 설계 경진대회 설계보고서를 기준으로 합니다. 이전 버전의 주장 목록과 재현 결과는 현재 3클래스 설계의 결과로 사용하지 않습니다.

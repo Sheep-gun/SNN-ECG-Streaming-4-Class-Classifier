@@ -18,3 +18,14 @@
 # line endings. CRLF is therefore a valid end-of-line sequence in redacted
 # public copies and must not be reported as trailing whitespace.
 /components/** -text !eol whitespace=cr-at-eol
+
+# Report vectors and frozen source exports retain their original byte hashes.
+/figures/report_2026/** -text whitespace=cr-at-eol
+/design/digital/rtl/rhythm3_duration_v3/** -text whitespace=cr-at-eol
+/design/digital/rtl/rhythm3_duration_v3/README.md text eol=lf
+/models/rhythm3_duration/** -text whitespace=cr-at-eol
+/models/rhythm3_duration/README_KR.md text eol=lf
+/datasets/rhythm3_duration_v3/** -text whitespace=cr-at-eol
+/datasets/rhythm3_duration_v3/README_KR.md text eol=lf
+/datasets/DATASET_LICENSES.md -text
+/verification/low_power_gals_research/models/TLATNTSCAX4_functional.v -text

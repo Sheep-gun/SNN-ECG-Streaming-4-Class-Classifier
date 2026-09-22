@@ -1,0 +1,17 @@
+abandoned_feature_stubs.v
+dscr_spike_counter.v
+ecg_event_encoder_adaptive.v
+ectopic_pair_neuron.v
+pnn_rhythm_predictor_lp.v
+qrs_lif_detector.v
+qrs_maf_neuron_lp.v
+ram_peak_accumulator_lp.v
+rbbb_qrs_delay_bank_lp.v
+rdm_variability_neuron.v
+reset_sync.v
+rhythm3_axi_event_cf_1v8.v
+rhythm3_duration_core.v
+rhythm3_feature_frontend.v
+rhythm3_snapshot_final_readout.sv
+snn_ecg_input_normalizer.v
+snn_ecg_mh_icg.sv

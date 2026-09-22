@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../../../../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # 36-case Board Replay Preflight Audit
 
 이 문서는 strict record-wise final_test 36개 30분 chunk를 실제 Vitis/MicroBlaze board replay로 실행하기 전 확인한 repo evidence를 정리한다.

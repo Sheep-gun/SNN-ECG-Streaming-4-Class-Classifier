@@ -1,97 +1,55 @@
-# 재현 안내
+# 현재 구현과 재현 안내
 
-## 고정 환경
+[설계보고서 전문](reports/INTEGRATED_TECHNICAL_REPORT_KR.md) · [데이터셋 구성 및 학습](docs/04_DATASET_AND_TRAINING_KR.md) · [검증 결과](docs/05_VERIFICATION_AND_RESULTS_KR.md)
 
-- Digital fixed source: `c6b80de19cdcad5b7e43fe7835588b629d847f75`
-- Timing pipeline history: `c7c75cfebf7add12bfcc32bb59d5edf38ac6e5aa`, `5e2e5d0a46be47d8086b8642e055066079bfa4e6`
-- MATLAB fixed source: `907f7e1f081a9d6a5703a32095d962143315a192`
-- XMODEL fixed source: `4756a5086023547328ef44fd5fd87da3c250dc39`
-- Vivado: 2020.2
-- FPGA: Artix-7 XC7A100T-CSG324-1
-- ASIC exploratory flow: Cadence Xcelium 23.09, Genus/Innovus 23.14, Conformal 24.1, GPDK045 GSCLIB v4.7
-- Stream: 1 kSPS signed 12-bit two's complement
+## 현재 파일
 
-## 1. 데이터 준비
+| 항목 | 경로 |
+| --- | --- |
+| AXI를 포함한 3클래스 RTL | [`design/digital/rtl/rhythm3_duration_v3/`](design/digital/rtl/rhythm3_duration_v3/) |
+| RTL 최상위 모듈 | `rhythm3_axi_event_cf_1v8` |
+| RTL 소스 목록 | [`sources.f`](design/digital/rtl/rhythm3_duration_v3/sources.f) |
+| 고정된 분류 모델 | [`frozen_model.json`](models/rhythm3_duration/results_v3/frozen_model.json) |
+| 모델 해시 | [`freeze_receipt.json`](models/rhythm3_duration/results_v3/freeze_receipt.json) |
+| 모델 학습·정수 계산 | [`train_hierarchy.py`](models/rhythm3_duration/train_hierarchy.py) |
+| Snapshot/Final RTL 생성 | [`generate_readout.py`](models/rhythm3_duration/generate_readout.py) |
+| C++ 특징 추출 | [`extract_snapshots.cpp`](models/rhythm3_duration/extract_snapshots.cpp), [`exact_cpp`](models/digital_equivalence/exact_cpp/)의 특징 추출 구현 |
+| 특징 누적값 → 분류 RTL 대조 | [`verify_readout.py`](models/rhythm3_duration/verify_readout.py) |
+| ADC → 코어 / AXI 대조 | [`verify_core.py`](models/rhythm3_duration/verify_core.py), `--axi`로 AXI 경로 선택 |
+| 라벨과 기록 분할 | [`datasets/rhythm3_duration_v3/`](datasets/rhythm3_duration_v3/) |
+| 고정 모델의 최종 시험 결과 | [`test_result.json`](models/rhythm3_duration/results_v3/test_result.json) |
+| 보고서 그림 | [`figures/report_2026/`](figures/report_2026/), SVG |
 
-```powershell
-python tools/fetch_physionet_datasets.py
-python tools/verify_physionet_datasets.py
-python tools/data/generate_locked_digital_36case.py
+## 공개 파일 확인
+
+저장소 루트에서 Python 3로 실행한다. 원문 전재, 상대 링크, 그림 원본 해시, 고정 모델과 소스 목록을 확인한다.
+
+```sh
+python tools/check_report_publication.py
 ```
 
-PhysioNet raw data와 generated input은 Git 외부 workspace path에 생성한다. checksum과 record 목록은 `datasets/dataset_manifest.yaml`을 따른다.
+NumPy가 설치된 Python에서 고정 모델의 readout을 생성할 수 있다. 출력 경로는 존재하지 않는 새 폴더로 지정한다.
 
-## 2. Python과 Exact C++
-
-Python equivalence:
-
-```powershell
-python models/digital_equivalence/tools/check_python_equivalence.py
+```sh
+python models/rhythm3_duration/generate_readout.py \
+  --model models/rhythm3_duration/results_v3/frozen_model.json \
+  --out tmp/rhythm3_readout
 ```
 
-Exact C++:
+생성된 `rhythm3_snapshot_final_readout.sv`는 공개 RTL과 동일해야 한다. PowerShell에서는 위 명령을 한 줄로 입력한다.
 
-```powershell
-cmake -S models/digital_equivalence/exact_cpp -B build/exact_cpp
-cmake --build build/exact_cpp --config Release
-python models/digital_equivalence/exact_cpp/tools/run_cpp_equivalence.py
-```
+## RTL 기능 시뮬레이션
 
-Exact C++ 결과를 benchmark로 사용하기 전 fixed-width, module trace, sample state, Snapshot과 final equivalence gate를 모두 통과해야 한다.
+기존 검증 스크립트는 Windows Vivado 2020.2의 `C:/Xilinx/Vivado/2020.2/bin`을 사용한다. `sources.f`의 경로는 해당 파일이 있는 디렉터리를 기준으로 해석한다. 기능 시뮬레이션에는 `MEMBRANE_FUNCTIONAL_MODEL`을 정의하고 [`TLATNTSCAX4_functional.v`](verification/low_power_gals_research/models/TLATNTSCAX4_functional.v)를 추가한다. 이 모델은 기능 검증용이며 물리 셀이나 전력 모델이 아니다.
 
-## 3. Pure RTL Vivado
+`verify_readout.py`와 `verify_core.py`에는 `--repo`, `--dataset`, `--work`, `--model`, `--rtl`, `--out` 경로가 필요하다. `--work`에는 외부 ADC 코드, 특징 CSV와 해시 영수증이 있어야 한다. 원시 ECG, 대용량 ADC 코드와 전체 시뮬레이션 로그는 이 저장소에 포함하지 않았다. 따라서 공개 파일만으로 전체 96건 검증이나 배치배선 전력 분석이 즉시 재실행되는 것은 아니다.
 
-```powershell
-vivado -mode batch -source tools/vivado/generate_readable_rtl_elaborated_schematic.tcl
-```
+클래스 번호는 NSR=0, AF=1, OTHER=2이다. 기존 인터페이스와의 호환을 위해 남아 있는 `final_mem_aff`는 AF, `final_mem_arr`는 OTHER에 연결되며, `final_mem_chf`는 0으로 고정된 예약 슬롯이다.
 
-GUI project:
-`vivado/pure_rtl/project/SNN_ECG_PURE_RTL_VISUALIZATION.xpr`
+물리 구현에는 별도의 GPDK045/Cadence 환경과 프로젝트용 A18 셀 view가 필요하다. `physical_icg_binding.sv`는 외부 `a18_icg_probe`의 연결만 정의한다. PDK와 도구 라이선스, 전체 셀 라이브러리 및 배치배선 데이터베이스는 배포하지 않는다.
 
-## 4. MicroBlaze Vivado
+## 자료의 시점
 
-GUI project:
-`vivado/microblaze/SNN_ECG_MB_FULL_REPLAY.xpr`
+공개한 코드·모델은 로컬 구현에서 그대로 가져왔다. 모델 JSON의 상태 항목과 데이터 manifest에는 생성 당시의 개발 이력이 남아 있으며, 시험 결과를 보고 수정하지 않도록 원본 해시를 유지하였다. 저장소의 현재 설명과 보고된 수치는 [제출 보고서](reports/ECG_Design_Report_2026.pdf)를 기준으로 한다. 이번 갱신은 문서와 구현 자료의 공개 정리이며, 보고서의 Cadence·96건 검증을 새로 수행한 작업은 아니다.
 
-Project IP repository path가 이동한 경우 `design/digital/ip_repo/`를 지정하고 IP Catalog refresh 후 Block Design을 validate한다.
-
-## 5. raw XMODEL output replay
-
-```powershell
-python tools/verification/run_xmodel_adc_pure_rtl_replay.py
-```
-
-현재 저장소는 raw full-30분 XMODEL accepted file 4개만 보존한다. 32개를 재생성하지 않으면 이 단계는 4-case audit로 완료되며 36-case raw replay PASS를 선언하지 않는다.
-
-## 6. GPDK045 core-only ASIC flow
-
-Wrapper, 100 MHz SDC와 tool script는 `design/digital/asic/gpdk45/`에 있다. GPDK045 library와 Cadence tool은 외부 licensed dependency이며 저장소에 포함하지 않는다. 실행은 `snn_ecg_asic_core_top`, `PROFILE_EN=0`, 100 MHz, slow 1.08 V/125 °C setup과 fast 1.32 V/0 °C hold view를 사용한다. 두 view에 같은 `gpdk045.tch`를 사용했으므로 독립적으로 특성화된 max/min RC corner로 해석하지 않는다.
-
-새 실행은 외부 임시 workspace에서 수행하고 필요한 결과를 local에 회수해 SHA-256을 확인한 뒤 원격 work directory와 process를 삭제한다. 공개 결과와 제약은 `verification/asic_gpdk45_core/README_KR.md`와 `tables/asic_gpdk45_ppa.csv`를 따른다. 실제 실행 파일은 `verification/asic_gpdk45_core/executed_snapshot/`, post-run hardened flow는 `design/digital/asic/gpdk45/`로 구분한다. 접속 정보, 라이선스 서버와 절대경로는 Git에 기록하지 않는다.
-
-Run-2는 run-1을 덮어쓰지 않고 `verification/asic_gpdk45_run2/`에 별도 보존한다. Scan-free core와 `snn_ecg_axi_asic_top` AXI block은 같은 100 MHz·Liberty·LEF·QRC 기준을 사용하고, slow early 0.95와 fast late 1.05의 fixed engineering derate를 OCV assumption으로 적용했다. 이는 foundry-characterized AOCV/POCV/LVF가 아니다.
-
-Run-2 functional authority는 `manifests/canonical_digital_36.manifest`의 regenerated digital 36-case와 `manifests/raw_xmodel_4.manifest`의 actual XMODEL 4-case를 구분한다. Post-route LEC는 mapped→post-route 논리 등가성이며 timing 또는 분류 정확도 근거가 아니다. Forced two-state gate 결과와 timing check를 끈 single-seed MAX-SDF pilot은 unmodified four-state GLS PASS가 아닌 sampled initialization-sensitivity 실험으로만 사용한다. Exploratory PG attempt는 실패 근거로 보존하며 PG·IR·EM 구현을 주장하지 않는다.
-
-Core activity power는 `verification/asic_gpdk45_run2/power/activity_power_summary.csv`와 `activity_annotation_summary.txt`를 authority로 사용한다. 모든 window는 seed11-conditioned mapped gate 6,045/6,045, `-access +rwc`, zero delay이며, normalized SAIF parse에서 fully-X/Z entry를 보존하고 unannotated default 0을 사용했다. Parse/annotation status PASS는 numeric annotation coverage PASS가 아니다. Accelerated gap2 full-record, active-wait idle와 100-sample literal 1 kSPS prefix는 서로 다른 cadence이므로 혼합하지 않으며, prefix는 Snapshot/decision에 도달하지 않는다. Matched delta는 energy/decision이 아니고 AXI에는 activity-based result가 없다.
-
-Run-3 hold closure는 `extract_violating_hold_endpoints.py`, `manual_hold_endpoint_eco.tcl`, `hold_resize_only.tcl`, `export_hold_closed_candidate.tcl`과 `run_postroute_lec.do`로 재현한다. Run-2 checkpoint와 PDK를 새 private work root에 복원하고 OCV·hold uncertainty를 유지한 채 endpoint ECO와 재추출을 수행한다. Core는 hold·data-transition·clock-slew·internal-DRC closure, AXI는 hold closure만 달성했다. Public 결과는 `verification/asic_gpdk45_hold_closure/`, raw DB/netlist/DEF/SDF/SPEF는 Git 밖의 checksum archive에 보존한다.
-
-Run-4 AXI는 `hold_closure_pass.tcl`에서 `HOLD_SLACK_THRESHOLD=-0.200`, `HOLD_TARGET_SLACK=0.000`, `HOLD_ROUTE_MODE=none`을 사용해 47·5·2·0-cell pass를 순서대로 적용하고, 마지막 endpoint에 `manual_hold_endpoint_eco.tcl`의 DLY1X1 한 개를 targeted `ecoRoute`한다. `finalize_hold_closed_checkpoint.tcl`로 high-effort RC·timing·power·SDF/SPEF를 재생성하고 `run_postroute_lec.do`로 mapped→postroute LEC를 확인한다. Public authority는 `verification/asic_gpdk45_axi_closure_run4/`이며 raw 산출물은 Git 밖 checksum archive에만 보존한다.
-
-Run-5 AXI는 scan-free mapped netlist에서 `run_axi_low_density_closure.tcl`을 실행한다. `FLOORPLAN_UTILIZATION=0.50`, `DRV_PASSES=3`을 사용하며 clock/OCV/hold uncertainty는 run-4와 동일하다. Fresh place·50 ps CTS·route·IQuantus high-effort extraction 후 post-route DRV와 hold를 반복하고 각 pass를 독립 report/checkpoint로 보존한다. `finalize_hold_closed_checkpoint.tcl`과 `run_postroute_lec.do`로 최종 timing·power·SDF/SPEF·LEC를 다시 확인한다. Public authority는 `verification/asic_gpdk45_axi_full_closure_run5/`이며 raw 산출물은 Git 밖 checksum archive에만 보존한다.
-
-Run-6 AXI는 run-5 checkpoint에서 `hold_closure_pass.tcl`과 `optimize_postroute_drv.tcl`을 교대 실행한다. Hold target은 0.010→0.012→0.015 ns로 올리고 각 hold ECO 뒤 `DRV_ROUTE_MODE=none`으로 transition을 복구한다. 최종 독립 export에서 hold WNS +0.010 ns, transition 0, setup +2.602 ns를 확인한다. Public authority는 `verification/asic_gpdk45_axi_hold_guardband_run6/`이며 raw 산출물은 Git 밖 checksum archive에만 보존한다.
-
-Cadence native 화면은 `export_innovus_native_visual_suite.tcl`과 `export_innovus_metal_visual_suite.tcl`을 Xvfb Innovus 세션에서 실행해 재현한다. 최종 run-6 checkpoint를 restore한 뒤 visibility·selection만 변경하고 `dumpToGIF`를 호출한다. 공개 authority와 command status는 `verification/cadence_native_visuals/`에 있고, Genus/Innovus raw text report는 실행경로 노출 때문에 local delivery 폴더에만 둔다.
-
-## 7. repository 검사
-
-```powershell
-python tools/check_clean_workspace.py
-python tools/check_integrated_technical_report.py
-python tools/check_integrated_repository.py
-git diff --check
-```
-
-검사기는 핵심 파일, 수치, 두 Vivado project, claim/evidence mapping, private path와 절대경로 누출을 fail-closed로 검사한다.
+이전 4클래스·FPGA 자료는 [과거 자료 안내](docs/LEGACY_KR.md)로 구분한다. 원시 데이터의 출처와 이용 조건은 [데이터 라이선스](datasets/DATASET_LICENSES.md)를 따른다.

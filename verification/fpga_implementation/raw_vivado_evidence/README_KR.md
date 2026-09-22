@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../../../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # Vivado 원본 구현 근거
 
 이 디렉터리는 사용자 홈에 분산되어 있던 Vivado 2020.2 임시 프로젝트를 제거하기 전에 보존한 최소 원본 산출물이다. 생성 캐시와 IP별 중간 checkpoint는 제외하고, 보고서 Figure와 구현 수치를 다시 확인하는 데 필요한 routed checkpoint 및 핵심 report만 유지한다.

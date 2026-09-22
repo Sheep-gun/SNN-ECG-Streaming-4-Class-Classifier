@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # GPDK045 hold-closure run-3
 
 Run-2의 음수 hold WNS를 같은 100 MHz SDC, 100 ps hold uncertainty, slow-early 0.95·fast-late 1.05 engineering OCV와 CPPR 조건에서 보정한 후속 물리 ECO 증거다. Run-2 산출물은 변경하지 않고 별도 checkpoint에서 DLY-cell endpoint ECO, targeted `ecoRoute`, IQuantus high-effort extraction과 DRV recovery를 수행했다.

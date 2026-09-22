@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../../../../../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # GPDK045 AXI 포함 비교 profile
 
 이 디렉터리는 기존 core-only 결과와 별도로, 프로젝트가 작성한 AXI-Lite 제어·AXI-Stream 입력 경계를 포함한 디지털 가속기 block의 PPA를 측정하기 위한 독립 profile이다. 아직 이 디렉터리에는 Genus·Innovus PPA 결과가 없으며, 실제 실행 전에는 수치를 주장하지 않는다.

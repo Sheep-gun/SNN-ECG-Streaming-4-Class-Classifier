@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # GPDK045 AXI full-closure run-5
 
 Run-4 AXI block에 남아 있던 data max-transition 141 nets / 1,149 terminals를 해결한 후속 물리 구현 증거다. Run-4 transition report의 141 nets 중 140개가 `qrs_maf` 내부에 집중됐고, 주로 약한 NAND/NOR driver의 falling slew 문제였다. 외부 AXI constraint를 완화하지 않고 floorplan utilization을 0.65에서 0.50으로 낮춰 buffer와 큰 driver를 배치할 공간을 확보했다.

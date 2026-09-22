@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../../../../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # AFE+ADC Parameter Reference
 
 이 문서는 XMODEL 구현자가 그대로 참고할 nominal AFE+ADC parameter reference이다.

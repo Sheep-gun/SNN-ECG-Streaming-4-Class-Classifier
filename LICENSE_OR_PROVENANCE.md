@@ -19,6 +19,8 @@ PhysioNet의 NSRDB, CHFDB, MIT-BIH Arrhythmia Database와 AFDB 원시 waveform�
 입력과 검증 결과는 원 데이터의 라이선스와 출처를 변경하지 않는다.
 
 개인 연락처, 학번, 서명과 직인이 포함된 신청서 원본 및 비공개 제출 자료는 Git에
-포함하지 않는다. 공개 Figure는 `figures/final_submission/`의 파일만을 기준으로 한다.
+포함하지 않는다. 현재 보고서 Figure는 `figures/report_2026/`를 기준으로 한다. `figures/final_submission/`은 이전 보고서 자료다.
+
+현재 3클래스 설계는 PhysioNet Long-Term AF Database v1.0.0 (DOI: 10.13026/C2QG6Q)을 사용한다. 원시 파형은 포함하지 않으며, 공개된 라벨·분할 정보의 출처와 이용 조건은 `datasets/DATASET_LICENSES.md`를 따른다. 보고서 공개본은 연락처와 서명이 있는 표지를 제외한 본문이다.
 
 GPDK045 GSCLIB v4.7과 Cadence 도구는 외부 licensed dependency로만 사용했다. Liberty, LEF, QRC, cell Verilog, CDL, GDS, 라이선스 정보와 tool work database는 이 저장소에 포함하지 않는다. 공개 범위는 프로젝트가 작성한 wrapper·SDC·script, sanitize된 report와 파생 PPA 요약이다.

@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../../../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # MATLAB 기반 ECG AFE+ADC Nominal Pre-Validation
 
 본 repo는 ECG AFE+ADC chain의 MATLAB 기반 **nominal pre-validation**을 수행한다.

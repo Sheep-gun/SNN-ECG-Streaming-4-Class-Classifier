@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # GPDK045 AXI closure run-4
 
 Run-3에서 hold는 닫혔지만 data max-transition 264 nets / 1,387 terminals와 clock slew 263 pins가 남았던 AXI-inclusive accelerator block을 다시 보정한 후속 증거다. Run-2 checkpoint를 별도로 복원해 Cadence hold threshold의 lower-bound 의미를 바로잡고, 목표 0 ns의 소규모 DLY-cell ECO를 반복한 뒤 마지막 반올림 경로에 DLY1X1 한 개를 추가했다.

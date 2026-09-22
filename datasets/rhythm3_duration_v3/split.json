@@ -1,0 +1,209 @@
+{
+  "status": "FROZEN_BEFORE_ADC_AND_MODEL_FITTING",
+  "seed": "rhythm3-contiguous-final-v3-20260916",
+  "assignment": {
+    "00": "train",
+    "202": "train",
+    "23": "train",
+    "24": "train",
+    "28": "train",
+    "38": "train",
+    "44": "train",
+    "53": "train",
+    "56": "train",
+    "70": "train",
+    "49": "train",
+    "115": "train",
+    "30": "train",
+    "75": "train",
+    "37": "train",
+    "118": "train",
+    "06": "train",
+    "208": "train",
+    "17": "train",
+    "111": "train",
+    "16": "train",
+    "69": "train",
+    "113": "train",
+    "201": "train",
+    "12": "train",
+    "206": "train",
+    "105": "train",
+    "42": "train",
+    "32": "train",
+    "45": "train",
+    "102": "train",
+    "74": "train",
+    "48": "train",
+    "43": "train",
+    "13": "train",
+    "112": "train",
+    "100": "train",
+    "11": "train",
+    "114": "train",
+    "110": "train",
+    "39": "train",
+    "47": "train",
+    "101": "train",
+    "19": "train",
+    "58": "train",
+    "15": "train",
+    "54": "train",
+    "25": "train",
+    "72": "train",
+    "200": "train",
+    "204": "validation",
+    "104": "validation",
+    "103": "validation",
+    "08": "validation",
+    "35": "validation",
+    "10": "validation",
+    "20": "validation",
+    "07": "validation",
+    "33": "validation",
+    "21": "validation",
+    "65": "validation",
+    "207": "validation",
+    "22": "validation",
+    "68": "validation",
+    "62": "validation",
+    "34": "validation",
+    "71": "validation",
+    "116": "test",
+    "01": "test",
+    "18": "test",
+    "120": "test",
+    "117": "test",
+    "51": "test",
+    "64": "test",
+    "205": "test",
+    "119": "test",
+    "203": "test",
+    "55": "test",
+    "121": "test",
+    "26": "test",
+    "60": "test",
+    "03": "test",
+    "122": "test",
+    "05": "test"
+  },
+  "counts": {
+    "300": {
+      "train": {
+        "NSR": 639,
+        "AF": 639,
+        "OTHER": 639
+      },
+      "validation": {
+        "NSR": 205,
+        "AF": 205,
+        "OTHER": 205
+      },
+      "test": {
+        "NSR": 231,
+        "AF": 231,
+        "OTHER": 231
+      }
+    },
+    "600": {
+      "train": {
+        "NSR": 305,
+        "AF": 305,
+        "OTHER": 305
+      },
+      "validation": {
+        "NSR": 101,
+        "AF": 101,
+        "OTHER": 101
+      },
+      "test": {
+        "NSR": 101,
+        "AF": 101,
+        "OTHER": 101
+      }
+    },
+    "1800": {
+      "train": {
+        "NSR": 94,
+        "AF": 94,
+        "OTHER": 94
+      },
+      "validation": {
+        "NSR": 31,
+        "AF": 31,
+        "OTHER": 31
+      },
+      "test": {
+        "NSR": 32,
+        "AF": 32,
+        "OTHER": 32
+      }
+    }
+  },
+  "record_support": {
+    "300": {
+      "train": {
+        "NSR": 29,
+        "AF": 43,
+        "OTHER": 17
+      },
+      "validation": {
+        "NSR": 5,
+        "AF": 15,
+        "OTHER": 4
+      },
+      "test": {
+        "NSR": 10,
+        "AF": 15,
+        "OTHER": 6
+      }
+    },
+    "600": {
+      "train": {
+        "NSR": 28,
+        "AF": 42,
+        "OTHER": 13
+      },
+      "validation": {
+        "NSR": 5,
+        "AF": 14,
+        "OTHER": 4
+      },
+      "test": {
+        "NSR": 10,
+        "AF": 15,
+        "OTHER": 5
+      }
+    },
+    "1800": {
+      "train": {
+        "NSR": 28,
+        "AF": 38,
+        "OTHER": 9
+      },
+      "validation": {
+        "NSR": 5,
+        "AF": 14,
+        "OTHER": 3
+      },
+      "test": {
+        "NSR": 9,
+        "AF": 14,
+        "OTHER": 4
+      }
+    }
+  },
+  "calibration_records_all_in_train": true,
+  "pristine_vs_previous_48_record_test": false,
+  "unseen_other_30min_records": [],
+  "historical_exposure_warning": "Full corpus annotation counts were inspected for feasibility. Old 48 record exclusion enforced for test only when feasible; metadata-driven splitting is not outcome-driven fitting.",
+  "objective": 0.0005512616838162386,
+  "trial": 3009,
+  "search_trials": 20000,
+  "eligible_sha256": "45b14ab46059545282b035e17e265bcab0b50c18a65450cb37b387445c1a6ad2",
+  "gold_labels_sha256": "4dee0f0b9ec165b2afadb0470af3489d065cc7d6cc569069da199b12967620e1",
+  "builder_sha256": "a497d032fabc0d0175366469da021d58c894be4bfcc72c35cd8bdc47e17281fa",
+  "window_overlap": "none within one duration and record; cross-duration overlap allowed only inside the same record split",
+  "source_unit": "record, not verified independent patient",
+  "equal_class_unit": "whole Final sequence, not Snapshot"
+}

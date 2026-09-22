@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # 1.5 최신 locked model 재통합 검증 (AFE → structural_guarded_silent_af_1008710)
 
 > 제27회 반도체설계대전 · 한양대 · 담당: 이수환(AFE) · 2026-07-06 (36-chunk 확장 2026-07-09)

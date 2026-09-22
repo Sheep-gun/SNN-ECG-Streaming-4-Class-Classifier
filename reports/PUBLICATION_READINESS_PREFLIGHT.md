@@ -1,32 +1,5 @@
-# Public repository preflight
+# 보고서 기준 문서 안내
 
-## 포함
+[원문 출처와 전재 범위](../docs/REPORT_SOURCE_KR.md) · [설계보고서 전문](INTEGRATED_TECHNICAL_REPORT_KR.md) · [과거 자료](../docs/LEGACY_KR.md)
 
-- 고정 AFE–ADC와 Digital RTL source
-- Python과 Exact C++ equivalent model
-- Pure RTL 및 MicroBlaze canonical Vivado project 각 1개
-- 재현 script, compact acceptance, raw-dump audit와 final figures
-- GPDK045 run-1 historical baseline, run-2 scan-free core·AXI, run-3 core closure, run-4 AXI 개선, run-5 AXI full-closure와 run-6 hold-guardband의 sanitize된 mapping/LEC/post-route/PPA·regression·실패/조건부 실험 근거
-- Innovus checkpoint가 직접 출력한 placement·routing·clock·qrs_maf·Metal1–Metal11 native GIF와 command-status provenance
-- claim, evidence, upstream commit와 unresolved registry
-
-## 제외
-
-- 참가신청서의 개인정보, 서명과 직인
-- raw PhysioNet database
-- temporary Vivado packaging, IP catalog와 cache project
-- 중복 upstream checkout과 중간 screenshot
-- GPDK045 Liberty·LEF·QRC·cell model·CDL·GDS, Cadence work database와 접속·license 정보
-
-## 공개 claim boundary
-
-30분 engineering validation, FPGA implementation, model-level AFE–RTL integration과 generic GPDK045 run-6까지 공개한다. Run-3 core와 run-6 AXI는 stated engineering assumptions에서 setup·hold·data-transition·clock-slew·internal-DRC 0을 기록했고, run-6 AXI는 100 ps engineering uncertainty 뒤에 10 ps residual slack을 남겼다. Guardband 비용은 instances·area·wire·power로 함께 공개한다. Fixed global engineering derate, vectorless power, failed PG attempt와 forced gate/SDF sensitivity는 각각 foundry variation model, workload/silicon power, 구현된 PG/IR 또는 일반 GLS proof로 확대하지 않는다. 24시간 성능, physical AFE/ADC, successful PG/IR, physical fill, complete antenna/foundry DRC/LVS, DFT, pad/package/fabrication, reset-aware decision activity, silicon power와 clinical validation은 완료 결과로 주장하지 않는다.
-
-최종 검사는 다음 명령으로 수행한다.
-
-```text
-python tools/check_clean_workspace.py
-python tools/check_integrated_technical_report.py
-python tools/check_integrated_repository.py
-git diff --check
-```
+현재 공개 문서는 2026 한국 대학생 반도체 설계 경진대회 설계보고서를 기준으로 합니다. 이전 버전의 주장 목록과 재현 결과는 현재 3클래스 설계의 결과로 사용하지 않습니다.

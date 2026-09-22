@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../../../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # Power and Energy Methodology
 
 - Legacy 1 MHz Pure RTL: 0.099000 W is retained as a separate low-frequency post-implementation vectorless estimate. It is not combined with the 100 MHz active-core latency, so no energy/decision is derived from it.

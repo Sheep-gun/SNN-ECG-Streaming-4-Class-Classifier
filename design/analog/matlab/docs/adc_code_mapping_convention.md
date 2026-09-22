@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../../../../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # ADC Code Mapping Convention 정리
 
 MATLAB ADC output은 12-bit offset-binary code, signed decimal stream, signed 12-bit two's-complement hex `.mem` 세 형태로 저장된다.

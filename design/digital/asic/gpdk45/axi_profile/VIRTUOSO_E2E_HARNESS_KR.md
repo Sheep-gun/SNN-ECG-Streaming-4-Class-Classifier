@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../../../../../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # Virtuoso ADC → 디지털 E2E 하네스
 
 이 하네스는 팀원의 Virtuoso/Spectre AFE·ADC 결과를 파일로 넘겨받아, 같은 12-bit ADC code stream을 다음 두 디지털 경로에 동시에 입력한다.

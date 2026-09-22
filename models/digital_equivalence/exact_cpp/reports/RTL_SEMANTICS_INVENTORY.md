@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../../../../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # RTL semantics inventory
 
 All rows refer to locked commit `c6b80de19cdcad5b7e43fe7835588b629d847f75`. “Wrap” means truncation to the declared vector width. Pulses reset low each transition unless asserted. Sequential behavior uses old state and a simultaneous next-state commit.

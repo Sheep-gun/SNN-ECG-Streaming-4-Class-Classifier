@@ -1,5 +1,5 @@
-# 보고서와 근거 연결
+# 보고서 기준 문서 안내
 
-보고서 문장별 claim과 artifact는 `reports/INTEGRATED_TECHNICAL_REPORT_EVIDENCE_MAP.csv`에서 관리한다. 수치의 canonical source는 `project_registry/global_metrics.yaml`, 주장 범위는 `project_registry/claim_registry.csv`, 미완료 항목은 `project_registry/unresolved_artifacts.csv`를 따른다.
+[원문 출처와 전재 범위](REPORT_SOURCE_KR.md) · [설계보고서 전문](../reports/INTEGRATED_TECHNICAL_REPORT_KR.md) · [과거 자료](LEGACY_KR.md)
 
-Figure의 출처와 용도는 `figures/FIGURE_INDEX.md`, upstream commit은 `project_registry/upstream_commits.yaml`에 기록한다. GPDK045 run-1 historical PPA와 run-2 scan-free core·AXI PPA/verification은 각각 `tables/asic_gpdk45_ppa.csv`, `tables/asic_gpdk45_run2_ppa.csv`, `tables/asic_gpdk45_run2_verification.csv`에서 구분한다. Run-2 core conditioned activity의 primary public summary는 `verification/asic_gpdk45_run2/power/activity_power_summary.csv`이며 AXI activity 결과로 확대하지 않는다.
+현재 공개 문서는 2026 한국 대학생 반도체 설계 경진대회 설계보고서를 기준으로 합니다. 이전 버전의 주장 목록과 재현 결과는 현재 3클래스 설계의 결과로 사용하지 않습니다.

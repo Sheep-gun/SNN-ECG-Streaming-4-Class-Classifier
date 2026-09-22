@@ -1,9 +1,5 @@
-# 구성별 출처와 handoff
+# 전체 시스템과 아날로그 구성 및 동작
 
-| 구성 | 고정 commit | 통합 위치 |
-|---|---|---|
-| MATLAB AFE–ADC | `907f7e1f081a9d6a5703a32095d962143315a192` | `design/analog/matlab/` |
-| LTspice와 XMODEL | `4756a5086023547328ef44fd5fd87da3c250dc39` | `design/analog/ltspice/`, `design/analog/xmodel/` |
-| Digital RTL | `c6b80de19cdcad5b7e43fe7835588b629d847f75` | `design/digital/` |
+현재 설계의 설명은 제출 보고서를 기준으로 정리한 [전체 시스템과 아날로그 구성 및 동작](02_SYSTEM_AND_ANALOG_KR.md)에서 확인할 수 있습니다.
 
-공개 authority는 로컬 checkout 경로가 아니라 `project_registry/upstream_commits.yaml`의 repository URL과 immutable commit이다. handoff 규약은 1 kSPS signed 12-bit ECG, `sample_valid`와 final class/membrane interface다.
+[보고서 전문](../reports/INTEGRATED_TECHNICAL_REPORT_KR.md) · [코드와 재현 안내](../REPRODUCIBILITY_KR.md) · [과거 자료](LEGACY_KR.md)

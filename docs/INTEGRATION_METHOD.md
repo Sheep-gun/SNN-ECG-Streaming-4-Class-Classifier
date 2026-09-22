@@ -1,11 +1,5 @@
-# Integration method
+# 전체 시스템과 아날로그 구성 및 동작
 
-통합 경계는 `1 kSPS signed 12-bit two's-complement ECG + sample_valid`다.
+현재 설계의 설명은 제출 보고서를 기준으로 정리한 [전체 시스템과 아날로그 구성 및 동작](02_SYSTEM_AND_ANALOG_KR.md)에서 확인할 수 있습니다.
 
-1. 공개 ECG를 PWL 전압 자극으로 재구성한다.
-2. MATLAB과 LTspice에서 AFE–S/H–ADC 특성을 확인한다.
-3. SystemVerilog XMODEL이 `adc_signed[11:0]`과 `sample_valid`를 생성한다.
-4. 고정 Pure RTL 코어가 중간 파일 없이 해당 신호를 받아 60초 Snapshot 30개와 최종 판정을 생성한다.
-5. 별도 AXI IP는 AXI-Lite 제어와 AXI-Stream 입력으로 패키징하고 MicroBlaze FPGA에서 재생한다.
-
-AFE–RTL direct integration과 AXI/MicroBlaze integration은 서로 다른 검증 범위다. 전자는 동일 XMODEL 환경의 signal handoff와 최종 출력 정합을, 후자는 FPGA 제어 및 데이터 공급 경로를 검증한다.
+[보고서 전문](../reports/INTEGRATED_TECHNICAL_REPORT_KR.md) · [코드와 재현 안내](../REPRODUCIBILITY_KR.md) · [과거 자료](LEGACY_KR.md)

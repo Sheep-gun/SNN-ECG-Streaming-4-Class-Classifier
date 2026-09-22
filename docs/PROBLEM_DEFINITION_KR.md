@@ -1,5 +1,5 @@
-# 문제 정의
+# 설계 요약 · 창의성 · 난이도 · 완성도
 
-장시간 ECG에서는 질환 특징이 기록 전체에 지속되지 않고 일부 구간에 간헐적으로 나타날 수 있다. 전체 raw window를 저장한 뒤 반복 분석하는 대신, 본 설계는 표본마다 사건과 뉴런 상태를 갱신하고 60초 구간의 증거를 30분 Final Membrane에 누적한다.
+현재 설계의 설명은 제출 보고서를 기준으로 정리한 [설계 요약 · 창의성 · 난이도 · 완성도](01_OVERVIEW_KR.md)에서 확인할 수 있습니다.
 
-현재 입력은 30분, 출력은 NSR, CHF, ARR, AF 중 하나와 네 Final Membrane이다. 30분은 공개 데이터에서 네 범주에 공통 적용한 검증 조건이며 24시간 이상 Holter streaming은 설계 지향점이다.
+[보고서 전문](../reports/INTEGRATED_TECHNICAL_REPORT_KR.md) · [코드와 재현 안내](../REPRODUCIBILITY_KR.md) · [과거 자료](LEGACY_KR.md)

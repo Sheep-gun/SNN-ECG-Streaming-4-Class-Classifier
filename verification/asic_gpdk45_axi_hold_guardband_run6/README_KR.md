@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # GPDK045 AXI hold-guardband run-6
 
 Run-5 AXI의 hold WNS 0.000 ns를 보강한 후속 증거다. 기존 100 ps hold uncertainty와 fixed engineering OCV를 유지한 채 positive hold target을 단계적으로 10·12·15 ps로 올리고, 각 hold ECO 후 재발한 data-transition을 별도 DRV pass로 복구했다.

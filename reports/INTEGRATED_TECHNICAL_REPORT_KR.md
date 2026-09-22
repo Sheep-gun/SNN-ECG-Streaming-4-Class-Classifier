@@ -1,376 +1,519 @@
-# 다중 시간 척도 SNN을 적용한 장시간 ECG 4-클래스 저전력 스트리밍 분류 가속기 IP
+# 아날로그 전처리와 디지털 뉴로모픽 구조를 결합한 장시간 ECG 리듬 분류용 저전력 ASIC 설계
 
-# I. 설계작품 요약서
+> [설계보고서 PDF](ECG_Design_Report_2026.pdf)의 해당 본문을 옮겼습니다.
 
-ECG는 심장의 전기적 활동을 시간에 따라 기록한 전압 파형이다. 짧은 구간에서는 개별 박동의 모양을 볼 수 있지만, 한 시점의 파형이 장시간 상태를 대표하기 어렵기 때문에 장시간 기록에서는 박동 간격의 반복과 불규칙성, 특정 파형 특징의 지속 시간이 중요하다. 대표적인 ECG 검사인 Holter 검사가 24~48시간 이상 심전도를 기록하는 것도 간헐적으로 나타나는 이상을 포착하기 위해서이다. 본 작품은 장시간 ECG 기록을 공개 데이터베이스 라벨에 따라 네 개의 리듬·질환 관련 범주인 NSR(normal sinus rhythm), CHF-labelled, ARR(arrhythmia-labelled), AF(atrial fibrillation-labelled)로 분류하기 위해 AFE–ADC와 SNN 기반 RTL 분류 가속기 IP를 결합한 통합 구조를 제시하며, 최종적으로 웨어러블 기기에 적용할 수 있는 저전력 반도체 IP 개발을 목표로 한다.
+[설계 요약 · 창의성 · 난이도 · 완성도](../docs/01_OVERVIEW_KR.md) | [전체 시스템과 아날로그 구성 및 동작](../docs/02_SYSTEM_AND_ANALOG_KR.md) | [디지털 구성 및 동작 · 저전력 클록 제어](../docs/03_DIGITAL_ARCHITECTURE_KR.md) | [데이터셋 구성 및 학습](../docs/04_DATASET_AND_TRAINING_KR.md) | [아날로그·디지털 검증과 최종 성능](../docs/05_VERIFICATION_AND_RESULTS_KR.md) | [면적, 타이밍 및 전력 분석](../docs/06_ASIC_POWER_KR.md) | [결론 및 제언 · 참고문헌](../docs/07_CONCLUSION_KR.md)
 
-장시간 파형을 처리하는 가장 직접적인 방법은 전체 기록을 저장한 뒤 일괄 분석하는 것이다. 그러나 웨어러블용 반도체 IP에서 전체 파형을 저장하고 반복 처리하는 방식은 메모리와 연산 부담을 증가시킬 수 있다. 이에 본 작품은 분류에 필요한 사건, 리듬 및 파형 증거만 순차적으로 누적하는 SNN 기반 저전력 스트리밍 구조를 채택하였다.
+<!-- report:p2:id0 -->
+## 1. 설계 요약
 
-사전 데이터 분석을 통해 네 범주의 구분에 유효한 PNN 기반 박동 간격 규칙성, RDM 기반 박동 간 변동성 및 DSCR 기반 파형 굴곡 등의 핵심 특징을 선정하고, 이를 스파이크 발생과 막전위 기반 증거 누적으로 표현하는 뉴로모픽 구조로 구현하였다. 또한 Holter 판독이 장시간 기록에서 이상 징후가 나타난 구간을 찾아 해석한다는 점에 착안하여, 연속 ECG 입력을 60초 길이의 Window로 나누고 각 구간의 특징을 Snapshot 뉴런층에서 요약하였다. 각 Snapshot의 분류 증거는 특징이 뚜렷할수록 최종 판정 뉴런층에 더 강하게 누적되며, 이를 통해 Window 내부의 단기 변화와 여러 Window에 걸쳐 반복·지속되는 장기 경향을 함께 반영한다. 이러한 계층형 뉴로모픽 구조를 통해 전체 원시 ECG를 저장하지 않고도 장·단기 특징을 지속적으로 갱신하는 다중 시간 척도 저전력 스트리밍 분류 가속기 IP를 구성하였다.
+<!-- report:p2:id1 -->
+ECG는 심장의 전기적 활동을 기록한 전압 파형으로, 간헐적 이상을 파악하려면 박동의 모양과 간격, 특징의 지속 양상을 살펴야 한다. 본 작품은 Holter 방식의 장시간 관찰을 위해 전체 파형을 저장하지 않고 박동 간격과 파형 특징에서 얻은 근거를 누적하는 저전력 ASIC을 설계하였다. 아날로그부는 1.8 V AFE로 ECG를 증폭하고 불필요한 성분을 줄인 뒤, 12-bit SAR ADC로 초당 1,000개의 코드를 생성한다. 디지털부는 박동 간격과 파형 특징을 60초 단위로 집계해 구간별 리듬을 분류하고, 각 구간의 판정 결과와 관찰된 특징에 따른 점수를 리듬별로 누적한다. 이후 누적 점수를 비교하여 전체 기록을 정상 동리듬(NSR), 심방세동(AF), 기타 비정상 리듬(OTHER) 중 하나로 최종 판정한다. 이 과정에 이벤트 기반 클록 게이팅을 적용해 연산할 때만 클록을 공급하고, 완료 후 차단하였다. 설계 결과 시험용 ECG 96건의 정확도는 94.79%였으며, 평균 소비전력은 아날로그부 0.256 mW, 디지털부 1.366 mW로 추정됐다. 이를 바탕으로 24시간 이상 관찰하는 웨어러블용 리듬 분류 IP를 지향한다.
 
-개발은 요구 사항 정의와 데이터 정규화에서 시작하였다. 본래 시스템은 Holter 검사와 같이 24시간 이상 연속 ECG를 처리하는 스트리밍 구조를 목표로 설계하였다. 그러나 NSR, CHF, ARR, AF 분류에 사용한 공개 ECG 데이터베이스는 클래스별 기록 길이가 서로 다르며, 특히 ARR 범주에 사용한 MIT-BIH Arrhythmia Database는 48개의 30분 기록을 제공한다. 이에 모든 클래스에 동일한 조건을 적용하기 위해 평가 입력 길이를 공통으로 확보할 수 있는 30분으로 통일하였다. 따라서 30분은 하드웨어의 처리 한계가 아니라 공개 데이터셋을 공정하게 비교하기 위한 표준 평가 단위이다. 이 평가 기준에 따라 각 원천 ECG record에서 여러 개의 30분 구간을 구성하되, 동일한 record에서 추출된 모든 구간이 학습, 검증, 최종 시험 중 하나에만 포함되도록 분리하였다. 각 30분 구간은 원천 DB label과 가용한 beat/rhythm annotation을 대조하여 해당 클래스의 박동 및 리듬 증거가 충분히 포함되는지 확인하고 라벨 대표성을 점검하였다. annotation은 이 데이터 구성과 품질 점검에만 사용했으며 최종 RTL 입력에는 포함하지 않았다.
+<!-- report:p2:id2 -->
+### 1) 창의성:
 
-데이터 구성과 분할을 마친 뒤, 아날로그부는 MATLAB에서 0.5–150 Hz ECG 대역의 필터, 이득 및 ADC 동적 범위를 설계하고, 이를 ±1.65 V LTspice AFE–S/H–ADC 회로로 구현하여 주파수 응답과 비이상적 조건을 검증하였다. 이때 공개 ECG는 이미 ADC를 거친 디지털 기록이므로, 표본값을 시간축과 전압축에 맞춘 PWL 전압 자극으로 재구성하여 AFE–ADC 검증 입력으로 사용하였다. 이어 동일한 회로 동작을 SystemVerilog XMODEL로 구현하여 1 kSPS signed 12-bit ECG 스트림을 생성하고 디지털 RTL에 전달하였다. 동일한 10초 ECG에 대한 LTspice와 XMODEL의 ADC 출력은 평균 절대 오차 0.6445 LSB와 상관계수 0.999518을 보여 두 모델 간 정합성을 확인하였다.
+<!-- report:p2:id3 -->
+간헐적인 심장 리듬 변화를 포착하려면 Holter 검사처럼 ECG를 오래 관찰해야 한다. 이를 몸에 붙이는 작은 기기에서 수행하려면 정확도와 함께 저장 공간과 전력을 고려해야 한다. 본 작품은 전체 파형 대신 판단에 필요한 정보를 남기고, 그 정보를 처리할 때 분류 회로를 동작시키도록 설계하였다.
 
-디지털부는 Python으로 RTL과 동일한 정수 연산을 수행하는 기준 모델을 구축하고, 박동 간격, 리듬 변동, 파형 형태와 질환 관련 사건을 분류 증거로 변환하는 규칙을 설계하였다. 분류 구조의 가중치와 임계값은 학습 및 검증 데이터로 결정하고 RTL로 구현한 뒤 최종 시험 전에 고정하였다. RTL은 표본별 변화량과 강한 사건을 검출하고, 각 60초 구간의 리듬과 파형 증거를 Snapshot 뉴런층에 요약한 뒤 30개의 Snapshot을 Final Membrane에 누적하도록 구현하였다. 설계 고정 후 처음 한 번만 수행한 최종 시험에서는 36개 구간 중 29개를 정확히 분류하여 정확도 80.56%를 기록하였다. Pure RTL 분류 가속기는 9,719 LUT와 5,038 FF를 사용하고 BRAM과 DSP 없이 구현되었으며, 배치 및 배선 후 WNS 8.184 ns를 확보하였다. 1 kSPS 연속 처리 할당전력은 142.0 mW로 추정되었으며, 30분 기록을 36.0129 ms 동안 burst 처리한 뒤 완전히 power-gating하는 이상적 조건에서는 평균 전력이 2.991 µW로 계산되었다. Generic GPDK045 run-1 historical core baseline은 hold·clock-slew·scan-QoR 한계를 보존한다. Run-2 scan-free core와 AXI block은 hold residual이 남았고, run-3 core는 setup +2.470 ns에서 hold·data-transition·clock-slew·internal-DRC를 닫았다. Run-6 AXI는 50% floorplan에서 setup +2.602 ns, hold WNS +0.010 ns/TNS 0/path 0, data max-transition 0, clock slew 0, internal DRC 0과 LEC 6,287점 clean을 달성했다. 기존 100 ps engineering uncertainty 뒤에 10 ps residual slack을 추가로 남긴 대신 standard-cell area·wire·vectorless power가 증가했다. Run-6 vectorless 3.71636663 mW는 workload 실측값이 아니다. Core seed11-conditioned activity 분석은 기존 run-2 조건부 결과로 유지하며 AXI activity power는 없다.
+<!-- report:p2:id4 -->
+이를 위해 파형의 특징을 스파이크로 표현하고 분류 근거를 막전위에 누적하는 디지털 뉴로모픽 구조를 적용하였다. 박동 검출 뉴런은 입력 변화에서 얻은 사건을 누적해 기준에 도달하면 발화하고, 특징 검출 뉴런은 박동 간격의 규칙성과 파형 변화를 알린다. 60초 동안 모은 특징 누적값으로 구간을 분류하고, 판정 결과와 특징 근거를 Snapshot으로 요약한다. 여러 Snapshot의 근거를 리듬별 최종 막전위(Final Membrane)에 가중 누적한 뒤 세 막전위를 비교해 NSR, AF, OTHER 중 하나로 판정한다.
 
-과거 고정 XMODEL 통합 환경의 compact acceptance에서는 AFE 생성 36개 chunk의 입력과 최종 출력이 독립 RTL/XSim 기준과 일치하였다. 현재 저장소에 보존된 실제 full-30분 raw XMODEL accepted dump는 4/36개이며, 보유 4개만 독립 재실행에서 bit-exact하다. 또한 RTL을 AXI 기반 IP로 패키징해 MicroBlaze 시스템에 통합하고 동일한 입력을 FPGA에서 재생한 결과도 XSim 기준과 일치하였다. 결과적으로 본 작품은 ECG 전체를 저장하지 않고 질환 증거를 순차적으로 누적하여 NSR, CHF, ARR, AF를 판정하는 다중 시간 척도 저전력 스트리밍 분류 가속기 IP를 구현하였다.
+<!-- report:p2:id5 -->
+처리 구조에 맞춰 입력 회로는 표본과 특징 전달을 마치면 클록을 차단하고, 분류 및 최종 누적 회로는 특징 누적값을 처리할 때만 동작시켰다. 특징별 계산에는 같은 연산 경로를 재사용하고 점수 범위에 맞춰 저장 폭을 정하였다. 뉴로모픽 특징 추출과 장기 판단에 필요한 연산 자원, 저장 공간과 클록 공급을 함께 설계한 점이 본 작품의 창의성이다.
 
-# II. 설계결과물 설명서
+<!-- report:p2:id6 -->
+### 2) 난이도:
 
-## 1. 설계 개요
+<!-- report:p2:id7 -->
+장시간의 ECG를 적은 상태값으로 요약하는 구조에서는, 박동과 파형 특징에서 얻은 분류 근거가 누락이나 중복 없이 최종 판정까지 반영되어야 한다. 본 설계는 1 ms마다 들어오는 표본에서 박동과 특징을 검출하고, 이를 60초 단위로 집계한 뒤 여러 구간에 걸쳐 누적한다. 검출 단계의 작은 차이도 이후 특징 누적값과 Final 누적값 바꿀 수 있으므로, 최종 클래스의 일치만으로는 회로의 정확성을 확인하기 어렵다. 따라서 특징 검출부터 구간별 집계와 최종 누적까지 각 단계의 내부 값이 기준 모델과 비트 단위로 일치하는지 검증하는 것이 주요 과제였다.
 
-### 1.1 설계 요지
+<!-- report:p2:id8 -->
+클록을 멈추는 시점도 처리 순서에 맞아야 한다. 입력 표본 하나를 받은 뒤에도 특징 검출과 증거 전달이 여러 클록에 걸쳐 이어지므로, 새 입력이 없다는 이유만으로 회로를 정지시킬 수 없다. 이에 입력 버퍼와 처리 중 상태를 확인해 남은 작업을 마친 뒤 정지하고, 재개 후에도 이전 누적값과 다음 입력의 순서가 유지되는지 검증하였다.
 
-ECG 분류에는 개별 박동의 형태뿐 아니라 장시간에 걸친 박동 간격의 불규칙성과 이상 파형의 반복 및 지속성을 함께 분석해야 한다. 그러나 웨어러블 분류 코어에 장시간의 ECG 전체 기록을 저장하고 반복적으로 분석하면 메모리, 연산량, 전력 부담이 증가한다. 본 작품은 이를 해결하기 위해 AFE–ADC와 SNN 기반 스트리밍 RTL 분류 가속기를 결합하여 NSR, CHF, ARR, AF를 판정하는 통합 시스템을 설계하였다.
+<!-- report:p2:id9 -->
+또 다른 과제는 박동 간격이 비슷한 리듬들을 구분하는 것이었다. Zihlmann 등의 CNN–LSTM 연구는 NSR, AF, Other의 클래스 분류에서 평균 F1 82.1%를 보고하였다.[[1]](INTEGRATED_TECHNICAL_REPORT_KR.md#ref-1) AF가 아닌 비정상 리듬에서도 박동 간격이 불규칙할 수 있어 간격만으로 AF와 OTHER를 구분하기 어렵다.[[2]](INTEGRATED_TECHNICAL_REPORT_KR.md#ref-2) 이에 본 설계는 파형의 상승과 하강이 바뀌는 횟수, 박동 주변의 진폭과 활동 폭도 함께 집계하였고, 그 결과 학습에 사용한 원천 기록과 분리한 시험 96건에서 정확도 94.79%와 macro-F1 94.78%를 기록하여 선별된 특징들로 세 리듬을 분류할 수 있음을 확인하였다.
 
-아날로그부는 HPF, 3-op-amp 계측 증폭기, 60 Hz Active Twin-T 노치 필터, 150 Hz LPF, 버퍼, Sample-and-Hold 및 12-bit ADC로 구성된다. 증폭 및 필터링된 ECG는 1 kSPS signed 12-bit 스트림으로 변환되어 디지털 분류기로 전달된다.
+<!-- report:p3:id10 -->
+### 3) 완성도:
 
-디지털부는 ΔECG와 Strong Event를 이용해 QRS파 후보를 검출한다. QRS파는 심실 수축에 따른 전기적 활동으로, 심장 박동을 식별하는 기준이 되는 급격한 파형 구간이다. 검출된 박동에서 RR 간격(박동 간격), 리듬 불규칙성, 조기·지연 박동과 QRS 형태를 추출해 질환별 증거로 변환한다. 간헐적 이상이 장시간 기록에 묻히지 않도록 ECG를 60초 Window로 나누고, 각 구간의 증거를 Snapshot Membrane에 요약한다. 30개의 Snapshot은 30분 Final Membrane에 누적되어 단기 변화와 장시간 반복성, 지속성을 함께 반영한다. 현재 30분은 공개 데이터베이스의 모든 클래스에서 공통으로 확보할 수 있는 길이에 맞춘 검증 조건이다. 따라서 동일한 스트리밍 구조를 더 긴 Holter ECG 입력으로 확장할 수 있으나, 실제 24시간 길이의 입력은 향후 검증이 필요하다.
+<!-- report:p3:id11 -->
+본 작품은 분류 코어에 AXI 입력, 제어와 결과 회수 경로를 구현하여 외부 제어기에서 사용할 수 있는 합성 가능한 RTL 블록(IP)으로 구성하였다. AXI-Stream으로 ECG 표본을 받고 AXI-Lite로 시작 명령, 상태 확인과 결과 읽기를 수행한다. 입력 대기 중 표본 보존과 완료 후 결과 회수까지 검증하여 상위 시스템 연결에 필요한 동작을 갖추었다.
 
-디지털 분류기는 일반적인 CNN/RNN 구현처럼 많은 학습 가중치를 별도 메모리에 저장하고 반복적인 곱셈과 누산을 수행하는 대신, SNN 기반 사건 검출과 막전위 누적을 중심으로 구현하였다. 또한 MATLAB–LTspice–XMODEL–Python/Exact C++–RTL/XSim–Vivado–FPGA 재생으로 이어지는 단계별 검증 절차를 구축하였다. 이를 통해 원시 ECG 전체를 저장하지 않고 리듬과 파형 증거만 순차적으로 갱신하는 스트리밍 ECG 분류 가속기 IP를 구현하였으며, 웨어러블 환경에서의 저전력 동작을 지향한다.
+<!-- report:p3:id12 -->
+평가 데이터는 하나의 공개 데이터베이스에서 구성하고, 제공된 박동 및 리듬 판독 정보로 정답을 정하였다. 본 작품은 Holter 검사처럼 24시간 이상의 장시간 관찰을 지향하지만, 공개 데이터에서 클래스별로 명확한 리듬 주석을 확보하고 동일한 길이로 평가하기 위해 30분을 평가 단위로 정하였다. 총 471개 구간을 학습 282개, 설계 검증 93개, 최종 시험 96개로 나누고, 같은 원본 ECG 기록에서 잘라낸 구간이 학습과 시험에 동시에 포함되지 않도록 분리하였다.
 
-### 1.2 창작 과정
+<!-- report:p3:id13 -->
+전체 471건의 14,130개 Snapshot에서 구간 점수와 매 Snapshot 처리 후 Final 누적값을 소프트웨어와 RTL 간에 대조하였다. 최종 시험 96건은 코어 직접 입력, AXI 입출력과 배선 지연 반영 조건으로 검증하였다. 모두 최종 클래스와 세 리듬의 누적값이 소프트웨어 계산과 일치하여, 지연을 고려한 조건에서도 입력 전달부터 분류와 결과 회수까지 정상 동작함을 확인하였다. 아날로그부는 트랜지스터 회로와 Verilog-A SAR 제어 모델을 연결해 1.8 V에서 필터와 ADC 변환을 검증하고, 통합 AVDD 평균 전력 256.43 µW를 확인하였다. 디지털부는 AXI를 포함한 합성, 배치배선과 타이밍 검증을 수행하고, 대표 30분 입력을 1 kSPS로 처리할 때의 평균 전력을 1.366 mW로 추정하였다. 회로 구성, 입출력 규격과 검증 결과를 신호 취득부터 결과 회수까지의 흐름에 따라 정리하였다.
 
-![그림 1. 작품 창작 및 통합 과정](../figures/final_submission/창작과정/창작과정%20블록도_가로형.svg)
+<!-- report:p3:id14 -->
+## 2. 구성 및 동작
 
-**그림 1. 작품 창작 및 통합 과정**
+<!-- report:p3:id15 -->
+### 1) 전체 시스템 구성
 
-2026년 3월에는 장시간 ECG 분석의 메모리, 연산량, 전력 문제를 해결하기 위해 AFE–ADC와 SNN 기반 RTL 분류 가속기 IP를 결합한 시스템을 설계 아이템으로 선정하였다. 이후 아날로그 회로 사전 검증 및 데이터 분석, AFE·ADC 회로 설계, 디지털 가속기 IP 설계로 역할을 분담하고, 파트 간 인터페이스를 1 kSPS signed 12-bit ECG 스트림으로 통일하였다.
+<!-- report:p3:id16 -->
+전체 시스템은 ECG 전압을 디지털 코드로 바꾸는 아날로그부와 리듬을 판단하는 디지털부로 구성된다. AFE가 신호를 증폭하고 잡음을 줄이면 12-bit SAR ADC가 초당 1,000개의 코드로 변환한다. 외부 제어기는 이를 AXI-Stream으로 전달하고, 디지털부는 박동과 파형 특징을 추출해 구간 분류와 최종 누적을 수행한다. 신호 경로와 제어기 연결은 그림 1과 같다.
 
-2026년 4월부터 6월까지 공개 ECG를 원천 기록 단위로 분리하고 30분 평가 조건을 설정한 뒤, 사전 분석을 통해 클래스 구분에 유효한 박동·리듬·파형 증거를 선정하였다. 이후 아날로그부는 MATLAB, LTspice 및 XMODEL로 필터, 증폭, ADC 동작을 설계·검증하였다. 디지털부는 선정된 증거를 누적하는 SNN 기반 가속기를 RTL로 구현하고, 긴 조합 경로는 파이프라인 분할로 개선하였다.
+<!-- report:p3:id17 -->
+![그림 1. AFE–ADC와 AXI 인터페이스를 갖춘 디지털 분류 IP의 전체 구성](../figures/report_2026/figure-01.svg)
 
-사전 분석에서는 원천 데이터베이스의 beat 및 rhythm annotation으로 각 30분 구간이 원천 라벨을 뒷받침하는 박동 및 리듬 증거를 충분히 포함하는지 점검하고, RR 간격, PNN 계열 규칙성, 연속 RR 차이, early–late pair, ΔECG 방향 변화, R-peak 진폭, QRS 폭과 말단 활동 후보를 계산하였다. 클래스별 분포, 결측률, 단순 분류율과 하드웨어 구현 가능성을 함께 비교하여 최종 증거 경로를 선정하였다. annotation은 구간의 라벨 대표성 및 데이터 품질 점검과 후보 특징 선정에만 사용했으며, 최종 RTL은 annotation 없이 signed 12-bit ECG에서 사건과 증거를 자체 생성한다. 상세 근거는 [사전 특징 선정 기록](../docs/FEATURE_SELECTION_AND_ANNOTATION_KR.md)과 [`analysis/feature_selection/`](../analysis/feature_selection/)에 보존한다.
+<a id="figure-1"></a>
 
-2026년 6월부터 7월까지 아날로그·디지털 각 파트의 정합성을 확인하였다. 당시 고정 통합 환경에서 생성한 compact acceptance에는 AFE 생성 36개 chunk와 디지털 replay 입력의 SHA-256 및 최종 출력 36/36 정합이 기록되어 있다. 다만 현재 저장소에 보존된 실제 full-30분 raw XMODEL accepted dump는 4/36개이며, 이 4개만 독립 재실행에서 입력 SHA, 최종 클래스와 네 Final Membrane이 bit-exact했다. 나머지 32개 raw dump가 없어 저장소 단독의 36-case raw XMODEL 재실행 기준은 FAIL이다. 이후 RTL을 AXI IP로 패키징해 MicroBlaze에 통합하고, FPGA 재생 결과가 XSim과 일치함을 확인하였다.
+<!-- report:p3:id18 -->
+**그림 1. AFE–ADC와 AXI 인터페이스를 갖춘 디지털 분류 IP의 전체 구성**
 
-2026년 8월 현재 데이터 분석, 알고리즘 개발, MATLAB, LTspice, XMODEL, Python, Exact C++, RTL 구현과 AXI IP 패키징, MicroBlaze 통합, End-to-End 및 FPGA 검증을 완료하였다. 이어 generic GPDK045에서 run-2 scan-free core와 AXI-inclusive accelerator block을 mapping·CTS·signal route·RC extraction하고 mapped-to-postroute LEC를 수행했다. Run-3 post-route ECO에서는 같은 slow-early 0.95·fast-late 1.05 engineering derate와 100 ps hold uncertainty를 유지하면서 core hold·data-transition·clock-slew·internal-DRC를 0 violation으로 닫았다. Run-6 AXI는 50% floorplan에서 setup·hold·data-transition·clock-slew·internal-DRC를 모두 닫고, 100 ps uncertainty 뒤에 추가 hold slack 10 ps와 clean LEC를 유지했다. Exploratory PG는 실패했고 unmodified four-state gate run은 X를 남겨 PG/sign-off와 ASIC 제작은 후속 과제이다.
+<a id="table-1"></a>
 
-## 2. 설계기술 설명서
+<!-- report:p4:id19 -->
+**표 1. 입력 규격과 판정 단위**
 
-### 2.1 설계 목표
+<!-- report:p4:id20 -->
+| 항목 | 설계 규격 |
+| --- | --- |
+| 아날로그와 디지털 공급전압 | 1.8 V |
+| ADC 분해능과 변환률 | 12비트, 초당 1,000회 |
+| ECG 데이터 한 건의 입력 길이 | 1,805초: 초기 안정화 5초와 분류 구간 1,800초 |
+| 분류에 사용하는 표본 | 데이터 한 건당 1,800,000개 |
+| 구간 요약 | 60,000개 표본마다 1회 |
+| 최종 판정 | 30개의 구간 요약마다 1회 |
+| 출력 분류 | NSR / AF / OTHER |
 
-최종 설계 목표는 장시간 ECG를 연속 처리하고, 기록 전반에서 누적한 증거를 종합하여 NSR, CHF, ARR, AF 중 하나의 분류 결과를 출력하는 저전력 스트리밍 가속기 IP를 개발하는 것이다. 시스템은 ECG를 증폭·필터링하고 디지털 코드로 변환하는 AFE–ADC부와, 박동, 리듬, 파형 형태의 증거를 추출해 장시간 누적하는 SNN 기반 RTL 분류기로 구성한다. 전체 원시 파형을 저장하지 않고 표본마다 필요한 상태만 갱신하여 웨어러블 환경에 적합한 메모리 요구량과 연산량을 확보하고자 한다.
+<!-- report:p4:id21 -->
+분류 구간 앞에 아날로그 필터의 초기 안정화 5초를 두고, 이때의 5,000개 코드는 분류에서 제외하였다. 이후 30분의 1,800,000개 표본으로 30회의 Snapshot과 한 번의 최종 판정을 얻는다.
 
-AFE는 0.5–150 Hz ECG 대역과 60 Hz 간섭 억제 기능을 갖는 1 kSPS signed 12-bit 스트림 생성을 목표로 한다. 디지털부는 60초 증거를 Snapshot Membrane에 요약하고 30개의 Snapshot을 Final Membrane에 누적하여 30분 기록을 분류한다. 최종 시험 정확도 80% 이상, Pure RTL의 BRAM·DSP 0과 양의 timing slack, FPGA–RTL/XSim 기능 정합을 목표로 하며, 전력은 연속 동작 전력, 판정당 에너지 및 완전 power-gating 가정의 평균 전력으로 구분하여 저전력 구현 가능성을 평가한다.
+<!-- report:p4:id22 -->
+외부 제어기는 AXI-Stream으로 표본과 유효 신호를 보내고, IP가 수신 가능할 때 전달한다. 대기 중 표본은 보존하며, 판정이 끝나면 완료 인터럽트(IRQ)를 보낸다. AXI-Lite는 시작 명령, 상태 확인과 결과 읽기를 담당한다.
 
-개발 결과물은 MATLAB과 LTspice의 AFE–ADC 모델, SystemVerilog XMODEL, 합성 가능한 Pure RTL/AXI IP 및 MicroBlaze FPGA 시스템이다. 각 단계는 동일한 신호 규약과 판정 기준으로 연결되며, 향후 스마트워치, ECG 패치, Holter 기록기 등 웨어러블 SoC 적용을 지향한다.
+<!-- report:p4:id23 -->
+### 2) 아날로그 구성 및 동작
 
-### 2.2 알고리즘 구성 및 결과(예상)
+<!-- report:p4:id24 -->
+미세한 ECG 전압을 증폭하고 잡음을 줄이기 위해 GPDK045의 2 V 소자로 1.8 V AFE와 ADC 아날로그 회로를 구성하였다. 신호 경로와 실제 회로는 그림 2, 3과 같다.
 
-![그림 2. 다중 시간 척도 ECG 분류 알고리즘](../figures/final_submission/알고리즘%20구성%20및%20예상결과/알고리즘%20구조도.svg)
+<!-- report:p4:id25 -->
+![그림 2. AFE와 12-bit SAR ADC의 신호 처리 구조](../figures/report_2026/figure-02.svg)
 
-**그림 2. 다중 시간 척도 ECG 분류 알고리즘**
+<a id="figure-2"></a>
 
-그림 2와 같이 디지털 분류 가속기는 1 kSPS signed 12-bit ECG에서 박동, 리듬, 파형 증거를 추출하고, 이를 60초 Snapshot과 30분 Final Membrane에 누적해 4-클래스를 판정한다. 원시 ECG 전체를 저장하지 않고, 표본이 입력될 때마다 사건을 검출하고 뉴런의 증거 누적값을 순차적으로 갱신하는 스트리밍 구조이다.
+<!-- report:p4:id26 -->
+**그림 2. AFE와 12-bit SAR ADC의 신호 처리 구조**
 
-현재 표본과 직전 표본의 차이인 ΔECG를 구하고, 그 절댓값이 구간 초기의 입력 변화에 맞춰 자동 설정된 문턱값을 넘으면 부호에 따라 상승 또는 하강 Strong Event를 발생시킨다. 이를 QRS LIF Neuron에 누적해 QRS 후보를 검출하고, 발화 후 상태 초기화와 불응기로 중복 검출을 막는다.
+<!-- report:p4:id27 -->
+![그림 3. AFE–S/H–SAR ADC의 실제 회로와 주요 블록](../figures/report_2026/figure-03.svg)
 
-검출된 QRS 박동은 리듬 특징을 추출하는 기준이 된다. RR Counter는 연속된 박동 사이의 표본 수를 세어 RR 간격을 계산한다. PNN은 현재 RR값을 기준으로 다음 RR의 예상 범위를 만들고, 실제 다음 RR이 해당 범위에 포함되는지를 비교하여 연속된 심박 간격의 규칙성을 판정한다. RDM은 현재와 직전 RR의 차이를 계산하여 박동 간 리듬 변동의 크기를 보고, Ectopic Evidence는 짧은 RR 뒤에 긴 RR이 이어지는 early–late 패턴을 부정맥 관련 증거로 반영한다.
+<a id="figure-3"></a>
 
-파형 형태는 네 개의 병렬 경로에서 분석한다. DSCR은 ΔECG의 방향 전환 횟수를 세어 파형의 굴곡을 나타내고, RAM은 PNN이 예상한 다음 박동 시점 전후에 짧은 관찰창을 열어 진폭의 최댓값을 산출한다. QRS MAF는 박동 전 120표본과 박동 후 100표본에서 Strong Event가 처음 발생한 위치와 마지막으로 발생한 위치의 차이를 이용해 QRS 활동 폭을 계산하고, RBBB-like 경로는 예상 QRS 종료 이후에도 Strong Event가 남는지를 확인해 심실 내 전도 지연성 증거를 생성한다.
+<!-- report:p4:id28 -->
+**그림 3. AFE–S/H–SAR ADC의 실제 회로와 주요 블록**
 
-각 증거는 클래스별 시냅스 가중치에 따라 60초 Snapshot Membrane에 누적된다. 확정된 Snapshot의 결과는 증거의 강도, 빈도를 반영하여 Final Membrane에 합산되며, 30분 누적이 완료되면 최종 막전위를 비교해 클래스를 출력한다. 이를 통해 원시 ECG 전체를 저장하지 않고도 일부 구간의 강한 이상을 포착하는 동시에, 우발적인 단일 사건보다 여러 구간에서 반복되는 특징을 중요하게 반영할 수 있다.
+<!-- report:p5:id29 -->
+피부의 서로 다른 위치에 부착한 두 전극의 신호는 고역통과필터(HPF)를 거쳐 저주파 성분이 줄어든다. 3-op-amp 계측증폭기(IA)는 두 입력의 미세한 ECG 전압 차이를 증폭하고 공통 잡음을 억제한다. 이어 수동 Twin-T 노치 필터와 RC 저역통과필터(LPF)로 60 Hz 전원 간섭과 고주파 성분을 줄여 샘플앤홀드(S/H)에 전달한다. S/H는 ADC 변환 동안 커패시터에 입력 전압을 유지한다. SAR ADC는 이를 커패시터 DAC(CDAC)의 시험 전압과 비교해 상위 비트부터 결정하고 12-bit 코드를 출력한다.
 
-**표 1. 대표 ECG 제품 및 선행기술과 제안 알고리즘 비교**
+<!-- report:p5:id30 -->
+아날로그 회로는 Cadence Virtuoso에서 트랜지스터 수준으로 구성하고, 변환 순서를 제어하는 Verilog-A SAR 모델을 연결해 Spectre로 검증하였다. 세부 설계 항목은 표 2와 같다.
 
-| 비교 대상 | ECG 관찰, 처리 방식 | 기존 기술의 최종 결과 | 제안 알고리즘의 차별점 |
-|---|---|---|---|
-| Apple Watch ECG App | 사용자가 30초 단일유도 ECG 측정 | 측정 시점의 동리듬 또는 심방세동 여부를 중심으로 분류 | 단일 30초 측정이 놓칠 수 있는 간헐적 이상을 장시간 누적해 4개 기록 범주로 판정 |
-| Zio Monitor | 최대 14일간 모든 박동을 저장한 뒤 분석 서비스에서 판독 | 부정맥 분석 보고서 | 원시 ECG 저장 부담과 외부 분석 서비스 의존도를 줄일 수 있음 |
-| Bauer et al. [3] | ECG 변화 사건을 순환형 SNN으로 분석 | 이상 패턴 유무를 출력 | 단순 이상 검출이 아닌 NSR, CHF, ARR, AF 기록 클래스를 판정 |
-| Zihlmann et al. [5] | CNN으로 ECG 구간 특징을 추출, 정보 결합 | Normal, Noise, Other rhythm, AF로 ECG 분류 | 대규모 MAC 연산 없는 SNN 기반 4-클래스 분류 |
+<a id="table-2"></a>
 
-표 1은 관찰 범위, 판정 단위, 원시 데이터 저장 방식과 설명 가능성을 기준으로 기존 기술을 비교한 것이다. Apple Watch ECG App은 30초 측정 시점의 리듬을, Zio Monitor는 장기간 저장 후 외부 분석 결과를 제공한다. Bauer 등의 「Real-Time Ultra-Low Power ECG Anomaly Detection Using an Event-Driven Neuromorphic Processor」는 이상 유무를 검출하고 [3], Zihlmann 등의 「Convolutional Recurrent Neural Networks for Electrocardiogram Classification」은 CNN으로 ECG를 네 클래스로 분류한다 [5]. 본 작품은 리듬/파형 증거를 누적하여 간헐적 이상을 포착하고, 30분 ECG 전체를 NSR, CHF, ARR, AF 중 하나로 낮은 하드웨어 복잡도에서 판정한다.
+<!-- report:p5:id31 -->
+**표 2. 아날로그부의 설계 항목**
 
-사건 기반 ECG 연구에서 Amirshahi와 Hashemi는 R-peak 주변 개별 beat를 Poisson spike로 변환해 STDP/R-STDP로 분류했고 [1], Chen 등은 level-crossing ADC와 spiking CNN으로 선택된 beat를 N, SVEB, VEB, F로 분류하였다 [2]. 두 연구는 event/SNN ECG hardware의 가능성을 보여주지만 여러 Window의 증거를 장시간 입력의 클래스로 누적하지는 않는다. 장시간 ECG 연구에서는 Shanmugam 등이 약 48시간 기록의 위험 beat sequence를 집계해 patient-level cardiovascular-death risk를 예측했고 [4], DeepHHF는 24시간 Holter를 30초 Window로 나누어 5년 heart-failure risk를 예측하였다 [6]. 검토한 대표 선행연구 범위에서는 NSR, CHF, ARR, AF 분류, Snapshot별 질환 증거의 명시적 상태화, 장시간 증거 누적, RTL/IP/FPGA 구현과 MATLAB–XMODEL–RTL 추적성을 함께 적용한 사례를 확인하지 못하였다. 이는 세계 최초이거나 동일 연구가 없다는 단정은 아니다.
+<!-- report:p5:id32 -->
+| 설계 항목 | 회로의 고정 설정 |
+| --- | --- |
+| 전원 / 공통모드 / 기준전압 | 1.8 V / 0.9 V / 0.4~1.4 V |
+| AFE 이득 / 필터 설계 주파수 | 199.36 V/V / HPF 0.48 Hz, 노치 60 Hz, LPF 150 Hz |
+| 샘플앤홀드 / ADC | 80 pF / 12-bit SAR, 1 kSPS, 오프셋 이진 |
 
-### 2.3 설계회로 구성
+<!-- report:p5:id33 -->
+### 3) 디지털 구성 및 동작
 
-본 작품의 회로는 ECG를 증폭 및 필터링하고 디지털 코드로 변환하는 AFE–ADC부, 핵심 증거를 추출 및 막전위에 누적하는 Pure RTL 분류 코어, 그리고 가속기를 제어하고 데이터를 전달하는 MicroBlaze 통합부로 구성된다.
+<!-- report:p5:id34 -->
+![그림 4. Genus 전체 회로와 주요 기능의 내부 회로 확대도](../figures/report_2026/figure-04.svg)
 
-![그림 3. AFE–ADC 신호 흐름 및 비이상성 모델](../figures/final_submission/설계회로%20구성/아날로그%20회로%20구조도.svg)
+<a id="figure-4"></a>
 
-**그림 3. AFE–ADC 신호 흐름 및 비이상성 모델**
+<!-- report:p5:id35 -->
+**그림 4. Genus 전체 회로와 주요 기능의 내부 회로 확대도**
 
-그림 3의 HPF는 약 0.5 Hz 이하의 기저선 변동을 제거하고, 3-op-amp 계측증폭기는 미세한 차동 ECG를 증폭하면서 공통모드 성분을 억제한다. Active Twin-T 노치 필터는 60 Hz 전원선 간섭을 제거하며, 150 Hz LPF와 버퍼는 ECG 대역 밖의 고주파 성분을 제한하고 다음 단의 부하를 분리한다. 이후 Sample-and-Hold와 12-bit ADC가 ±1.65 V 신호를 1 kSPS로 변환하며, ADC 코드는 signed two’s-complement 형식으로 바뀌어 디지털 RTL에 전달된다.
+<!-- report:p5:id36 -->
+디지털부는 뉴로모픽 특징 추출부와 Snapshot 분류 및 Final 누적부로 구성되며, GPDK045 소자 기반 프로젝트용 1.8 V 셀로 합성하였다. 그림 4는 특징 추출부에서 공유 분류 연산부와 막전위 저장부로 이어지는 Genus 회로이다.
 
-![그림 4. LTspice로 구현한 AFE–S/H–ADC 전체 회로도](../figures/final_submission/설계회로%20구성/full%20schematic%20by%20LTspice.svg)
+<!-- report:p5:id37 -->
+![그림 5. ECG 심전도 파형 개념도](../figures/report_2026/figure-05.svg)
 
-**그림 4. LTspice로 구현한 AFE–S/H–ADC 전체 회로도**
+<a id="figure-5"></a>
 
-그림 4는 AFE–ADC 신호 흐름을 RC 소자와 op-amp 모델로 구현한 LTspice 회로이다. 초기 수동 노치 필터의 출력 부하 문제가 있었는데, Active Twin-T 구조와 버퍼를 추가하여 해결하였다.
+<!-- report:p5:id38 -->
+**그림 5. ECG 심전도 파형 개념도**
 
-![그림 5. Vivado RTL Elaborated Design 기반 Pure RTL 분류기의 모듈 계층 구조도](../figures/final_submission/설계회로%20구성/디지털%20RTL%20계층%20구조도_한글호환.svg)
+<!-- report:p6:id39 -->
+디지털부의 동작은 입력된 ECG에서 박동을 검출하는 것부터 시작된다. 그림 5의 QRS파는 심실의 전기적 활성에 따른 빠른 전압 변화를 나타내므로, 이를 박동 검출의 기준으로 사용하였다. QRS 구간에서는 빠른 전압 변화가 이어지므로 연속한 두 표본의 차이인 ΔECG의 절댓값이 반복해서 커지는 구간을 QRS 후보로 삼았다. 이를 검출하기 위해 ΔECG의 절댓값이 문턱값을 넘을 때마다 Strong Event 스파이크를 발생시켜 QRS 뉴런의 막전위에 누적하고, 임계값에 도달하면 발화하여 박동을 알리도록 하였다. 발화 후에는 막전위를 초기화하고 불응기를 두어 같은 박동의 중복 검출을 억제하였다.
 
-**그림 5. Vivado RTL Elaborated Design 기반 Pure RTL 분류기의 모듈 계층 구조도**
+<!-- report:p6:id40 -->
+![그림 6. 특징 집계, Snapshot 분류와 Final 누적의 알고리즘](../figures/report_2026/figure-06.svg)
 
-그림 5의 최상위 모듈 snn_ecg_30min_final_top은 signed 12-bit ECG를 u_snapshot에서 처리해 7가지 특징 증거와 클래스 상태를 생성한다. u_final은 30개의 Snapshot을 누적하여 4-클래스의 Final Membrane과 최종 클래스를 출력한다.
+<a id="figure-6"></a>
 
-![그림 6. Vivado IP Integrator Block Design 기반 IP 통합 구조도](../figures/final_submission/설계회로%20구성/디지털%20IP%20패키징%20통합%20구조도_한글호환.svg)
+<!-- report:p6:id41 -->
+**그림 6. 특징 집계, Snapshot 분류와 Final 누적의 알고리즘**
 
-**그림 6. Vivado IP Integrator Block Design 기반 IP 통합 구조도**
+<a id="table-3"></a>
 
-Pure RTL은 AXI IP로 패키징하였다. MicroBlaze는 AXI-Lite를 통한 분류 시작과 결과 확인을, Sample Feeder는 AXI-Stream signed 12-bit 표본 공급을, RTL 가속기는 사건 검출과 증거 누적을 담당한다. 처리가 끝나면 가속기가 done과 IRQ를 발생시키고, MicroBlaze가 최종 결과를 읽어 UART로 출력한다.
+<!-- report:p6:id42 -->
+**표 3. 디지털부에서 추출하는 주요 분류 근거**
 
-**표 2. 대표 ECG 처리 아키텍처와 제안 회로 구성의 구조적 비교**
+<!-- report:p6:id43 -->
+| 관찰 항목 | 추출 회로와 계산 | 분류 근거 |
+| --- | --- | --- |
+| RR 규칙성 | PNN: 예상 범위와 다음 박동 비교 | 규칙적인 반복 |
+| RR 변동 | RDM: 연속 RR의 절대 차이 | 간격 변화의 크기 |
+| 조기 박동 | 짧은 RR 뒤의 긴 RR 검출 | 간헐적 박동 변화 |
+| 굴곡과 진폭 | DSCR 방향 전환 / RAM 최대 진폭 | 파형의 굴곡과 크기 |
+| QRS 모양 | MAF 활동 폭 / 후반부 지연 검출 | 넓거나 늦게 남는 변화 |
 
-| 비교 기술 | 일반적인 회로·처리 구성 | 제안 회로 구성 | 핵심 차이 |
-|---|---|---|---|
-| CPU·MCU 기반 ECG 분석 | 원시 ECG를 메모리에 저장한 뒤 순차 분석 | 표본 입력마다 사건을 검출하고 뉴런 상태를 순차적으로 갱신 | 전체 입력 버퍼 없이 스트리밍 처리 |
-| CNN·RNN FPGA 가속기 | 반복적인 MAC 연산과 가중치 메모리 사용 | 비교기, 계수기, 비트 이동, 부호 누산기 사용 | 대규모 MAC 연산 없이 RTL 구현 |
-| 분리된 AFE·분류 모델 | AFE·ADC 결과를 저장한 뒤 소프트웨어에서 분류 | 1kSPS signed 12-bit 스트림을 RTL에 직접 전달 | 별도 소프트웨어 분류 없이 RTL에서 클래스 판정 |
+<!-- report:p6:id44 -->
+그림 6의 RR Counter에서는 검출한 QRS 박동 사이의 표본 수를 세어 RR 간격을 구한다. 이를 이용해 PNN은 현재 RR에 가장 가까운 예상 간격을 선택하고, 다음 RR이 예상 범위 안이면 일치, 밖이면 불일치 스파이크를 발생시켜 박동 간격의 규칙성을 판단하도록 하였다. RDM은 현재와 직전 RR의 절대 차이를 비교해 간격의 변동 정도를 코드와 스파이크로 전달한다. 조기 박동 경로는 짧은 RR 뒤에 긴 RR이 이어지는 패턴을 찾아 지속적인 불규칙성과 간헐적 박동 변화를 구별하도록 구성하였다.
 
-표 2와 같이 제안 회로는 AFE–ADC와 RTL 분류기를 공통 스트림으로 직접 연결하고, 원시 ECG 전체를 저장하는 대신 해석 가능한 리듬/파형 증거만 누적하여 적은 하드웨어 자원으로 NSR, CHF, ARR, AF의 최종 클래스를 판정한다.
+<!-- report:p6:id45 -->
+파형의 굴곡과 진폭은 DSCR과 RAM으로 관찰하였다. DSCR은 ΔECG의 절댓값이 문턱값을 넘는 경우에 대해 값의 부호가 바뀔 때 스파이크를 발생시켜 상승과 하강의 전환을 검출하도록 설계하였다. RAM은 PNN이 예상한 다음 박동 주변에 관찰창을 열어 기준선 위쪽의 최대 진폭을 저장하고, 창이 닫히면 진폭 코드와 완료 스파이크를 전달하도록 설계하였다.
 
-### 2.4 설계회로 검증
+<!-- report:p6:id46 -->
+QRS MAF는 박동 검출 전 120표본과 후 100표본에서 Strong Event의 첫 발생과 마지막 발생 사이의 활동 폭, 방향 전환 횟수와 기준선 대비 진폭 누적량을 계산하도록 하였다. 이를 기준 범위와 비교해 QRS 형태의 변화를 스파이크로 전달하고, 후반부 지연 검출 경로에서는 활동 폭과 후반부 사건 수를 함께 확인해 늦은 전압 변화가 반복되면 지연형 근거를 전달하도록 구성하였다.
 
-![그림 7. 아날로그 회로 검증 흐름](../figures/final_submission/설계회로%20검증/아날로그%20검증/아날로그%20검증%20흐름.svg)
+<!-- report:p6:id47 -->
+이렇게 검출한 스파이크 횟수와 특징 코드를 60초 단위로 모아 구간별 특징 누적값을 구하였다. 학습 데이터에서 정한 52개 조건에 따라 특징값이 임계값을 초과하는지 비교하고, 조건 충족 여부에 정수 가중치를 적용해 식 (1)의 점수를 계산하였다.
 
-**그림 7. 아날로그 회로 검증 흐름**
+<!-- report:p7:id48 -->
+![식 (1)](../figures/report_2026/equation-01.svg)
 
-공개 ECG는 이미 ADC를 거친 디지털 기록이므로, 표본값을 시간축과 전압축에 맞춘 PWL 전압 자극으로 재구성하여 시간영역 검증에 사용하였다. MATLAB 기준 모델과 LTspice AC sweep으로 주파수 응답을 비교하고, 동일한 PWL ECG를 LTspice와 XMODEL에 입력하여 1 kSPS signed 12-bit ADC 출력의 정합성을 검증하였다.
+<!-- report:p7:id49 -->
+여기서 t는 60초 구간 번호, k는 NSR, AF, OTHER의 클래스, j는 조건 번호이다. z는 조건 충족 시 1, 미충족 시 0이며, w는 학습된 정수 가중치, b는 초기 점수이다. 가장 큰 구간 점수 s의 클래스를 예측하고, 판정 결과와 특징 근거를 Snapshot으로 묶어 Final 단계에 전달하도록 하였다.
 
-![그림 8-1. MATLAB–LTspice 전체 AFE 응답](../figures/final_submission/설계회로%20검증/아날로그%20검증/LTspice%20vs%20Matlab/Overall%20AFE%20Frequency%20Response%20Comparison.svg)
+<!-- report:p7:id50 -->
+Final 단계에서는 식 (2)와 같이 특징 조건의 기여도와 예측 클래스의 기여도를 리듬별 막전위 V에 더하도록 하였다. 식의 S와 F는 Snapshot과 Final을, E와 C는 각각 특징 근거와 예측 클래스에 적용하는 가중치를 구분한다.
 
-![그림 8-2. 60 Hz Active Twin-T 노치 응답](../figures/final_submission/설계회로%20검증/아날로그%20검증/LTspice%20vs%20Matlab/60%20HZ%20Active%20Twin-T%20Notch%20Response%20Comparison.svg)
+<!-- report:p7:id51 -->
+![식 (2)](../figures/report_2026/equation-02.svg)
 
-**그림 8. MATLAB–LTspice 전체 AFE 응답(좌)과 60 Hz Active Twin-T 노치 응답(우)**
+<!-- report:p7:id52 -->
+Snapshot 점수는 매 구간 분류 전에 학습된 초기값으로 초기화하고, Final 막전위는 전체 관측 시작 시 한 번만 초기화한 뒤 구간별 근거를 계속 누적하였다. 이후 구간별 판정과 특징 근거를 누적하고, 30개 Snapshot 처리 후 세 막전위를 비교해 최종 판정하였다. 같은 특징이 여러 구간에서 나타나면 근거도 반복 반영되며, Snapshot의 발생 순서 자체를 저장하지는 않는다.
 
-MATLAB과 LTspice의 0.5–150 Hz 대역 및 60 Hz 노치 형상은 유사했으며, 정량 결과는 표 3에 제시하였다.
+<!-- report:p7:id53 -->
+이러한 구조로 집계와 누적에 필요한 입력 이력과 상태값만 저장하여, 원시 ECG 전체를 보관하지 않도록 구성하였다. 또한 새 특징 누적값이 60초마다 도착하는 처리 주기에 맞춰 특징 조건을 순차적으로 계산하고 동일한 점수 누적 경로를 반복 사용하도록 설계하였으며, 가능한 최대 누적 범위를 계산해 구간 점수는 24비트, 최종 점수는 32비트로 저장함으로써 값의 손실 없이 레지스터 수를 줄였다.
 
-![그림 9. LTspice–XMODEL ADC 출력 중첩 비교](../figures/final_submission/설계회로%20검증/아날로그%20검증/xmodel%20vs%20LTspice/adc_waveform_full.png)
+<!-- report:p7:id54 -->
+### 4) 처리 주기에 맞춘 저전력 클록 제어
 
-**그림 9. LTspice–XMODEL ADC 출력 중첩 비교**
+<!-- report:p7:id55 -->
+장시간 관찰에서는 계산보다 다음 입력을 기다리는 시간이 길다. 대기 중에도 클록을 공급하면 전력이 소비되므로, 표본 처리와 분류 작업이 발생할 때 열고 남은 처리를 마치면 닫는 이벤트 기반 클록 게이팅을 적용하였다.
 
-그림 9와 같이 동일한 10초 ECG를 LTspice와 XMODEL에 입력하여 10,000개의 signed ADC 코드를 비교하였으며, 정량 결과는 표 3에 제시하였다.
+<!-- report:p7:id56 -->
+본 작품의 입력 처리부는 수락한 표본의 특징 검출과 사건 전달을 마친 뒤 다음 표본까지 정지한다. 분류 연산부는 60초 단위 특징 누적값의 수락 신호(Capture)가 들어오면 첫 클록을 받아 입력을 보관하고, 처리 중 상태(Pending)를 설정한다. Pending은 구간 점수 계산과 Final 갱신, 완료 신호 전달이 끝날 때까지 클록을 유지한다.
 
-**표 3. AFE·ADC 모델 간 검증 결과**
+<!-- report:p7:id57 -->
+![그림 7. Capture 수락과 Pending에 따른 클록 공급의 상승 엣지 관계](../figures/report_2026/figure-07.svg)
 
-| 검증 범위 | 핵심 결과 | 의미 |
-|---|---|---|
-| MATLAB과 LTspice | HPF 0.481174 Hz, IA 이득 200.594 V/V, 60 Hz 감쇠 −83.557 dB, LPF 150.211 Hz, clipping 0건 | MATLAB 공칭 설계가 LTspice 회로 모델에서 재현됨 |
-| LTspice와 XMODEL | 평균 오차 +0.0221 LSB, MAE 0.6445 LSB, RMS 1.3020 LSB, 상관계수 0.999518, 지연 0표본 | ECG 파형과 샘플링 시점의 정합 확보 |
-| ADC 코드 오차 | ±1 LSB 91.19%, ±5 LSB 98.74%, ±10 LSB 99.89%, 최대 13 LSB | 제한된 오차 범위에서 코드 정합 확보 |
+<a id="figure-7"></a>
 
-표 3과 같이 MATLAB–LTspice의 AFE 응답과 LTspice–XMODEL의 ADC 코드 정합을 확인하고, XMODEL 출력을 후속 RTL 검증에 사용하였다.
+<!-- report:p7:id58 -->
+**그림 7. Capture 수락과 Pending에 따른 클록 공급의 상승 엣지 관계**
 
-![그림 10. 디지털 회로 검증 흐름](../figures/final_submission/설계회로%20검증/디지털%20검증/디지털%20검증%20흐름.svg)
+<!-- report:p7:id59 -->
+클록 공급을 제어하기 위해 동작 특성이 확인된 집적 클록 게이팅 셀(ICG)을 사용하였다. ICG는 시스템 클록이 낮을 때 공급 여부를 결정해 펄스가 잘리지 않도록 한다. Capture가 첫 클록을 요청하고 첫 상승 에지에서 설정된 Pending이 완료까지 공급을 유지한다. 상태는 62.5 MHz 시스템 클록의 상승 에지에서 동기식으로 갱신한다.
 
-**그림 10. 디지털 회로 검증 흐름**
+<!-- report:p8:id60 -->
+초기화와 시험에서는 reset 및 test/debug 신호로 클록을 강제 공급한다. 정상 동작에서는 입력 버퍼, 전달 중인 사건과 연산 완료 상태를 확인한 뒤 정지하여 남은 작업이 누락되지 않도록 하였다. 분류 입력은 수락 시 레지스터에 보관하고 계산 중 고정해 외부 변화에 따른 불필요한 동작을 줄였다.
 
-디지털 RTL은 Python 등가 모델로 최종 출력을, 독립적인 Exact C++ 모델로 RTL 연산과 내부 상태를 검증하였다. 이어 Full-top XSim에서 표본 수신부터 60초 Snapshot과 30분 최종 판정까지의 제어 흐름을 확인하였다.
+<!-- report:p8:id61 -->
+## 3. 설계 과정 및 실험 결과
 
-**표 4. 디지털 RTL의 단계별 기능 정합 결과**
+<!-- report:p8:id62 -->
+### 1) 데이터셋 구성 및 학습
 
-| 항목 | 정합 결과 |
-|---|---|
-| Python–RTL | 최종 클래스 36/36, 4-클래스의 Final Membrane 144/144 전부 일치 |
-| Exact C++–RTL | RTL 기준 정수 연산 793,595/793,595, 모듈 단위 내부 동작 추적 18/18, 내부 상태 240,000/240,000, Snapshot 경계 1,080/1,080 일치 |
-| Full-top RTL | 36/36 시험 사례 통과, 사례별 1,800,000표본 수신, 30 Snapshot, 1회 최종 판정 및 final_valid 정상 발생 |
+<!-- report:p8:id63 -->
+본 작품은 24시간 이상의 관찰을 지향하지만, 공개 데이터에서 클래스별로 명확한 정답과 서로 분리된 ECG 기록을 확보하여 같은 길이로 평가하기 위해 30분을 공통 단위로 정하였다. 세 클래스는 모두 PhysioNet Long-Term AF Database v1.0.0에서 구성하였다.[[3]](INTEGRATED_TECHNICAL_REPORT_KR.md#ref-3) 제공된 정보를 기준으로 NSR, AF, OTHER 구간을 선정하여 데이터 출처의 차이가 분류의 단서가 되지 않도록 하였다.
 
-표 4의 36개 사례에서 RTL 기준 정수 연산, 내부 상태 및 30분 제어 흐름의 불일치가 없었다. 이를 통해 기준 알고리즘이 RTL의 내부 연산과 30분 전체 처리 흐름에 동일하게 반영되었음을 확인하였다.
+<a id="table-4"></a>
 
-![그림 11. 아날로그-디지털 통합 검증 흐름](../figures/final_submission/설계회로%20검증/AXI,IP%20및%20mixed%20검증/VAL-03_analog_digital_integration_flow.svg)
+<!-- report:p8:id64 -->
+**표 4. 30분 ECG 구간의 분류 기준**
 
-**그림 11. 아날로그-디지털 통합 검증 흐름**
+<!-- report:p8:id65 -->
+| 분류 | 30분 구간의 선정 기준 |
+| --- | --- |
+| NSR | 정상 동리듬 비율 99% 이상, AF와 다른 리듬 없음, 비정상 박동 1% 이하 |
+| AF | 심방세동 비율 90% 이상, AF 이외의 비정상 리듬 1% 이하 |
+| OTHER | AF 없음. 비-AF 비정상 리듬 50% 이상 또는 비정상 박동 30% 이상 |
 
-AFE–ADC XMODEL과 고정 Pure RTL 코어를 연결한 과거 통합 실행은 36-case compact acceptance로 보존되어 있다. 현재 실제 raw XMODEL accepted dump를 이용해 독립 재실행할 수 있는 범위는 대표 4개이며, AFE–ADC가 RTL에 전달한 signed 12-bit 표본열의 SHA-256과 최종 클래스, 네 Final Membrane을 기준 결과와 대조했다. AXI IP의 제어와 데이터 전송 동작은 XSim에서 별도로 검증하였다.
+<!-- report:p8:id66 -->
+정답이 불명확하거나 판독 정보가 없는 구간은 제외하고, 파형 길이, 비정상적인 평탄 구간과 중복을 검사하였다. 같은 원본 ECG 기록의 구간은 학습, 설계 검증, 최종 시험 중 하나에만 배정해 유사 파형이 학습과 시험에 함께 쓰이지 않도록 하였다. 분할 기준은 환자가 아닌 ECG 기록이다.
 
-**표 5. AFE–ADC XMODEL–RTL End-to-End 및 AXI/IP 검증 결과**
+<a id="table-5"></a>
 
-| 검증 항목 | 방법 | 결과 |
-|---|---|---|
-| Compact acceptance | 과거 고정 통합 환경의 AFE 생성 36개 chunk와 digital replay 입력·출력 비교 | 입력 SHA와 최종 출력 36/36 정합; raw dump 36개 보존을 뜻하지 않음 |
-| Raw XMODEL full replay | 저장소가 실제 보유한 full-30분 accepted dump를 Pure RTL로 독립 재실행 | 보유 4/4는 입력 SHA·class·membrane bit-exact, 전체 기준은 4/36 FAIL |
-| Raw archive 완전성 | 전체 36-case 기준 실제 XMODEL accepted dump 존재 여부 확인 | 4/36 보존, 32/36 누락 |
-| AXI/IP 인터페이스 | XSim에서 AXI-Lite 제어/결과 레지스터, AXI-Stream 대기, TLAST, done & IRQ 확인 | 인터페이스 동작 정상, 2/2 testbench PASS |
-| MicroBlaze FPGA 통합 | Nexys A7-100T에서 36개 최종 시험 입력 재생 후 UART 출력과 XSim 기준값 비교 | 최종 클래스 36/36, 네 개의 Final Membrane 144/144 bit-exact |
+<!-- report:p8:id67 -->
+**표 5. 평가 데이터의 구성**
 
-표 5와 같이 과거 36-case compact acceptance와 현재 재실행 가능한 raw XMODEL 4-case 증거를 구분한다. 보유 4개 raw dump는 모두 bit-exact했지만 32개가 누락되어 raw 36-case PASS를 선언하지 않는다. AXI/IP의 제어, 표본 전송, 처리 완료 및 IRQ 동작은 정상적으로 확인되었으며, MicroBlaze 통합 FPGA 재생에서 최종 클래스와 네 개의 Final Membrane이 기준값과 일치하였다.
+<!-- report:p8:id68 -->
+| 분할 | NSR | AF | OTHER | 합계 |
+| --- | --- | --- | --- | --- |
+| 학습 | 94 | 94 | 94 | 282 |
+| 설계 검증 | 31 | 31 | 31 | 93 |
+| 최종 시험 | 32 | 32 | 32 | 96 |
+| 전체 | 157 | 157 | 157 | 471 |
 
-ASIC core wrapper는 Xcelium의 synthetic 16-sample reduced-parameter smoke에서 cycle mismatch 0으로 PASS했고, 실제 코어 RTL과 Genus mapped netlist의 Conformal LEC에서 13개 hierarchical module이 모두 PASS하여 diff 0, abort 0을 기록했다. Wrapper smoke는 default workload·실제 ECG 36-case wrapper regression이 아니며, Conformal 결과는 합성 전후 논리 등가성이지 분류 정확도 100%를 뜻하지 않는다.
+<!-- report:p8:id69 -->
+학습에서는 특징 추출부를 고정하고 Snapshot 분류와 Final 누적의 가중치 및 초기 설정값을 구하였다. 학습용 ECG 282건의 8,460개 60초 구간 중 주석상 정답이 명확한 7,357개를 Snapshot 학습에 사용하고, 모호한 1,103개는 제외하였다. 각 구간의 정답은 해당 60초의 주석으로 정하여, 30분 전체의 정답을 일괄 적용하지 않았다.
 
-고정 설계의 재현 절차와 실행 진입점은 [REPRODUCIBILITY_KR.md](../REPRODUCIBILITY_KR.md)에, 각 주장별 근거와 한계는 [claim registry](../project_registry/claim_registry.csv)와 [evidence map](INTEGRATED_TECHNICAL_REPORT_EVIDENCE_MAP.csv)에 기록하였다.
+<!-- report:p8:id70 -->
+특정 기록이나 클래스가 학습을 지배하지 않도록 데이터별 비중을 조정하고, 계수가 지나치게 커지는 것을 억제하는 가중 ridge 회귀(α=0.1)로 두 단계의 가중치와 초기 점수를 구하였다. 입력 표준화는 계수와 초기 점수에 흡수한 뒤 정수화하여, RTL에서는 별도의 실수 정규화 없이 계산하도록 하였다. 가중치는 부호 있는 20비트 정수로 표현하였다.
 
-### 2.5 설계회로 구현 결과
+<!-- report:p8:id71 -->
+Final 학습에는 해당 기록을 학습하지 않은 Snapshot 모델의 예측을 사용하였다. 이를 위해 학습 기록을 다섯 묶음으로 나누고, 네 묶음으로 Snapshot 모델을 학습한 뒤 남은 한 묶음을 예측하는 과정을 반복하였다. 이렇게 얻은 30개 구간의 클래스별 예측 횟수와 특징 조건별 충족 횟수를 입력으로 Final을 학습하였다.
 
-![그림 12. XMODEL AFE–ADC 단계별 시간영역 파형](../figures/final_submission/설계회로%20구현결과/Xmodel%20구현%20결과.svg)
+<!-- report:p9:id72 -->
+학습한 모델을 정수화하고 ECG 93건으로 검증한 뒤 고정하였다. 이후 17개 원본 기록에서 구성한 ECG 96건으로 최종 시험을 수행했으며, 시험 결과를 보고 가중치나 임계값을 수정하지 않았다.
 
-**그림 12. XMODEL AFE–ADC 단계별 시간영역 파형**
+<!-- report:p9:id73 -->
+### 2) 아날로그 검증 및 결과
 
-그림 12는 재구성한 ECG PWL 전압 자극이 XMODEL AFE–ADC의 필터링, 증폭, 양자화를 거쳐 1 kSPS signed 12-bit 코드로 변환되는 과정을 보여준다. QRS 파형은 유지되었으며 clipping 없이 RTL 입력 스트림이 생성되었다.
+<!-- report:p9:id74 -->
+공개 ECG는 이미 디지털화된 기록이므로 표본의 시간과 전압값을 연결한 PWL 전압 자극으로 재구성해 AFE에 입력하였다. 이는 별도 DAC 칩이 아닌 시뮬레이션 전압원이다.
 
-![그림 13. Vivado post-route 기반 FPGA 구현 및 계층별 배치 결과](../figures/final_submission/설계회로%20구현결과/FPGA%20구현ㆍ배치%20결과.svg)
+<!-- report:p9:id75 -->
+![그림 8. AFE 주파수 응답과 12-bit SAR ADC의 첫 변환 과정](../figures/report_2026/figure-08.svg)
 
-**그림 13. Vivado post-route 기반 FPGA 구현 및 계층별 배치 결과**
+<a id="figure-8"></a>
 
-Pure RTL 분류기를 AXI IP로 패키징하여 MicroBlaze, Sample Feeder, Local Memory, AXI INTC 및 UARTLite와 통합하였다. Pure RTL은 9,719 LUT, 5,038 FF, BRAM 0, DSP 0 및 WNS 8.184 ns로 구현되었다. MicroBlaze 통합 시스템은 12,494 LUT, 8,494 FF, 16 BRAM, 3 DSP 및 WNS 0.097 ns를 확보했으며, 추가된 BRAM과 DSP는 프로세서와 주변장치 자원이다. 기능 정합 결과는 표 5에 제시하였다.
+<!-- report:p9:id76 -->
+**그림 8. AFE 주파수 응답과 12-bit SAR ADC의 첫 변환 과정**
 
-![그림 14. GPDK045 digital core-only signal post-route 결과](../figures/final_submission/설계회로%20구현결과/GPDK045%20코어%20배치배선%20결과.gif)
+<!-- report:p9:id77 -->
+AFE의 주파수 응답은 1.8 V, 27°C에서 평가하였다. 두 입력에 0.5 V 크기와 각각 0°, 180° 위상의 AC 신호를 인가해 차동 입력을 1 V로 두고, 출력과 차동 입력의 비로 이득을 구하였다. HPF와 LPF의 단독 차단 주파수는 0.4823 Hz와 150.15 Hz였으며, 전체 AFE의 60 Hz에서의 이득은 55 Hz와 65 Hz의 평균 이득보다 38.65 dB 낮게 나타났다. 저주파 기준선 변동과 고주파 성분을 제한하면서 전원 주파수 간섭을 억제하는 응답을 확인하였다.
 
-**그림 14. GPDK045 digital core-only signal post-route 결과**
+<!-- report:p9:id78 -->
+그림 8의 SAR 파형은 CDAC 출력(DAC_OUT)을 S/H에 저장된 전압(HOLD)과 비교해 코드를 결정하는 과정이다. START 501 µs부터 EOC 630 µs까지 약 129 µs가 걸려, 표본 간격인 1 ms 안에 변환을 마쳤다. 시뮬레이터의 최대 시간 간격을 5 ns에서 1 ns로 줄여 동일한 10 ms ECG 입력의 10개 변환을 비교한 결과, 코드 차이는 최대 1 LSB였고 표본 취득과 완료 시점은 같았다. 계산을 더 촘촘히 해도 결과가 거의 달라지지 않음을 확인할 수 있었다.
 
-그림 14는 표준셀 코어의 배치, CTS와 일반 신호 배선 결과다. VDD/VSS power grid, pad ring과 package는 포함하지 않으며, Innovus 내부 Metal1 spacing 위반 1건이 남아 있다.
+<a id="table-6"></a>
 
-![그림 15. GPDK045 run-6 AXI standard-cell placement](../figures/final_submission/설계회로%20구현결과/GPDK045%20AXI%20표준셀%20배치%20결과.gif)
+<!-- report:p9:id79 -->
+**표 6. AFE/ADC 시뮬레이션의 주요 결과**
 
-**그림 15. GPDK045 run-6 AXI standard-cell placement**
+<!-- report:p9:id80 -->
+| 평가 항목 | 시뮬레이션 결과 |
+| --- | --- |
+| 공정 / 전압 / 온도 | GPDK045 / 1.8 V / 27°C |
+| HPF / LPF 차단 주파수 | 0.4823 Hz / 150.15 Hz (단독 필터) |
+| 60 Hz 감쇠 | 38.65 dB (55/65 Hz 국소 기준 대비) |
+| ADC 규격 / 1 LSB | 12-bit, 1 kSPS / 약 244.14 µV |
+| 변환에 걸리는 시간 | START→EOC 약 129 µs |
+| 계산 시간 간격 비교 | 1 ns와 5 ns, 10개 변환의 최대 차이 1 LSB |
+| 통합 AVDD 전류 / 전력 | 142.46 µA / 256.43 µW |
 
-그림 15는 최종 run-6 checkpoint에서 signal net을 숨기고 standard-cell instance만 표시한 Innovus native 화면이다. 481.2 × 478.04 µm die 안에 44,602 instances가 배치됐고 placement density는 68.079%다. 셀 분포와 확보된 whitespace를 보여주지만 filler·tap·endcap·metal fill 또는 power grid 완성을 뜻하지 않는다.
+<!-- report:p9:id81 -->
+주요 결과는 표 6과 같다. 통합 전력은 AFE, S/H와 ADC 아날로그 회로가 연결된 공통 AVDD에서 측정한 값이며, Verilog-A SAR 제어 모델을 포함한 혼합 시뮬레이션 조건으로 제시하였다.
 
-![그림 16. GPDK045 run-6 AXI 최종 placement 및 signal routing](../figures/final_submission/설계회로%20구현결과/GPDK045%20AXI%20최종%20배치배선%20결과.gif)
+<!-- report:p10:id82 -->
+### 3) 디지털 검증 및 결과
 
-**그림 16. GPDK045 run-6 AXI 최종 placement 및 signal routing**
+<!-- report:p10:id83 -->
+디지털 검증에서는 소프트웨어로 계산한 특징과 분류 결과를 동일 입력의 RTL 결과와 비교하였다. C++ 정수 모델로 60초 단위 특징 누적값을 만들고, Python 모델에 고정된 가중치와 임계값을 적용해 구간 점수와 Final 누적값을 구하였다. 이를 기대값으로 저장하고 최종 클래스, 각 Snapshot의 세 구간 점수와 처리 후 Final 누적값을 비트 단위로 대조하였다.
 
-그림 16은 같은 checkpoint의 placement와 Metal1–Metal11 일반 신호 배선을 함께 표시한 Innovus native 화면이다. 이 상태에서 setup WNS +2.602 ns, hold WNS +0.010 ns, data max-transition 0, clock slew 0, internal route DRC 0을 기록했다. VDD/VSS는 unrouted이고 pad·package가 없어 full-chip 또는 foundry-signoff layout은 아니다.
+<!-- report:p10:id84 -->
+클록 제어는 입력 간격을 바꾸어 정지와 재개를 유도하고, reset 및 test/debug 조건을 적용해 검증하였다. 정지 중 입력과 누적값이 보존되고, 재개 후 남은 계산과 완료 신호 전달이 이어지는지 확인하였다. 초기화 시에는 내부 상태가 정해진 시작값으로 돌아가는지도 검사하였다.
 
-![그림 17. GPDK045 run-6 AXI CTS clock nets 선택 화면](../figures/final_submission/설계회로%20구현결과/GPDK045%20AXI%20Clock%20Net%20선택%20결과.gif)
+<!-- report:p10:id85 -->
+합성과 배치배선 과정에서 논리 기능이 유지되는지 확인하기 위해, 각 단계의 소자 연결 정보인 netlist를 비교하였다. 합성 후와 배치배선 후 netlist의 4,195개 비교점에서 논리적 동등성을 확인하였으며, 구현 검증 결과는 표 7에 정리하였다.
 
-**그림 17. GPDK045 run-6 AXI CTS clock nets 선택 화면**
+<a id="table-7"></a>
 
-그림 17은 Innovus가 clock net으로 식별한 114개 net을 실제 routed layout 위에서 선택한 native 화면이다. 선택 overlay는 CTS 분포를 보여주며 slow setup view의 clock slew worst는 0.057 ns로 0.060 ns engineering target 이내였다. 이는 clock 배선의 시각화이지 jitter·IR·EM 또는 silicon clock 품질 실측이 아니다.
+<!-- report:p10:id86 -->
+**표 7. 디지털 회로의 단계별 검증 결과**
 
-![그림 18. GPDK045 run-6 qrs_maf leaf placement 선택 화면](../figures/final_submission/설계회로%20구현결과/GPDK045%20AXI%20QRS-MAF%20배치%20선택%20결과.gif)
+<!-- report:p10:id87 -->
+| 검증 대상 | 비교 기준과 입력 범위 | 확인 결과 |
+| --- | --- | --- |
+| 구간 분류와 Final 누적 | 전체 ECG 데이터 471건에 대한 Python 정수 기대값과 RTL의 구간 점수와 Final 누적값 | NSR, AF, OTHER의 구간 점수와 Final 누적값 모두 bit exact |
+| 클록 정지와 초기화 | 입력 간격, reset, test/debug 조건 변화 | 입력 보존, 완료 전달과 재개 후 결과 확인 |
+| 합성 후 논리 등가성 | 합성 netlist와 배치배선 후 netlist | 4,195개 비교점 일치 |
 
-**그림 18. GPDK045 run-6 `qrs_maf` leaf placement 선택 화면**
+<!-- report:p10:id88 -->
+### 4) 통합 검증 방법과 최종 성능
 
-그림 18의 cyan overlay는 `qrs_maf` hierarchy에 속한 9,261 leaf instances를 선택한 Innovus native 결과다. Run-4 data-transition 위반 141 nets 중 140개가 이 hierarchy에 집중돼 있었고, run-5/6의 50% floorplan 재배치와 DRV 보정 후 transition violation을 0으로 닫았다. 화면은 selected leaf placement이며 물리적 hard macro boundary를 뜻하지 않는다.
+<!-- report:p10:id89 -->
+통합 검증은 ADC 코드의 코어 직접 입력, AXI 입출력과 배치배선 후 지연 반영의 세 조건으로 수행하였다. 모두 동일한 최종 시험용 ECG 데이터 96건을 사용했으며, 고정 AFE–ADC 모델이 생성한 코드에서 초기 안정화 5초를 제외한 30분 분량을 입력하였다. 비교 기준은 동일 코드로 계산한 C++ 특징 추출값과 Python 분류 기대값으로 정하였다.
 
-**표 6. GPDK045 digital block 구현과 PPA: run-1 / run-2 / run-3 / run-4 / run-5 / run-6 guardband**
+<!-- report:p10:id90 -->
+코어와 AXI 경로에서는 코드의 부호와 전달 순서, 최종 결과의 일치를 확인하고, AXI 입력 대기 중 표본 보존과 완료 후 결과 회수도 검증하였다. 배치배선 후 회로에는 셀과 배선의 지연을 반영하고 저장 소자를 각각 0과 1로 초기화한 두 조건을 적용하여, 지연을 고려한 각 초기화 조건에서도 계산 결과가 기대값과 일치하는지 확인하였다. 검증 조건별 입력 규모와 결과는 표 8에 정리하였다.
 
-| 항목 | 결과 | 해석 범위 |
-|---|---:|---|
-| 코어 경계 | `snn_ecg_asic_core_top`, `PROFILE_EN=0`, 12-bit ADC | profiler/debug 출력 제외, 분류 기능 코어 유지 |
-| PVT/RC | setup slow 1.08 V·125 °C, hold fast 1.32 V·0 °C | 양 뷰에 같은 `gpdk045.tch` 사용 |
-| Genus mapping | 35,188 cells, 93,585.906 µm², setup slack +3.349 ns | `syn_map` 기준; `syn_opt` 미실행 |
-| Historical scan-capable mapping | `SDFFQX1` 995개, undefined scan 10.70% flops | scan chain 미정의; placement/timing QoR 한계 |
-| Conformal LEC | 13 hierarchical modules PASS, diff 0, abort 0 | RTL-to-mapped 논리 등가성 |
-| Innovus post-route | 35,663 instances, 95,321.556 µm² | signal route 완료 |
-| Innovus DIE boundary | 421.000 × 418.190 µm | DEF 2,000 DBU/µm 변환; core-only block boundary, pad/package 제외 |
-| IQuantus extraction | high extraction status 0 | extracted timing 기반 |
-| 100 MHz extracted timing | setup WNS +2.980 ns, hold WNS −0.050 ns | explicit report; setup/hold closure 아님 |
-| CCOpt clock slew | clock slew 위반 86개, target 0.060 ns, worst 0.062 ns | clock design-rule closure 아님 |
-| post-route vectorless power | internal 2.42385086, switching 0.92844734, leakage 0.00324419, total 3.35554239 mW | setup-slow, default PI/sequential activity 0.10; workload 전력 아님 |
-| physical completeness | VDD/VSS unrouted, internal route DRC 1, antenna data incomplete | PG/IR, filler/decap/tap/endcap·metal fill, foundry DRC/LVS, DFT, pad/package 미수행 |
-| Run-2 scan-free core mapped | 36,565 cells, 94,421.754 µm², sequential 6,045, setup +3.3509 ns | run-1 historical result와 별도 profile |
-| Run-2 scan-free core post-route | 42,958 instances, 120,287.898 µm², 422.8 × 419.9 µm, density 82.775% | padless block; internal DRC 0 |
-| Run-2 core timing | setup +2.469 ns; hold −0.008 ns, TNS −0.094 ns, 37 paths | clock slew 0 @ 60 ps; max-transition 3 nets/6 terminals 미해소 |
-| Run-2 AXI mapped | 37,293 cells, 96,548.994 µm², sequential 6,244, setup +3.3498 ns | AXI accelerator block; MicroBlaze SoC 아님 |
-| Run-2 AXI post-route | 43,901 instances, 123,650.100 µm², 426.2 × 425.03 µm, density 83.215% | padless block; internal DRC 0 |
-| Run-2 AXI timing | setup +2.781 ns; hold −0.016 ns, TNS −0.518 ns, 107 paths | clock slew 0 @ 60 ps; max-transition 73 nets/469 terminals 미해소 |
-| Run-2 OCV | slow early 0.95, fast late 1.05의 fixed engineering derate | foundry-characterized AOCV/POCV/LVF 아님 |
-| Run-2 vectorless power | core 3.71626492 mW, AXI 3.69335598 mW | default PI/sequential activity 0.10; workload 전력·실측값 아님 |
-| Run-2 core accelerated gap2 activity | internal 1.52085678, switching 0.50045621, leakage 0.00404773, total 2.02536072 mW | seed11-conditioned mapped gate 6,045/6,045, `-access +rwc`, zero delay; wall-time 1 kSPS·silicon power 아님 |
-| Run-2 core active-wait idle | internal 1.48928157, switching 0.41750333, leakage 0.00405502, total 1.91083992 mW | matched 0.1 s window; leakage·clock·idle-state activity 포함, pure clock power 아님 |
-| Run-2 core literal 1 kSPS prefix | internal 1.48928212, switching 0.41750554, leakage 0.00405312, total 1.91084079 mW | 100-sample 0.1 s prefix; Snapshot/decision 미도달 |
-| Run-2 core matched activity delta | literal minus active-wait idle total 0.00000087 mW | normalized SAIF parse PASS, fully-X/Z preserved, unannotated default 0; numeric annotation coverage PASS·silicon power·energy/decision 아님; AXI activity 없음 |
-| Run-2 RTL / LEC | core wrapper canonical 36/36, actual raw XMODEL 4/4; core LEC 6,178, AXI LEC 6,287 points clean | AXI 36-case replay 아님; raw archive 4/36; LEC는 timing/accuracy 근거 아님 |
-| Run-3 core closure | 43,016 instances, 120,532.428 µm²; setup +2.470 ns; hold 0.000 ns, TNS 0, paths 0 | data max-transition 0, clock slew 0, internal DRC 0; vectorless 3.72167787 mW |
-| Run-3 AXI hold closure | 44,062 instances, 124,717.482 µm²; setup +2.435 ns; hold 0.000 ns, TNS 0, paths 0 | data max-transition 264 nets/1,387 terminals, clock slew 263 pins; full closure 아님; vectorless 3.79286409 mW |
-| Run-3 LEC | core 6,178, AXI 6,287 points clean | diff·abort·unknown 0; 논리 등가성 근거 |
-| Run-4 AXI selected | 43,956 instances, 123,906.258 µm²; setup +2.661 ns; hold 0.000 ns, TNS 0, paths 0 | max-transition 141 nets/1,149 terminals; clock slew 0, internal DRC 0; vectorless 3.71285384 mW |
-| Run-4 AXI route / LEC | wire 953,367.865 µm, vias 346,666; LEC 6,287 points clean | run-3보다 wire·via 감소; diff·abort·unknown 0; data-transition residual로 full closure 아님 |
-| Run-5 AXI full closure | 42,881 instances, 126,069.441 µm²; die 481.2 × 478.04 µm, 230,032.848 µm², density 65.274%; setup +2.703 ns; hold 0.000 ns, TNS 0, paths 0 | data max-transition 0, clock slew 0, internal DRC 0; vectorless 3.58433691 mW |
-| Run-5 AXI route / LEC | wire 812,624.320 µm, vias 313,004; LEC 6,287 points clean | diff·abort·unknown 0; 50% floorplan의 area–closure tradeoff; foundry sign-off 아님 |
-| Run-6 AXI hold guardband | 44,602 instances, 131,487.003 µm²; setup +2.602 ns; hold +0.010 ns, TNS 0, paths 0 | data max-transition 0, clock slew 0, internal DRC 0; vectorless 3.71636663 mW |
-| Run-6 AXI route / LEC | wire 933,258.465 µm, vias 331,718; LEC 6,287 points clean | 기존 100 ps uncertainty 뒤 10 ps residual; 비용과 foundry-signoff 경계를 분리 |
-| Run-2 gate/SDF boundary | unmodified four-state output X; forced mapped seeds 11/22/33 at 6,045/6,045, MAX-SDF seed11 at 6,044/6,044 exact | testbench-conditioned sampled sensitivity; SDF timing checks disabled, `SDFNCAP` 88 warnings |
-| Exploratory PG | 171 connectivity, 715 geometry violations | failed attempt; selected checkpoints signal-only with VDD/VSS unrouted; no PG/IR/EM implementation claim |
+<a id="table-8"></a>
 
-표 6은 run-1 historical baseline, run-2 scan-free core·AXI block, run-3 core closure, run-4 AXI 개선, run-5 full closure와 run-6 hold guardband를 구분한다. Run-3 core와 run-6 AXI는 stated engineering OCV 아래 setup·hold·data-transition·clock-slew·internal-DRC를 닫았다. Run-6는 기존 100 ps uncertainty 뒤에 10 ps residual slack을 추가로 확보한 비용을 instances·area·wire·power로 공개했다. 두 결과 모두 generic library, signal-only route와 unrouted PG 조건이므로 foundry sign-off가 아니다. Run-6 AXI도 AXI 36-case replay를 뜻하지 않는다. Forced gate/SDF와 activity 결과의 기존 조건부 경계도 유지한다. Run-1은 [historical evidence](../verification/asic_gpdk45_core/README_KR.md), run-2는 [static evidence](../verification/asic_gpdk45_run2/README_KR.md), run-3는 [hold-closure evidence](../verification/asic_gpdk45_hold_closure/README_KR.md), run-4는 [AXI closure evidence](../verification/asic_gpdk45_axi_closure_run4/README_KR.md), run-5는 [AXI full-closure evidence](../verification/asic_gpdk45_axi_full_closure_run5/README_KR.md), run-6는 [AXI guardband evidence](../verification/asic_gpdk45_axi_hold_guardband_run6/README_KR.md)에 보존한다.
+<!-- report:p10:id91 -->
+**표 8. 통합 동작의 검증 항목과 결과**
 
-#### RTL timing 병목 분석과 파이프라인 최적화
+<!-- report:p10:id92 -->
+| 검증 경로 | 입력 데이터와 비교 기준 | 확인 결과 |
+| --- | --- | --- |
+| ADC→분류 코어 | 최종 시험 ECG 데이터 96건 C++ 특징 / Python 분류 기대값 | 데이터 당 Snapshot 30회의 구간 점수 및 최종 누적값 일치 |
+| ADC→AXI→결과 읽기 | 최종 시험 ECG 데이터 96건 동일 코드의 소프트웨어 기대값 | 최종 클래스와 48비트 누적값 일치 |
+| 배선 지연 반영 | 최종 시험 ECG 데이터 96건 동일 입력의 소프트웨어 기대값 | 초기값 0/1 두 조건에서 클래스와 누적값 일치 |
 
-초기 주요 병목은 `class_score_neurons` 내부의 `rdm_level_spike → pred_class` 조합 경로였다. 이 경로는 약 90 logic levels와 52개의 CARRY4를 포함한 긴 누산, 비교 및 WTA 경로였고, `class_score_neurons`는 주요 자원 및 timing hotspot이었다. 이를 clock 완화가 아니라 다음과 같은 구조적 파이프라인 분할로 해결하였다.
+<!-- report:p10:id93 -->
+고정 모델의 최종 분류 성능은 표 9와 표 10과 같다. 학습 및 설계 검증과 원본 ECG 기록이 겹치지 않는 30분 구간 96개를 사용했으며, 각 클래스는 32개이다. 91개가 데이터베이스에서 정한 정답과 일치하여 정확도 94.79%, macro-F1 94.78%를 기록하였다.
 
-- C24/global readout과 class WTA pipeline 분리
-- `segment_done`에서 마지막 사건을 보존하는 `*_next` counter capture와 C24 event/gate/score delta 등록
-- RDM·RAM 산술 경로의 exact lookup table 전환
-- Snapshot score의 update–adjust–commit 단계와 RBBB gate 평가 시점 정렬
-- QRS MAF combinational scan의 timestamp FIFO 기반 다중-cycle 처리
-- PNN predictor center 등록과 case lookup 적용
-- Final Membrane margin·WTA의 pairwise stage 분리
-- ARR scale/commit 경로와 post-segment flush timing 정렬
+<a id="table-9"></a>
 
-개선은 **critical path 관측 → pipeline 분할 → timing 재검증 → 기능 등가성 확인** 순서로 수행하였다. 기존 RDM-to-prediction critical path를 제거하고 Python/RTL 및 FPGA 기능 등가성을 유지하면서 timing closure를 달성하였다. 최적화 전 약 17.5k LUT는 historical OOC hotspot 수치이므로 최종 Pure RTL 9,719 LUT와 직접 비교하지 않는다. 설계 이력 commit은 `c7c75cfebf7add12bfcc32bb59d5edf38ac6e5aa`와 `5e2e5d0a46be47d8086b8642e055066079bfa4e6`, 고정 최종 RTL은 `c6b80de19cdcad5b7e43fe7835588b629d847f75`이며, 상세 근거는 [RTL timing 최적화 이력](../verification/timing_optimization/RTL_TIMING_OPTIMIZATION_HISTORY_KR.md)에 보존한다.
+<!-- report:p11:id94 -->
+**표 9. 최종 시험의 분류 성능**
 
-**표 7. 고정 최종 시험의 NSR·CHF·ARR·AF 혼동 행렬**
+<!-- report:p11:id95 -->
+| 항목 | 최종 시험 결과 |
+| --- | --- |
+| 정확도 / macro-F1 | 94.79% / 94.78% |
+| NSR 정밀도 / 재현율 / F1 | 96.88% / 96.88% / 96.88% |
+| AF 정밀도 / 재현율 / F1 | 100.00% / 87.50% / 93.33% |
+| OTHER 정밀도 / 재현율 / F1 | 88.89% / 100.00% / 94.12% |
+| 기록별 균등 평균 재현율 | 94.31% (17개 원본 ECG 기록) |
+| 기록별 다수결 비교 | 선정된 시험 구간의 정답 다수결과 15개 기록 일치 / 예측 동률 2개 |
 
-| 정답 / 예측 | NSR | CHF | ARR | AF | 합계 |
-|---|---:|---:|---:|---:|---:|
-| NSR | 9 | 0 | 0 | 0 | 9 |
-| CHF | 0 | 6 | 0 | 3 | 9 |
-| ARR | 2 | 0 | 7 | 0 | 9 |
-| AF | 1 | 0 | 1 | 7 | 9 |
-| 합계 | 12 | 6 | 8 | 10 | 36 |
+<a id="table-10"></a>
 
-분류 성능은 학습/검증 데이터와 원천 record가 겹치지 않고 모델 선택에도 사용되지 않은 fully held-out 최종 시험 데이터로, 설계 고정 후 최초 한 번만 평가하였다. 36개 30분 ECG 중 29개를 정확히 판정하여 정확도 80.56%, Macro-F1 80.44%, 균형 정확도 80.56%를 기록하였다.
+<!-- report:p11:id96 -->
+**표 10. 최종 시험의 혼동행렬 (행: 정답 / 열: 예측)**
 
-**표 8. 가속기 처리시간 및 전력 분석**
+<!-- report:p11:id97 -->
+| 정답 / 예측 | NSR | AF | OTHER |
+| --- | --- | --- | --- |
+| NSR | 31 | 0 | 1 |
+| AF | 1 | 28 | 3 |
+| OTHER | 0 | 0 | 32 |
 
-| 항목 | 결과 | 산출 기준 |
-|---|---:|---|
-| Exact C++ kernel 연산시간 | 1,777.6998 ms | 단일 thread 360회 측정 중앙값 |
-| FPGA 가속기 활성시간 | 36.0129 ms | 3,601,290 active cycles @ 100 MHz |
-| 코어 처리시간 비율 | 49.36배 | 1,777.6998 ms / 36.0129 ms |
-| 1 kSPS 연속 처리 할당전력 | 142.0 mW | 가속기 동적 45.0 mW + FPGA static 97.0 mW |
-| 100 MHz burst 할당전력 | 149.5 mW | 가속기 동적 52.5 mW + FPGA static 97.0 mW |
-| 판정당 활성 에너지 | 5.3839 mJ | 149.5 mW × 36.0129 ms |
-| 이상적 power-gating 평균 전력 | 2.991 µW | 5.3839 mJ / 1,800 s |
+<!-- report:p11:id98 -->
+오분류 5건 중 4건은 AF였고 이 중 3건은 OTHER로 예측되었다. 후속 개선에서는 간격과 파형 특징이 다른 결론을 지지하는 구간을 분석해 AF와 OTHER의 구분 근거를 보완할 필요가 있다.
 
-가속 성능은 RTL과 동일한 정수 연산과 판정 절차를 C++로 구현한 단일 thread Exact C++ kernel을 기준으로 비교하였다. FPGA의 실제 활성시간은 Exact C++보다 49.36배 짧았다. 1 kSPS 연속 처리 시 할당전력은 142.0 mW로 추정되며, 30분 데이터를 36.0129 ms 동안 burst 처리한 후 전원을 완전히 power-gating하는 이상적 조건에서는 평균 전력이 2.991 µW로 계산된다.
+<!-- report:p11:id99 -->
+### 5) 면적, 타이밍 및 전력 분석
 
-### 2.6 목표 대비 결과 비교
+<!-- report:p11:id100 -->
+AXI를 포함한 디지털부를 Cadence Genus로 합성하고 Innovus로 배치배선하여 면적, 타이밍과 전력을 평가하였다. 배선 지연과 부하를 반영하고 1.8 V, 대표 공정 조건(TT), 25°C, 62.5 MHz에서 분석하여 최종 배치배선 결과와 주요 구현 수치는 그림 9와 표 11에 제시하였다.
 
-**표 9. 설계 목표 대비 최종 결과**
+<!-- report:p11:id101 -->
+![그림 9. 디지털 분류 회로의 Innovus 배치배선 결과](../figures/report_2026/figure-09.svg)
 
-| 설계목표 | 목표값 | 최종 결과 | 판정 및 보완 방향 |
-|---|---|---|---|
-| 4-클래스 분류 정확도 | 정확도 80% 이상 | 정확도 80.56%, Macro-F1 80.44% | 달성. 성능 향상을 위해 클래스 데이터 추가 확보 필요 |
-| 스트리밍 입력 규격 | 1 kSPS signed 12-bit | 1 kSPS signed 12-bit 직접 인계 구현 | 달성 |
-| Pure RTL 메모리, 연산자원 | BRAM 0, DSP 0 | 9,719 LUT, 5,038 FF, BRAM 0, DSP 0 | 달성 |
-| Pure RTL FPGA timing | 양의 slack | WNS 8.184 ns | 달성 |
-| FPGA 기능 정합 | 클래스, 막전위 전 사례 일치 | 최종 클래스 36/36, 막전위 144/144 bit-exact | 달성 |
-| ASIC exploratory implementation | scan-free core/AXI mapping, LEC, place/CTS/route, extracted timing | Run-3 core와 run-6 AXI stated engineering checks 0 violation; AXI hold +10 ps | 부분 달성. Generic block closure·guardband 달성, PG·fill·foundry sign-off 미해소 |
-| 장시간 ECG 처리 | 24시간 이상 확장 지향 | 30분 검증 | 조건부 달성. 공개 데이터 길이의 제약 극복 필요 |
-| 웨어러블 저전력 가능성 | 저전력 분류 IP | FPGA 연속 142.0 mW 추정, 이상적 2.991 µW, run-2 core/AXI vectorless 3.71626492/3.69335598 mW, core conditioned activity windows 2.02536072/1.91083992/1.91084079 mW | 조건부 달성. core activity는 zero-delay forced-seed window이며 Snapshot/decision·numeric coverage·PG·sign-off·silicon 실측 미포함; AXI vectorless only |
+<a id="figure-9"></a>
 
-본 설계 범위의 모듈 구현과 통합 및 검증을 완료하였으며, 표 9와 같이 분류 성능, 스트리밍 입력, FPGA 하드웨어 자원, timing 및 기능 정합 목표를 달성하였다. GPDK045 run-3 core와 run-6 AXI는 stated engineering checks에서 setup·hold·data-transition·clock-slew·internal-DRC를 닫았고, AXI는 추가 hold slack 10 ps를 남겼다. 다만 PG·fill·foundry sign-off가 남아 전체 ASIC 목표는 부분 달성으로 평가했다. 장시간 처리와 저전력 목표도 30분 입력과 조건부 추정에 근거하므로 유지한다.
+<!-- report:p11:id102 -->
+**그림 9. 디지털 분류 회로의 Innovus 배치배선 결과**
 
-본 작품은 웨어러블 기기에 적용 가능한 저전력 반도체 IP를 지향한다. 관련 ECG 전용 ASIC을 조사한 결과, Abubakar 등의 65 nm TNN 기반 프로세서는 13종 비정상 리듬 검출에서 746 nW의 실측 전력을 달성했으며 [7], Zhang 등의 55 nm ANN 기반 프로세서는 개별 심박의 5-클래스 분류에서 12.88 µW를 보고하였다 [8]. 본 작품의 2.991 µW는 완전 power-gating 가정의 산출값이고 GPDK045 run-1 3.35554239 mW, run-2 core/AXI 3.71626492/3.69335598 mW, run-3 core/AXI 3.72167787/3.79286409 mW, run-4 AXI 3.71285384 mW, run-5 AXI 3.58433691 mW와 run-6 AXI 3.71636663 mW는 default activity의 vectorless 추정치다. Core activity 수치도 seed-conditioned zero-delay window 추정이므로 서로 다른 workload·공정·계측 범위의 실리콘 실측 수치와 직접 우열을 비교하지 않는다.
+<a id="table-11"></a>
 
-다만 이러한 저전력 가능성과 장시간 분류 구조의 실효성을 최종적으로 입증하려면, 성공한 power grid·IR·power gating과 physical fill, complete antenna data와 foundry DRC/LVS sign-off, unmodified four-state reset/power-up robustness, quantified annotation coverage를 갖춘 Snapshot/decision workload activity와 실리콘 전력 실측이 필요하다. 현재 실제 검증 입력은 30분이며, 24시간 정확도, 처리시간과 전력은 검증하지 않았다. 물리 AFE PCB, ADC silicon, pad/DFT/package, fabricated silicon과 임상 검증도 수행하지 않았다. 또한 공개 데이터베이스별 클래스 결합에 따른 database–class confounding이 남아 있으므로, 동일한 측정 환경에서 수집한 장시간 다중 클래스 ECG로 분류 성능과 실제 24시간 동작을 추가 검증해야 한다. 모든 FPGA/ASIC 전력 수치는 조건부 산출 또는 추정이지 실측 소비전력이 아니다.
+<!-- report:p12:id103 -->
+**표 11. 제안 방식의 ASIC 구현 결과**
 
-### 2.7 국내외 수상 실적
+<!-- report:p12:id104 -->
+| 항목 | 배치배선 후 결과 |
+| --- | --- |
+| 셀 점유 면적 / 인스턴스 | 17.5846 mm² (padding 포함) / 43,957개 |
+| 셋업 / 홀드 WNS | +4.105 ns / +0.030 ns |
+| 보고된 신호 검사 | DRV 0 / signal DRC 0 |
+| ICG enable 타이밍 | 195개 / setup +5.405 ns, hold +0.415 ns |
+| 셀 모델 / 평가 조건 | GPDK045 소자 기반 프로젝트용 A18 셀 / 1.8 V, TT, 25°C, 62.5 MHz |
 
-해당 사항 없음
+<!-- report:p12:id105 -->
+셀 점유 면적은 배치에 사용한 셀 외곽 크기인 LEF footprint의 합계로, padding을 포함하였다. 16 ns 클록 주기에서 셋업과 홀드 시간 여유가 모두 양수였으며, 195개 ICG 제어 신호도 시간 조건을 만족하였다. 구간 분류와 Final 누적에 필요한 최대 112클록은 1.792 µs로, 60초마다 도착하는 특징 누적값을 순차 처리할 시간 여유를 확보하였다.
 
-# III. 제품 및 기술요약
+<!-- report:p12:id106 -->
+아날로그부는 1.8 V, 27°C의 혼합 시뮬레이션에서 AFE, S/H와 SAR ADC가 연결된 공통 AVDD의 전류를 측정하였다. 초기 구간을 제외한 5~10 ms의 평균 소비전력은 256.43 µW였다. 디지털부는 대표 30분 ECG 1건의 1,800,000개 표본을 1 kSPS로 입력하여 배치배선 후 전력을 추산하였다. 연산과 입력 대기 시간을 포함한 평균 전력 및 처리 성능을 표 12에 정리하였다.
 
-## 창의성
+<a id="table-12"></a>
 
-본 작품은 분류기 내부에 원시 ECG 전체를 저장하지 않고, 간헐적으로 나타나는 질환 증거를 60초와 30분의 두 시간 척도에서 누적한다. ΔECG와 Strong Event로 QRS파를 검출한 뒤, PNN, RDM 등의 리듬 경로와 DSCR, RAM, QRS MAF, RBBB-like 등의 파형 경로에서 박동 간격, 리듬 변동 및 형태 특징을 해석 가능한 증거로 변환한다. 변환된 증거를 60초마다 Snapshot Membrane에 누적하고, 30분동안 생성된 30개의 Snapshot을 Final Membrane에 누적해 증거의 강도·빈도·지속성을 반영한다. 대규모 MAC 배열과 가중치 메모리 대신 SNN 기반 사건 처리와 막전위 누적 구조를 사용하고, AFE–ADC 모델부터 Pure RTL의 4-클래스 판정까지 직접 연결한 스트리밍 구조가 핵심 창의성이다.
+<!-- report:p12:id107 -->
+**표 12. 아날로그 및 디지털부의 소비전력과 디지털 처리 성능**
 
-## 기술성
+<!-- report:p12:id108 -->
+| 항목 | 분석 결과 |
+| --- | --- |
+| 아날로그부 평균 전력 | 0.256 mW |
+| 디지털 평균 총전력 | 1.365571 mW |
+| FF/ICG 클록 입력 내부 전력 | 0.739063 mW |
+| 입력 표본당 에너지 | 1.365571 µJ |
+| 60초당 평균 에너지 | 81.934264 mJ |
+| 30분 판정당 에너지 | 2.458028 J |
+| 마지막 입력→IRQ 지연 | 2.402525 µs |
 
-AFE–ADC는 LTspice 회로와 XMODEL로, SNN 분류 가속기는 Pure RTL과 AXI 기반 FPGA IP로 구현하였다. 아날로그부는 목표 ECG 대역과 60 Hz 간섭 억제 특성을 재현해 1 kSPS signed 12-bit 출력을 RTL에 전달하였다. 디지털부는 원시 파형을 저장하지 않고 사건·리듬·파형 증거를 60초와 30분의 두 시간 척도로 누적한다. 설계 고정 후 정확도 80.56%, Macro-F1 80.44%를 기록했으며 Pure RTL FPGA timing closure와 기능 정합을 달성했다. Generic GPDK045 run-2 이후 run-3 core는 setup +2.470 ns, hold·data-transition·clock-slew·internal-DRC 0 violation과 LEC 6,178점 clean을 기록했다. Run-6 AXI는 setup +2.602 ns, hold +0.010 ns, data max-transition 0, clock slew 0, internal DRC 0과 LEC 6,287점 clean을 기록했다. Run-3 core 3.72167787 mW와 run-6 AXI 3.71636663 mW는 default activity 추정이며 실측값이 아니다.
+<!-- report:p12:id109 -->
+이어 클록 제어 방식의 영향을 살펴보기 위해 현재 설계의 일반 동기식, 이벤트 기반 클록 게이팅과 선택적 비동기 Hybrid를 비교하고, 클록 게이팅을 기준으로 전력과 셀 점유 면적을 표 13에 정리하였다.
 
-## 사업성
+<a id="table-13"></a>
 
-본 IP는 스마트워치, ECG 패치, Holter 기록기와 원격 모니터링 단말의 AFE–ADC 후단에 탑재되는 엣지 분류 블록을 목표로 한다. 장시간 ECG를 저장, 전송한 뒤 외부에서 분석하는 방식은 자원 부담을 높일 수 있다. 제안 IP는 원시 파형 대신 리듬, 파형 증거만 누적하여 기기 내부에서 입력 ECG 전체를 NSR, CHF, ARR, AF 중 하나로 분류한다. BRAM과 DSP를 사용하지 않는 SNN 기반 RTL 구조와 완전 power gating 가정의 평균 전력 2.991 µW는 장시간 착용기기의 저전력 통합 가능성을 보여준다. AXI 기반 독립 IP로 패키징되어 다양한 웨어러블 SoC에 재사용하기도 쉽다. 향후 ASIC 전력 실측과 임상 검증을 거쳐 웨어러블 헬스케어 시장으로 확장할 수 있다.
+<!-- report:p12:id110 -->
+**표 13. 클록 제어 구조의 비교 결과**
 
-## 완성도
+<!-- report:p12:id111 -->
+| 구조 | 전력 / 셀 점유 면적 | 비교 결과 |
+| --- | --- | --- |
+| 일반 동기식 (Sync-Base) | 11.137460 mW / 17.6461 mm² | 전력 +715.59% / 면적 +0.35% |
+| 이벤트 기반 클록 게이팅 | 1.365571 mW / 17.5846 mm² | 동일 조건 저전력 선택 |
+| 선택적 비동기 Hybrid | 1.403081 mW / 17.0599 mm² | 전력 +2.7469% / 면적 −2.9834% |
 
-MATLAB 설계부터 LTspice, XMODEL, 기준 모델, RTL/XSim, Vivado와 FPGA까지 단계별 검증하였다. GPDK045에서는 run-1 historical baseline과 run-2 scan-free core·AXI를 보존하면서 run-3 core closure, run-5 AXI full closure와 run-6 hold guardband까지 확장했다. Core/AXI mapped-to-postroute LEC는 각각 6,178/6,287점에서 diff·abort·unknown 0이다. 다만 실패한 PG, unmodified four-state GLS, physical fill, foundry DRC/LVS, DFT·pad/package와 fabrication은 남아 있다. 따라서 generic block-level closure와 full-chip foundry sign-off를 구분한다.
+<!-- report:p12:id112 -->
+이벤트 기반 클록 게이팅은 일반 동기식보다 셀 점유 면적의 차이가 작으면서도 소비전력을 약 87.74% 줄였다. Hybrid는 클록 게이팅보다 면적이 약 2.98% 작았지만 전력은 약 2.75% 높았다. 이에 장시간 ECG 관찰에서의 전력 절감을 우선하여, 필요한 계산 동안만 클록을 공급하는 이벤트 기반 클록 게이팅 구조를 채택하였다.
 
-# 참고문헌
+<!-- report:p13:id113 -->
+### 6) 결론 및 제언
 
-1. A. Amirshahi and M. Hashemi, “ECG Classification Algorithm Based on STDP and R-STDP Neural Networks for Real-Time Monitoring on Ultra Low-Power Personal Wearable Devices,” *IEEE Transactions on Biomedical Circuits and Systems*, 2019. https://doi.org/10.1109/TBCAS.2019.2948920
-2. J. Chen et al., “An Event-Driven Compressive Neuromorphic System for Cardiac Arrhythmia Detection,” *IEEE International Symposium on Circuits and Systems*, 2022. https://ieeexplore.ieee.org/document/9937756/
-3. F. C. Bauer, D. R. Muir, and G. Indiveri, “Real-Time Ultra-Low Power ECG Anomaly Detection Using an Event-Driven Neuromorphic Processor,” *IEEE Transactions on Biomedical Circuits and Systems*, 2019. https://doi.org/10.1109/TBCAS.2019.2953001
-4. D. Shanmugam, D. Blalock, and J. Guttag, “Multiple Instance Learning for ECG Risk Stratification,” *Proceedings of Machine Learning for Healthcare*, 2019. https://proceedings.mlr.press/v106/shanmugam19a.html
-5. M. Zihlmann, D. Perekrestenko, and M. Tschannen, “Convolutional Recurrent Neural Networks for Electrocardiogram Classification,” *Computing in Cardiology*, 2017. https://doi.org/10.22489/CinC.2017.070-060
-6. E. Zvuloni et al., “Modeling day-long ECG signals to predict heart failure risk with explainable AI,” *npj Digital Medicine*, 2026. https://doi.org/10.1038/s41746-026-02835-8
-7. A. Abubakar et al., “A 746 nW ECG Processor ASIC Based on Ternary Neural Network,” *IEEE Transactions on Biomedical Circuits and Systems*, 2022. https://doi.org/10.1109/TBCAS.2022.3196059
-8. C. Zhang et al., “A Low-Power ECG Processor ASIC Based on an Artificial Neural Network for Arrhythmia Detection,” *Applied Sciences*, 2023. https://doi.org/10.3390/app13179591
+<!-- report:p13:id114 -->
+웨어러블 ECG 연구는 기기 안에서 이상을 판단해 저장과 전송 부담을 줄이는 방향으로 발전하고 있다. Bauer 등은 이벤트 기반 뉴로모픽 이상 검출[[4]](INTEGRATED_TECHNICAL_REPORT_KR.md#ref-4), Chu 등은 스파이크 구동 SNN[[5]](INTEGRATED_TECHNICAL_REPORT_KR.md#ref-5), Bhanushali 등은 ADC와 분류 회로의 칩 통합[[6]](INTEGRATED_TECHNICAL_REPORT_KR.md#ref-6), Busia 등은 저전력 마이크로컨트롤러 기반 Transformer[[7]](INTEGRATED_TECHNICAL_REPORT_KR.md#ref-7)로 기기 내 분석의 가능성을 제시하였다.
+
+<!-- report:p13:id115 -->
+본 작품은 이러한 흐름에서 Holter 방식의 장시간 관찰에서 반복되는 특징을 제한된 저장 공간에 남기는 데 초점을 맞추었다. AFE–ADC 입력에서 검출한 박동과 파형 특징을 Snapshot으로 요약하고 Final 막전위에 누적해, 전체 원시 파형을 보관하지 않고 장기 리듬을 판단하도록 하였다.
+
+<!-- report:p13:id116 -->
+전용 ASIC에서는 이 처리 방식에 맞춰 연산 경로를 재사용하고 저장 폭과 클록 공급 시점을 정하였다. 뉴로모픽 특징 추출, 계층적 증거 누적과 이벤트 기반 클록 게이팅을 하나의 장시간 분석 구조로 연결한 점이 본 작품의 기여이다.
+
+<!-- report:p13:id117 -->
+최종 시험 96건에서 정확도 94.79%와 macro-F1 94.78%를 기록하고, AXI 및 배선 지연 반영 검증에서도 계산 결과의 일치를 확인하였다. 평균 전력은 아날로그부 약 0.256 mW, 대표 30분 입력을 처리한 디지털부 약 1.366 mW로 추정되어 장시간 ECG 분석용 IP의 구현 기반을 마련하였다.
+
+<!-- report:p13:id118 -->
+현재 모델의 장시간 적용 가능성을 살피기 위해 24시간 ECG 9건을 예비 평가하였다. NSR 우세 3건은 NSR 2건과 OTHER 1건으로, AF 우세 3건은 모두 AF로 예측되었다. OTHER 혼합 3건은 NSR, AF, OTHER로 각각 1건씩 예측되어, 혼합 리듬 기록의 판정 기준과 누적 방식에 대한 추가 검토가 필요하다.
+
+<!-- report:p13:id119 -->
+이를 바탕으로 더 많은 환자의 24시간 이상 ECG 데이터를 확보하고, 본 구조의 분류 가중치와 누적 방식을 장시간 입력에 맞춰 재튜닝한 뒤 독립된 기록에서 성능을 검증하고자 한다. 구간별 판정 시각과 이상이 의심되는 원시 파형을 선택적으로 보존하고, 실제 착용 환경에서 짧은 이상과 움직임 잡음에 대한 검증을 보완하여 의료진의 판독을 돕는 저전력 ECG 패치용 IP로 발전시키고자 한다.
+
+<!-- report:p13:id120 -->
+### 7) 참고문헌
+
+<!-- report:p13:id121 -->
+<a id="ref-1"></a>
+
+[1] M. Zihlmann et al., “Convolutional Recurrent Neural Networks for Electrocardiogram Classification,” CinC, vol. 44, pp. 1–4, 2017. DOI: 10.22489/CinC.2017.070-060.
+
+<!-- report:p13:id122 -->
+<a id="ref-2"></a>
+
+[2] G. D. Clifford et al., “AF Classification from a Short Single Lead ECG Recording: The PhysioNet/Computing in Cardiology Challenge 2017,” CinC, 2017. DOI: 10.22489/CinC.2017.065-469.
+
+<!-- report:p13:id123 -->
+<a id="ref-3"></a>
+
+[3] PhysioNet, Long-Term AF Database v1.0.0. DOI: 10.13026/C2QG6Q.
+
+<!-- report:p13:id124 -->
+<a id="ref-4"></a>
+
+[4] F. C. Bauer et al., “Real-Time Ultra-Low Power ECG Anomaly Detection Using an Event-Driven Neuromorphic Processor,” IEEE TBCAS, 2019. DOI: 10.1109/TBCAS.2019.2953001.
+
+<!-- report:p13:id125 -->
+<a id="ref-5"></a>
+
+[5] H. Chu et al., “A Neuromorphic Processing System With Spike-Driven SNN Processor for Wearable ECG Classification,” IEEE TBCAS, vol. 16, no. 4, pp. 511–523, 2022. DOI: 10.1109/TBCAS.2022.3189364.
+
+<!-- report:p13:id126 -->
+<a id="ref-6"></a>
+
+[6] S. P. Bhanushali et al., “Fully Integrated Mixed-Signal Classifier for Cardiovascular Health Monitoring,” IEEE BioCAS, 2023. DOI: 10.1109/BioCAS58349.2023.10388918.
+
+<!-- report:p13:id127 -->
+<a id="ref-7"></a>
+
+[7] P. Busia et al., “A Noisy Beat is Worth 16 Words: a Tiny Transformer for Low-Power Arrhythmia Classification on Microcontrollers,” 2024. arXiv:2402.10748v1.

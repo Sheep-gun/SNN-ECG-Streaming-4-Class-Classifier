@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # Cadence native visual exports
 
 이 폴더는 AI 생성·재구성·후처리 그림이 아니라 Cadence Innovus가 실제 checkpoint에서 `dumpToGIF`로 직접 출력한 화면만 보존한다. 최종 기준은 GPDK045 run-6 AXI block이며, 배치·CTS·일반 신호 배선이 완료된 `snn_ecg_axi_asic_top` checkpoint다.

@@ -1,11 +1,5 @@
-# Streaming state와 memory 범위
+# 디지털 구성 및 동작 · 저전력 클록 제어
 
-Pure RTL은 30분 raw ECG 배열을 내부에 저장하지 않는다. 새 표본이 들어올 때 다음 상태만 갱신한다.
+현재 설계의 설명은 제출 보고서를 기준으로 정리한 [디지털 구성 및 동작 · 저전력 클록 제어](03_DIGITAL_ARCHITECTURE_KR.md)에서 확인할 수 있습니다.
 
-- adaptive event와 QRS detector state
-- RR interval, PNN, RDM과 ectopic evidence state
-- DSCR, RAM, QRS MAF와 RBBB-like morphology state
-- 네 class의 Snapshot 및 Final Membrane
-- pipeline과 WTA control state
-
-1 kSPS signed 12-bit로 30분 raw input은 약 2.7 MB지만, 이는 구현에서 회피한 입력 window 크기다. 실제 dense baseline을 구현해 측정한 memory saving으로 주장하지 않는다.
+[보고서 전문](../reports/INTEGRATED_TECHNICAL_REPORT_KR.md) · [코드와 재현 안내](../REPRODUCIBILITY_KR.md) · [과거 자료](LEGACY_KR.md)

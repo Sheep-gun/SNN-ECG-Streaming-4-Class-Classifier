@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../../../../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # AFE 최초 입력 데이터셋 (MATLAB용)
 
 > AFE에 **주입한 원본 digitized ECG**(AFE 처리 이전 신호)를 MATLAB에서 바로 쓰도록 CSV로 변환한 것.

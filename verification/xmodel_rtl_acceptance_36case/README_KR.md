@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # 36-case compact AFE–RTL acceptance evidence
 
 이 폴더는 고정 AFE 생성 final-test chunk와 digital board-replay input의 SHA-256 36/36 동일성, canonical `sample_gap_cycles=2`에서 Pure RTL의 class 36/36과 four Final Membrane 144/144 일치를 기록한 compact CSV 및 XSim harness를 보존한다.

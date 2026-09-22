@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # GPDK045 run-2 parser staging
 
 이 디렉터리는 raw run tree의 명시된 report/result만 fail-closed 방식으로 파싱한 public-builder 입력이다.

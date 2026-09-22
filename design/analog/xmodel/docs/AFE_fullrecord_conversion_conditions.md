@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../../../../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # Full-record AFE+ADC 변환 조건 (디지털팀 전달)
 
 **작성:** 이수환 (AFE) · **일자:** 2026-06-27 · **대상:** record 전체 stream AFE+ADC 변환본

@@ -1,9 +1,13 @@
-# Reports
+# 보고서와 구현 안내
 
-- `INTEGRATED_TECHNICAL_REPORT_KR.md`: 제출 기술내용을 중심으로 사전 분석, 선행연구, 구현 이력, 재현성과 claim 한계를 관련 본문 절에 통합한 공개 원고
-- `INTEGRATED_TECHNICAL_REPORT_EVIDENCE_MAP.csv`: 문장, claim과 artifact 연결
-- `INTEGRATED_REPORT_REVISION_AUDIT.md`: 최신 개정 범위
-- `INTEGRATED_TECHNICAL_REPORT_REVIEW_CHECKLIST.md`: claim boundary 검토
-- `PUBLICATION_READINESS_PREFLIGHT.md`: 공개 전 점검
+[프로젝트 소개](../README.md) · [설계보고서 전문](INTEGRATED_TECHNICAL_REPORT_KR.md) · [PDF](ECG_Design_Report_2026.pdf)
 
-대회 제출 PDF 원본은 개인정보와 서명을 포함하므로 저장소에 넣지 않는다. 다른 `docs/` 문서는 통합 보고서의 주장과 구현 과정을 뒷받침하는 근거 및 재현 기록이다.
+- [설계 요약 · 창의성 · 난이도 · 완성도](../docs/01_OVERVIEW_KR.md)
+- [전체 시스템과 아날로그 구성 및 동작](../docs/02_SYSTEM_AND_ANALOG_KR.md)
+- [디지털 구성 및 동작 · 저전력 클록 제어](../docs/03_DIGITAL_ARCHITECTURE_KR.md)
+- [데이터셋 구성 및 학습](../docs/04_DATASET_AND_TRAINING_KR.md)
+- [아날로그·디지털 검증과 최종 성능](../docs/05_VERIFICATION_AND_RESULTS_KR.md)
+- [면적, 타이밍 및 전력 분석](../docs/06_ASIC_POWER_KR.md)
+- [결론 및 제언 · 참고문헌](../docs/07_CONCLUSION_KR.md)
+
+[현재 구현과 재현 안내](../REPRODUCIBILITY_KR.md) · [과거 자료](../docs/LEGACY_KR.md)

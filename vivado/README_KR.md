@@ -1,10 +1,5 @@
-# Vivado 프로젝트
+# 이전 개발 자료
 
-유지하는 `.xpr`은 아래 두 개뿐이다.
+이 경로에는 이전 설계의 분석·도구·구현 자료가 남아 있습니다.
 
-| 목적 | 실행할 project |
-|---|---|
-| Pure RTL hierarchy와 elaborated schematic 확인 | `pure_rtl/project/SNN_ECG_PURE_RTL_VISUALIZATION.xpr` |
-| AXI IP, MicroBlaze, implementation 및 FPGA replay | `microblaze/SNN_ECG_MB_FULL_REPLAY.xpr` |
-
-`pure_rtl/evidence/`에는 Pure RTL hierarchy 선택 목록과 schematic 출력 안내가 있으며, `project_verification.txt`에는 두 project의 source/top 검증 결과가 기록된다.
+[현재 보고서](../reports/INTEGRATED_TECHNICAL_REPORT_KR.md) · [현재 코드와 재현 안내](../REPRODUCIBILITY_KR.md) · [과거 자료 안내](../docs/LEGACY_KR.md)

@@ -1,0 +1,4 @@
+검증 대상,비교 기준과 입력 범위,확인 결과
+구간 분류와 Final 누적,전체 ECG 데이터 471건에 대한 Python 정수 기대값과 RTL의 구간 점수와 Final 누적값,"NSR, AF, OTHER의 구간 점수와 Final 누적값 모두 bit exact"
+클록 정지와 초기화,"입력 간격, reset, test/debug 조건 변화","입력 보존, 완료 전달과 재개 후 결과 확인"
+합성 후 논리 등가성,합성 netlist와 배치배선 후 netlist,"4,195개 비교점 일치"

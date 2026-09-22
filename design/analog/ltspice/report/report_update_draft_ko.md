@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../../../../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # ECG AFE·Behavioral ADC LTspice 검증 보강 초안
 
 문장 성격을 `[확인된 사실]`, `[해석]`, `[미완료]`로 표시하였다. 별도 tolerance가 없는 analog metric은 PASS/FAIL이 아니라 `MEASURED`이다.

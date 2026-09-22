@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../../../../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # Reference Vector Manifest
 
 ì´ ë¬¸ìë MATLAB reference input/output vectorì SHA256 hashë¥¼ ì ë¦¬íë¤. ì´ vectorë íì MATLAB-vs-XMODEL equivalence verificationì ê¸°ì¤ì¼ë¡ ì¬ì©ëë¤.

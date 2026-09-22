@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../../../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # 실제 실행 script snapshot
 
 이 폴더는 2026-08-20 원격 실행에서 사용한 project-owned wrapper, SDC, testbench와 Tcl의 byte-exact snapshot이다. 각 hash는 [`../executed_flow_sha256.csv`](../executed_flow_sha256.csv)에 기록한다. PDK·Cadence DB·접속정보는 포함하지 않는다.

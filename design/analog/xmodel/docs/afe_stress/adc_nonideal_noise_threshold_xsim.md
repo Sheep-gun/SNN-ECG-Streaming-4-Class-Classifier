@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../../../../../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # ADC white-noise threshold — locked RTL final_pred (NSR chunk)
 
 > 대상: NSR record 16483 w010 (clean golden = NSR 30/0/0/0). canonical 30분 chunk에 백색잡음 주입.

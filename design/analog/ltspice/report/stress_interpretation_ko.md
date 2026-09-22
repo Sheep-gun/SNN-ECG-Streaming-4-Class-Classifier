@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../../../../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # XMODEL-aligned LTspice stress 해석
 
 Stress 값과 적용 범위는 fixed XMODEL commit `4756a5086023547328ef44fd5fd87da3c250dc39`에서 가져왔다. 모든 수치는 `tables/xmodel_aligned_stress_results.csv`의 LTspice schematic/model 결과이며 tolerance가 없어 `MEASURED`이다.

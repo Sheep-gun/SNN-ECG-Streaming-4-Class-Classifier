@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../../../../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # MATLAB-to-XMODEL 인계 문서
 
 이 문서는 MATLAB reference output을 MATLAB-vs-XMODEL 등가성 검증에서 어떻게 사용할지 정의한다.

@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # XMODEL AFE–ADC 출력 데이터
 
 이 디렉터리는 고정 AFE–ADC XMODEL이 생성하고 직접 통합된 RTL 코어가 수락한 30분 signed 12-bit ADC 출력의 표준 보관 위치다.

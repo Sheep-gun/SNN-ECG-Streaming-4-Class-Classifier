@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # Benchmark 반영 감사
 
 최신 benchmark 근거는 디지털 저장소 commit `d44e67517650f1f95ca67b93c2788f41e99f1a5e`에서 `models/digital_equivalence/`로 선별 반영했다. 파일별 출처는 `project_registry/benchmark_import_manifest.csv`에 기록한다.

@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../../../../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # 아날로그부 후속 통합 경계
 
 현재 Cadence 결과는 디지털 분류 코어와 project-owned AXI digital wrapper만 다룬다. AFE·S/H·ADC의 transistor/layout 구현은 아날로그 팀 범위이며, Virtuoso·공식 mixed-signal PDK가 없는 현재 환경에서는 physical analog integration을 완료했다고 주장하지 않는다.

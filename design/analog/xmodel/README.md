@@ -1,3 +1,5 @@
+> **이전 설계 자료** — 현재 3클래스 설계의 설명과 수치는 [2026 설계보고서](../../../reports/INTEGRATED_TECHNICAL_REPORT_KR.md)를 기준으로 합니다. 이 문서는 당시의 코드·검증 이력을 보존합니다.
+
 # AFE–ADC XMODEL
 
 이 디렉터리는 공개 digitized ECG를 PWL 전압 자극으로 재구성하고 AFE–ADC 동작을 SystemVerilog XMODEL로 재현하는 원본 설계와 검증 자산을 보관한다.
