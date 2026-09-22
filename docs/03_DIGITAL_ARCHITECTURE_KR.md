@@ -1,8 +1,6 @@
 # 디지털 구성 및 동작 · 저전력 클록 제어
 
-> [설계보고서 PDF](../reports/ECG_Design_Report_2026.pdf)의 해당 본문을 옮겼습니다.
-
-
+[설계보고서 PDF](../reports/ECG_Design_Report_2026.pdf)
 
 <!-- report:p5:id33 -->
 ### 3) 디지털 구성 및 동작

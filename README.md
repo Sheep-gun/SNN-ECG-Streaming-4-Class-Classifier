@@ -4,8 +4,6 @@
 
 [설계보고서 전문](reports/INTEGRATED_TECHNICAL_REPORT_KR.md) · [PDF](reports/ECG_Design_Report_2026.pdf) · [문서 목차](docs/README_KR.md) · [코드와 재현 안내](REPRODUCIBILITY_KR.md)
 
-이 문서의 설계 설명은 제출 보고서의 표현을 그대로 사용했습니다. 현재 설계의 분류는 **NSR / AF / OTHER**입니다. 저장소 주소의 `4-Class`와 과거 자료는 이전 설계의 이력입니다.
-
 ## 설계 요약
 
 <!-- report:p2:id1 -->
@@ -200,8 +198,7 @@ AXI를 포함한 디지털부를 Cadence Genus로 합성하고 Innovus로 배치
 | 아날로그·디지털 검증과 최종 성능 | [05_VERIFICATION_AND_RESULTS_KR.md](docs/05_VERIFICATION_AND_RESULTS_KR.md) |
 | 면적, 타이밍 및 전력 분석 | [06_ASIC_POWER_KR.md](docs/06_ASIC_POWER_KR.md) |
 | 결론 및 제언 · 참고문헌 | [07_CONCLUSION_KR.md](docs/07_CONCLUSION_KR.md) |
-| 현재 3클래스 RTL | [rhythm3_duration_v3](design/digital/rtl/rhythm3_duration_v3/) |
+| 디지털 RTL | [rhythm3_duration_v3](design/digital/rtl/rhythm3_duration_v3/) |
 | 고정 모델 · 학습 및 검증 코드 | [rhythm3_duration](models/rhythm3_duration/) |
-| 보고서 원문 대조 | [출처와 전재 범위](docs/REPORT_SOURCE_KR.md) |
 
-[출처와 라이선스](LICENSE_OR_PROVENANCE.md) · [과거 자료 안내](docs/LEGACY_KR.md)
+[출처와 라이선스](LICENSE_OR_PROVENANCE.md)

@@ -1,8 +1,6 @@
 # 데이터셋 구성 및 학습
 
-> [설계보고서 PDF](../reports/ECG_Design_Report_2026.pdf)의 해당 본문을 옮겼습니다.
-
-
+[설계보고서 PDF](../reports/ECG_Design_Report_2026.pdf)
 
 <!-- report:p8:id62 -->
 ### 1) 데이터셋 구성 및 학습

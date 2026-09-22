@@ -60,7 +60,7 @@ def main():
                 assert list(csv.reader(f)) == e["rows"]
 
     files = set(manifest["active_report_documents"])
-    files.update(["REPRODUCIBILITY_KR.md", "START_HERE_KR.md", "WORKSPACE_INVENTORY_KR.md", "docs/README_KR.md", "docs/REPORT_SOURCE_KR.md", "docs/LEGACY_KR.md", "figures/FIGURE_INDEX.md"])
+    files.update(["REPRODUCIBILITY_KR.md", "START_HERE_KR.md", "WORKSPACE_INVENTORY_KR.md", "docs/README_KR.md", "figures/FIGURE_INDEX.md"])
     for name in files:
         text = (ROOT / name).read_text(encoding="utf8")
         for target in re.findall(r"\]\(([^)]+)\)", text):

@@ -1,11 +1,10 @@
 # 라이선스와 출처
 
-이 저장소는 세 설계 구성과 검증 산출물을 하나로 모은 기술 저장소이며, 원저작물의
-라이선스를 새로 부여하거나 변경하지 않는다. 각 구성의 고정 원본은 다음과 같다.
+구성 요소의 출처는 다음과 같다. 각 파일에 포함된 원저작물의 라이선스를 따른다.
 
 - MATLAB AFE–ADC: `ferocious-kiwi/ECG-SoC-MATLAB-AFE-ADC-Prevalidation` commit `907f7e1f081a9d6a5703a32095d962143315a192`
 - AFE–ADC XMODEL: `Hwan-22/ECG-SoC` commit `4756a5086023547328ef44fd5fd87da3c250dc39`
-- Digital RTL history: `Sheep-gun/SNN-ECG-Streaming-4-Class-Classifier` commit `c6b80de19cdcad5b7e43fe7835588b629d847f75`
+- Digital RTL: `Sheep-gun/SNN-ECG-Streaming-4-Class-Classifier` commit `c6b80de19cdcad5b7e43fe7835588b629d847f75`
 
 상세 경로와 역할은 `project_registry/upstream_commits.yaml`, 현재 공개 파일의
 SHA-256은 `project_registry/artifact_manifest.csv`에 기록한다. 원본 파일에 포함된
@@ -19,8 +18,8 @@ PhysioNet의 NSRDB, CHFDB, MIT-BIH Arrhythmia Database와 AFDB 원시 waveform�
 입력과 검증 결과는 원 데이터의 라이선스와 출처를 변경하지 않는다.
 
 개인 연락처, 학번, 서명과 직인이 포함된 신청서 원본 및 비공개 제출 자료는 Git에
-포함하지 않는다. 현재 보고서 Figure는 `figures/report_2026/`를 기준으로 한다. `figures/final_submission/`은 이전 보고서 자료다.
+포함하지 않는다. 현재 보고서 Figure는 `figures/report_2026/`를 기준으로 한다.
 
-현재 3클래스 설계는 PhysioNet Long-Term AF Database v1.0.0 (DOI: 10.13026/C2QG6Q)을 사용한다. 원시 파형은 포함하지 않으며, 공개된 라벨·분할 정보의 출처와 이용 조건은 `datasets/DATASET_LICENSES.md`를 따른다. 보고서 공개본은 연락처와 서명이 있는 표지를 제외한 본문이다.
+리듬 분류기는 PhysioNet Long-Term AF Database v1.0.0 (DOI: 10.13026/C2QG6Q)을 사용한다. 원시 파형은 포함하지 않으며, 공개된 라벨·분할 정보의 출처와 이용 조건은 `datasets/DATASET_LICENSES.md`를 따른다. 보고서 공개본은 연락처와 서명이 있는 표지를 제외한 본문이다.
 
 GPDK045 GSCLIB v4.7과 Cadence 도구는 외부 licensed dependency로만 사용했다. Liberty, LEF, QRC, cell Verilog, CDL, GDS, 라이선스 정보와 tool work database는 이 저장소에 포함하지 않는다. 공개 범위는 프로젝트가 작성한 wrapper·SDC·script, sanitize된 report와 파생 PPA 요약이다.

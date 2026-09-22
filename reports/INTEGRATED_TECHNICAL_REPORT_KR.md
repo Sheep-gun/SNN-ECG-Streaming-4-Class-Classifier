@@ -1,6 +1,6 @@
 # 아날로그 전처리와 디지털 뉴로모픽 구조를 결합한 장시간 ECG 리듬 분류용 저전력 ASIC 설계
 
-> [설계보고서 PDF](ECG_Design_Report_2026.pdf)의 해당 본문을 옮겼습니다.
+[설계보고서 PDF](ECG_Design_Report_2026.pdf)
 
 [설계 요약 · 창의성 · 난이도 · 완성도](../docs/01_OVERVIEW_KR.md) | [전체 시스템과 아날로그 구성 및 동작](../docs/02_SYSTEM_AND_ANALOG_KR.md) | [디지털 구성 및 동작 · 저전력 클록 제어](../docs/03_DIGITAL_ARCHITECTURE_KR.md) | [데이터셋 구성 및 학습](../docs/04_DATASET_AND_TRAINING_KR.md) | [아날로그·디지털 검증과 최종 성능](../docs/05_VERIFICATION_AND_RESULTS_KR.md) | [면적, 타이밍 및 전력 분석](../docs/06_ASIC_POWER_KR.md) | [결론 및 제언 · 참고문헌](../docs/07_CONCLUSION_KR.md)
 

@@ -1,8 +1,6 @@
 # 전체 시스템과 아날로그 구성 및 동작
 
-> [설계보고서 PDF](../reports/ECG_Design_Report_2026.pdf)의 해당 본문을 옮겼습니다.
-
-
+[설계보고서 PDF](../reports/ECG_Design_Report_2026.pdf)
 
 <!-- report:p3:id14 -->
 ## 2. 구성 및 동작

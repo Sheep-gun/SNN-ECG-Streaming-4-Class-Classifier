@@ -10,4 +10,4 @@
 - [면적, 타이밍 및 전력 분석](06_ASIC_POWER_KR.md)
 - [결론 및 제언 · 참고문헌](07_CONCLUSION_KR.md)
 
-[현재 구현과 재현 안내](../REPRODUCIBILITY_KR.md) · [과거 자료](LEGACY_KR.md)
+[구현과 재현 안내](../REPRODUCIBILITY_KR.md)

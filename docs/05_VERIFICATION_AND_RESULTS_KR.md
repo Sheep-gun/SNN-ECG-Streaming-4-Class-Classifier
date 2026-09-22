@@ -1,8 +1,6 @@
 # 아날로그·디지털 검증과 최종 성능
 
-> [설계보고서 PDF](../reports/ECG_Design_Report_2026.pdf)의 해당 본문을 옮겼습니다.
-
-
+[설계보고서 PDF](../reports/ECG_Design_Report_2026.pdf)
 
 <!-- report:p9:id73 -->
 ### 2) 아날로그 검증 및 결과

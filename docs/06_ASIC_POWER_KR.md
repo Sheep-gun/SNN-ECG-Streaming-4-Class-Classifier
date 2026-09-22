@@ -1,8 +1,6 @@
 # 면적, 타이밍 및 전력 분석
 
-> [설계보고서 PDF](../reports/ECG_Design_Report_2026.pdf)의 해당 본문을 옮겼습니다.
-
-
+[설계보고서 PDF](../reports/ECG_Design_Report_2026.pdf)
 
 <!-- report:p11:id99 -->
 ### 5) 면적, 타이밍 및 전력 분석

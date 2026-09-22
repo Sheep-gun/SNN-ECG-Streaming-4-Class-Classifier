@@ -1,8 +1,6 @@
 # 결론 및 제언 · 참고문헌
 
-> [설계보고서 PDF](../reports/ECG_Design_Report_2026.pdf)의 해당 본문을 옮겼습니다.
-
-
+[설계보고서 PDF](../reports/ECG_Design_Report_2026.pdf)
 
 <!-- report:p13:id113 -->
 ### 6) 결론 및 제언
